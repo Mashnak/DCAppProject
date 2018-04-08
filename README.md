@@ -7,7 +7,13 @@ Made by:
 - Markus Schmidgall
 - Simon Winterhalter
 
-# Useful Links
+# Important things
+
+- [Trello Board](https://trello.com/b/Pwd63DWV/ss18-da-teama)
+
+# Useful things
+
+## Links
 
 - [Lynda](https://www.lynda.com/) (Offers Guide for: Docker, MongoDB, React/Native, JavaScript. Also free for Students.)
 - [React Website](https://reactjs.org/)
@@ -15,7 +21,7 @@ Made by:
 - [MongoDB Website](https://www.mongodb.com/de)
 - [SprintBoot Website](https://projects.spring.io/spring-boot/)
 
-# Useful Programs
+## Programs
 
 - [Postman](https://www.getpostman.com/) (Allows sending of RESTful calls.)
 - [SourceTree](https://www.sourcetreeapp.com/)
