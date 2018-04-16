@@ -2,6 +2,18 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
 
+class SongData {
+  SongData(this.name, this.album, this.artist, this.publisher, this.releaseDate,
+      this.imagePath);
+
+  String name;
+  String album;
+  String artist;
+  String publisher;
+  DateTime releaseDate;
+  String imagePath;
+}
+
 class MyApp extends StatelessWidget {
   Widget _buildInfoSection(String sectionName, String sectionValue) {
     return new Container(
@@ -27,6 +39,23 @@ class MyApp extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+
+  Widget _buildSongInfoTab(SongData songData) {
+    return new ListView(
+      children: <Widget>[
+        new Image.asset(
+          songData.imagePath,
+          height: 240.0,
+          fit: BoxFit.cover,
+        ),
+        _buildInfoSection('Song Title', songData.name),
+        _buildInfoSection('Album Name', songData.album),
+        _buildInfoSection('Artist Name', songData.artist),
+        _buildInfoSection('Label', songData.publisher),
+        _buildInfoSection('Release Date', songData.releaseDate.toString()),
+      ],
     );
   }
 
@@ -58,20 +87,13 @@ class MyApp extends StatelessWidget {
           ),
           body: new TabBarView(
             children: [
-              new ListView(
-                children: <Widget>[
-                  new Image.asset(
-                    'images/lake.jpg',
-                    height: 240.0,
-                    fit: BoxFit.cover,
-                  ),
-                  _buildInfoSection('Song Title', 'Legend Has It'),
-                  _buildInfoSection('Album Name', 'Run The Jewels 3'),
-                  _buildInfoSection('Artist Name', 'Run The Jewels'),
-                  _buildInfoSection('Label', 'Run The Jewels, Inc.'),
-                  _buildInfoSection('Release Date', '2016'),
-                ],
-              ),
+              _buildSongInfoTab(new SongData(
+                  'Legend Has It',
+                  'Run The Jewels 3',
+                  'Run The Jewels',
+                  'Run The Jewels, Inc.',
+                  new DateTime(2016),
+                  'images/lake.jpg')),
               new Icon(Icons.music_note),
               new Icon(Icons.comment)
             ],
@@ -81,52 +103,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-/*
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => new _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
-      ),
-      body: new Center(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Text(
-              'You have pushed the button this many times:',
-            ),
-            new Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: new Icon(Icons.add),
-      ),
-    );
-  }
-}
-*/
