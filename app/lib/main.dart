@@ -59,6 +59,50 @@ class MyApp extends StatelessWidget {
     );
   }
 
+  Widget _buildSongLinksTab() {
+    final _biggerFont =
+        new TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold);
+
+    return new Container(
+      padding: EdgeInsets.all(16.0),
+      child: GridView.count(
+        mainAxisSpacing: 12.0,
+        crossAxisSpacing: 12.0,
+        crossAxisCount: 2,
+        children: <Widget>[
+          new RaisedButton(
+            child: Text(
+              'SoundCloud',
+              style: _biggerFont,
+            ),
+            onPressed: () {},
+          ),
+          new RaisedButton(
+            child: Text(
+              'Spotify',
+              style: _biggerFont,
+            ),
+            onPressed: () {},
+          ),
+          new RaisedButton(
+            child: Text(
+              'Youtube',
+              style: _biggerFont,
+            ),
+            onPressed: () {},
+          ),
+          new RaisedButton(
+            child: Text(
+              'Napster',
+              style: _biggerFont,
+            ),
+            onPressed: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -94,7 +138,7 @@ class MyApp extends StatelessWidget {
                   'Run The Jewels, Inc.',
                   new DateTime(2016),
                   'images/lake.jpg')),
-              new Icon(Icons.music_note),
+              _buildSongLinksTab(),
               new Icon(Icons.comment)
             ],
           ),
