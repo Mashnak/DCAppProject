@@ -13,6 +13,10 @@ class SongData {
 }
 
 class SongView extends StatelessWidget {
+  final SongData viewedSongData;
+
+  SongView(this.viewedSongData);
+
   Widget _buildInfoSection(String sectionName, String sectionValue) {
     return new Container(
       padding: const EdgeInsets.all(12.0),
@@ -40,19 +44,20 @@ class SongView extends StatelessWidget {
     );
   }
 
-  Widget _buildSongInfoTab(SongData songData) {
+  Widget _buildSongInfoTab() {
     return new ListView(
       children: <Widget>[
         new Image.asset(
-          songData.imagePath,
+          viewedSongData.imagePath,
           height: 240.0,
           fit: BoxFit.cover,
         ),
-        _buildInfoSection('Song Title', songData.name),
-        _buildInfoSection('Album Name', songData.album),
-        _buildInfoSection('Artist Name', songData.artist),
-        _buildInfoSection('Label', songData.publisher),
-        _buildInfoSection('Release Date', songData.releaseDate.toString()),
+        _buildInfoSection('Song Title', viewedSongData.name),
+        _buildInfoSection('Album Name', viewedSongData.album),
+        _buildInfoSection('Artist Name', viewedSongData.artist),
+        _buildInfoSection('Label', viewedSongData.publisher),
+        _buildInfoSection(
+            'Release Date', viewedSongData.releaseDate.toString()),
       ],
     );
   }
@@ -101,6 +106,10 @@ class SongView extends StatelessWidget {
     );
   }
 
+  Widget _buildSongCommentsTab() {
+    return new Icon(Icons.comment);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new DefaultTabController(
@@ -124,15 +133,9 @@ class SongView extends StatelessWidget {
         ),
         body: new TabBarView(
           children: [
-            _buildSongInfoTab(new SongData(
-                'Legend Has It',
-                'Run The Jewels 3',
-                'Run The Jewels',
-                'Run The Jewels, Inc.',
-                new DateTime(2016),
-                'images/lake.jpg')),
+            _buildSongInfoTab(),
             _buildSongLinksTab(),
-            new Icon(Icons.comment)
+            _buildSongCommentsTab(),
           ],
         ),
       ),
