@@ -5,12 +5,13 @@ import 'common.dart';
 
 class AlbumData {
   AlbumData(this.name, this.artist, this.publisher, this.releaseDate,
-      this.imagePath, this.songs);
+      this.length, this.imagePath, this.songs);
 
   String name;
   String artist;
   String publisher;
   DateTime releaseDate;
+  String length;
 
   String imagePath;
 
@@ -21,6 +22,23 @@ class AlbumView extends StatelessWidget {
   final AlbumData viewedAlbumData;
 
   AlbumView(this.viewedAlbumData);
+
+  Widget _buildAlbumInfoTab() {
+    return new ListView(
+      children: <Widget>[
+        new Image.asset(
+          viewedAlbumData.imagePath,
+          height: 240.0,
+          fit: BoxFit.cover,
+        ),
+        new InfoSection('Album Title', viewedAlbumData.name),
+        new InfoSection('Artist Name', viewedAlbumData.artist),
+        new InfoSection('Total length', viewedAlbumData.length),
+        new InfoSection('Label', viewedAlbumData.publisher),
+        new InfoSection('Release Date', viewedAlbumData.releaseDate.toString()),
+      ],
+    );
+  }
 
   Widget _buildSongItem(BuildContext context, SongData songData) {
     return new ListTile(
@@ -35,28 +53,17 @@ class AlbumView extends StatelessWidget {
     );
   }
 
-  Widget _buildAlbumInfoTab() {
-    return new ListView(
-      children: <Widget>[
-        new Image.asset(
-          viewedAlbumData.imagePath,
-          height: 240.0,
-          fit: BoxFit.cover,
-        ),
-        new InfoSection('Album Title', viewedAlbumData.name),
-        new InfoSection('Artist Name', viewedAlbumData.artist),
-        new InfoSection('Label', viewedAlbumData.publisher),
-        new InfoSection('Release Date', viewedAlbumData.releaseDate.toString()),
-      ],
-    );
-  }
-
   Widget _buildAlbumContentTab(BuildContext context) {
+    final songs = viewedAlbumData.songs.map((SongData songData) {
+      return _buildSongItem(context, songData);
+    });
+
+    final dividedSongs =
+        ListTile.divideTiles(context: context, tiles: songs).toList();
+
     return new ListView(
-      padding: const EdgeInsets.all(16.0),
-      children: viewedAlbumData.songs.map((SongData songData) {
-        return _buildSongItem(context, songData);
-      }).toList(), //<Widget>[].map(),
+      padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+      children: dividedSongs, //<Widget>[].map(),
     );
   }
 
