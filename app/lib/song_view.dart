@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'common.dart';
+
 class SongData {
   SongData(this.name, this.album, this.artist, this.publisher, this.releaseDate,
       this.imagePath);
@@ -9,40 +11,14 @@ class SongData {
   String artist;
   String publisher;
   DateTime releaseDate;
+
   String imagePath;
 }
 
 class SongView extends StatelessWidget {
   final SongData viewedSongData;
 
-  SongView(this.viewedSongData);
-
-  Widget _buildInfoSection(String sectionName, String sectionValue) {
-    return new Container(
-      padding: const EdgeInsets.all(12.0),
-      child: new Row(
-        children: <Widget>[
-          new Expanded(
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new Container(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: new Text(
-                    sectionName,
-                    style: new TextStyle(color: Colors.grey),
-                  ),
-                ),
-                new Text(sectionValue,
-                    style: new TextStyle(
-                        fontSize: 20.0, fontWeight: FontWeight.bold))
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
+  const SongView(this.viewedSongData);
 
   Widget _buildSongInfoTab() {
     return new ListView(
@@ -52,12 +28,11 @@ class SongView extends StatelessWidget {
           height: 240.0,
           fit: BoxFit.cover,
         ),
-        _buildInfoSection('Song Title', viewedSongData.name),
-        _buildInfoSection('Album Name', viewedSongData.album),
-        _buildInfoSection('Artist Name', viewedSongData.artist),
-        _buildInfoSection('Label', viewedSongData.publisher),
-        _buildInfoSection(
-            'Release Date', viewedSongData.releaseDate.toString()),
+        new InfoSection('Song Title', viewedSongData.name),
+        new InfoSection('Album Name', viewedSongData.album),
+        new InfoSection('Artist Name', viewedSongData.artist),
+        new InfoSection('Label', viewedSongData.publisher),
+        new InfoSection('Release Date', viewedSongData.releaseDate.toString()),
       ],
     );
   }
@@ -129,7 +104,7 @@ class SongView extends StatelessWidget {
               )
             ],
           ),
-          title: new Text('Legend Has It - Run the Jewels'),
+          title: new Text(viewedSongData.name),
         ),
         body: new TabBarView(
           children: [
