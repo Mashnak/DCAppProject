@@ -82,7 +82,7 @@ class SongView extends StatelessWidget {
   }
 
   Widget _buildSongCommentsTab() {
-    return new Icon(Icons.comment);
+    return new Text("data");
   }
 
   @override
