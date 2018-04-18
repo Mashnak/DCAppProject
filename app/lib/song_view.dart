@@ -82,7 +82,7 @@ class SongView extends StatelessWidget {
   }
 
   Widget _buildSongCommentsTab() {
-    return new Text("data");
+    return new NestedComment();
   }
 
   @override
