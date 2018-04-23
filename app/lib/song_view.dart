@@ -1,6 +1,18 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import 'common.dart';
+
+Future<SongData> fetchSongData(id) async {
+  final response =
+      await http.get('https://jsonplaceholder.typicode.com/users/1');
+  final responseJson = json.decode(response.body);
+
+  return new SongData.fromJson(responseJson);
+}
 
 class SongData {
   SongData(this.name, this.album, this.artist, this.publisher, this.releaseDate,
@@ -13,14 +25,31 @@ class SongData {
   DateTime releaseDate;
 
   String imagePath;
+
+  SongData.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        album = json['username'],
+        artist = json['email'],
+        publisher = json['phone'],
+        releaseDate = new DateTime(2016) {
+    imagePath = "images/lake.jpg";
+  }
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'album': album,
+        'artist': artist,
+        'publisher': publisher,
+        'releaseData': releaseDate,
+      };
 }
 
 class SongView extends StatelessWidget {
-  final SongData viewedSongData;
+  final Future<SongData> futureSongData;
 
-  const SongView(this.viewedSongData);
+  const SongView(this.futureSongData);
 
-  Widget _buildSongInfoTab() {
+  Widget _buildSongInfoTab(viewedSongData) {
     return new ListView(
       children: <Widget>[
         new Image.asset(
@@ -37,7 +66,7 @@ class SongView extends StatelessWidget {
     );
   }
 
-  Widget _buildSongLinksTab() {
+  Widget _buildSongLinksTab(viewedSongData) {
     final _biggerFont =
         new TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold);
 
@@ -104,14 +133,27 @@ class SongView extends StatelessWidget {
               )
             ],
           ),
-          title: new Text(viewedSongData.name),
+          // title: new Text(viewedSongData.name),
         ),
-        body: new TabBarView(
-          children: [
-            _buildSongInfoTab(),
-            _buildSongLinksTab(),
-            _buildSongCommentsTab(),
-          ],
+        body: new FutureBuilder<SongData>(
+          future: futureSongData,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return new TabBarView(
+                children: [
+                  _buildSongInfoTab(snapshot.data),
+                  _buildSongLinksTab(snapshot.data),
+                  _buildSongCommentsTab(),
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return new Text("${snapshot.error}");
+            }
+
+            return new Center(
+              child: new CircularProgressIndicator(),
+            );
+          },
         ),
       ),
     );

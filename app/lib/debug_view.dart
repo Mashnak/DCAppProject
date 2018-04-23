@@ -99,15 +99,15 @@ class DebugView extends StatelessWidget {
       body: new Center(
         child: new Column(
           children: <Widget>[
-            new RaisedButton(
-              child: new Text('Song View'),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => new SongView(debugSongData)));
-              },
-            ),
+            // new RaisedButton(
+            //   child: new Text('Song View'),
+            //   onPressed: () {
+            //     Navigator.push(
+            //         context,
+            //         new MaterialPageRoute(
+            //             builder: (context) => new SongView(debugSongData)));
+            //   },
+            // ),
             new RaisedButton(
               child: new Text('Album View'),
               onPressed: () {
@@ -115,6 +115,16 @@ class DebugView extends StatelessWidget {
                     context,
                     new MaterialPageRoute(
                         builder: (context) => new AlbumView(debugAlbumData)));
+              },
+            ),
+            new RaisedButton(
+              child: new Text('REST Song View'),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) =>
+                            new SongView(fetchSongData("id"))));
               },
             ),
           ],
