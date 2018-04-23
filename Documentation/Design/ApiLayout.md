@@ -2,7 +2,8 @@
 
 # API - Layout
 
-## Client to Business-Logic
+Client to Business-Logic  
+Request is forwarded if business logic allows it
 
 - GetSongInfo
   - Request
@@ -28,14 +29,48 @@
   - Response
     - PublisherJson
 
-- GetPlaylist
+- GetComments
   - Request
-    - GET /playlist/dfdgdfgtrzdfdgdg23f4
+    - Get /type/jhkdsjfheurzwz832729329/comments
   - Response
-    - PlaylistJSON
+    - CommentJSON
+  - type
+    - song
+    - album
+    - artist
 
 - GetProfile
   - Request
     - Get /profile/username
   - Response
     - ProfileJSON
+
+- GetPlaylist
+  - Request
+    - GET /playlist/dfdgdfgtrzdfdgdg23f4
+  - Response
+    - PlaylistJSON
+
+- GetUserSearchResult
+  - Request
+    - GET /user/search?arg1={0}
+  - Response
+    - ResultJSON
+  - Parameter
+    - username
+
+- GetSearchResult
+  - Request
+    - GET /type/search?arg1={0}&arg2={1}&arg3={2}&arg4={3}
+  - Response
+    - ResultJSON
+  - Args
+    - song
+    - album
+    - artist
+    - publisher
+  - types
+    - song
+    - album
+    - artist
+    - publisher
