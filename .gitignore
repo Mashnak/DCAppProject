@@ -1,3 +1,4 @@
 *.gz
 *.aux
 *.toc
+backend/node/node_modules/
