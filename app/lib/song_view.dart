@@ -18,22 +18,22 @@ class SongData {
   SongData(this.name, this.album, this.artist, this.publisher, this.releaseDate,
       this.imagePath);
 
-  String name;
-  String album;
-  String artist;
-  String publisher;
-  DateTime releaseDate;
+  final String name;
+  final String album;
+  final String artist;
+  final String publisher;
+  final DateTime releaseDate;
 
-  String imagePath;
+  final String imagePath;
 
   SongData.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         album = json['username'],
         artist = json['email'],
         publisher = json['phone'],
-        releaseDate = new DateTime(2016) {
-    imagePath = "images/lake.jpg";
-  }
+        releaseDate = new DateTime(2016),
+        imagePath =
+            "https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg";
 
   Map<String, dynamic> toJson() => {
         'name': name,
@@ -41,6 +41,7 @@ class SongData {
         'artist': artist,
         'publisher': publisher,
         'releaseData': releaseDate,
+        'imagePath': imagePath,
       };
 }
 
@@ -52,7 +53,7 @@ class SongView extends StatelessWidget {
   Widget _buildSongInfoTab(viewedSongData) {
     return new ListView(
       children: <Widget>[
-        new Image.asset(
+        new Image.network(
           viewedSongData.imagePath,
           height: 240.0,
           fit: BoxFit.cover,
