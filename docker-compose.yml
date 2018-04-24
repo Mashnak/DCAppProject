@@ -1,0 +1,45 @@
+version: "2"
+services:
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"
+  backend:
+    container_name: backend
+    restart: always
+    build:
+      context: ./backend
+    ports:
+      - "3000:3000"
+    links:
+      - mongo
+    depends_on:
+      - mongo
+  businesslogic:
+    container_name: businesslogic
+    restart: always
+    build:
+      context: ./business_logic
+    ports:
+      - "8080:8080"
+    links:
+      - backend
+    depends_on:
+      - backend
+  webapp:
+    container_name: webapp
+    restart: always
+    build:
+      context: ./web_app
+    ports:
+      - "80:80"
+    links:
+      - businesslogic
+    depends_on:
+      - businesslogic
+
+volumes:
+  mongodata:
