@@ -2,7 +2,7 @@ var express = require('express')
 var app = express()
 var mongoose = require('mongoose')
 
-var PORT = 8080
+var PORT = 3000
 var HOST = '0.0.0.0'
 
 app.use(express.static(__dirname))
@@ -31,14 +31,16 @@ var Song = mongoose.model('Song', {
 
 app.get('/song/:song', (req, res) => {
     var songname = req.params.song
-    Message.find({name: songname}, (err, messages) => {
+    Message.find({
+        name: songname
+    }, (err, messages) => {
         res.send(messages)
     })
 })
 
-mongoose.connect(dbUrl, (err) => {
-    console.log('mongo db connection', err)
-})
+// mongoose.connect(dbUrl, (err) => {
+//     console.log('mongo db connection', err)
+// })
 
 var server = app.listen(PORT, HOST, () => {
     console.log('server is listening on port', server.address().port)

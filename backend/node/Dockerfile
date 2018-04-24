@@ -1,14 +1,9 @@
-# Latest LTS of NodeJS
 FROM node:carbon
 
-# NodeJS App Directory
-WORKDIR /usr/src/app
+EXPOSE 3000
 
-# Copy package.json aswell as package-lock.json
-COPY package*.json ./
+WORKDIR /app
+COPY . /app/
 RUN npm install
 
-COPY . .
-EXPOSE 8080
-
-CMD [ "npm", "start" ]
+ENTRYPOINT cd /app && npm start
