@@ -22,15 +22,15 @@ public class Application {
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
     }
 
-    @RequestMapping(value = "/song", method = RequestMethod.GET)
-    public String song(
-            @RequestParam(value = "name", defaultValue = "Default") String name,
-            @RequestParam(value = "length", defaultValue = "12:34") String length,
-            @RequestParam(value = "releaseDate", defaultValue = "01.01.2000") String releaseDate,
-            @RequestParam(value = "publisher", defaultValue = "Another one") String publisher,
-            @RequestParam(value = "album", defaultValue = "Some Album") String album
+    @RequestMapping(value = "/song", method = RequestMethod.POST)
+    public String insertNewSong(
+            @RequestParam(value = "name") String name,
+            @RequestParam(value = "length") String length,
+            @RequestParam(value = "releaseDate") String releaseDate,
+            @RequestParam(value = "publisher") String publisher,
+            @RequestParam(value = "album") String album
     ) {
-        Song song = new Song("0",
+        Song song = new Song("",
                 name,
                 length,
                 releaseDate,
@@ -39,12 +39,39 @@ public class Application {
         );
 
         String json = "";
-
         try {
             json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(song);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+
+        // Send to DB
+
+        return "";
+    }
+
+    @RequestMapping(value = "/song", method = RequestMethod.GET)
+    public String insertNewSong(
+            @RequestParam(value = "id") String id
+    ) {
+        /*
+        Retrieve Song from DB by id
+        Song song = new Song("",
+                name,
+                length,
+                releaseDate,
+                publisher,
+                album
+        );
+        */
+
+        String json = "";
+//
+//        try {
+//            json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(song);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
 
         return json;
     }
