@@ -1,3 +1,5 @@
+package de.teama.bl.data;
+
 import java.util.List;
 
 public class Album {
@@ -12,4 +14,13 @@ public class Album {
 
   private Publisher publisher;
   private Artist artist;
+
+  public Album(String name){
+    this.name = name;
+  }
+
+  @Override
+  public String toString() {
+    return name;
+  }
 }
