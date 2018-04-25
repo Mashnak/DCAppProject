@@ -25,4 +25,29 @@ public class Song {
   public String toString() {
     return name;
   }
+
+  public String getId() {
+    return id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getLength() {
+    return length;
+  }
+
+
+  public String getReleaseDate() {
+    return releaseDate;
+  }
+
+  public Publisher getPublisher() {
+    return publisher;
+  }
+
+  public Album getAlbum() {
+    return album;
+  }
 }

@@ -2,3 +2,6 @@
 *.aux
 *.toc
 backend/node/node_modules/
+Documentation/Design/.idea/workspace.xml
+Documentation/Design/.idea/modules.xml
+Documentation/Design/.idea/Design.iml
