@@ -7,4 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Song example';
+  songtitle = 'Gangnam Style';
+  artist = 'Psy';
+  searchrequest = 'Korean Music';
 }
