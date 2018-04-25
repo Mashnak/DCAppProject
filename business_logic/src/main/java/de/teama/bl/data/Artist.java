@@ -1,3 +1,5 @@
+package de.teama.bl.data;
+
 import java.util.List;
 
 public class Artist {
