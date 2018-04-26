@@ -1,17 +1,20 @@
 # JSON - Example
+
 Examples for JSON Files that might be stored in our Database
-# Song
-  - id
-  - name
-  - length
-  - releaseDate
-  - lyrics
-  - -> URLs[...]
-  - -> genres[...]
-  - -> tags[...]
-  - -> publisher
-  - -> album
-  - -> artists[...]
+
+## Song
+
+- id
+- name
+- length
+- releaseDate
+- lyrics
+- -> URLs[...]
+- -> genres[...]
+- -> tags[...]
+- -> publisher
+- -> album
+- -> artists[...]
 
 ```JSON
 {
@@ -35,7 +38,7 @@ Examples for JSON Files that might be stored in our Database
     ...
   ],
   "publisher": {"id": "18b9t6dnr04zfdp37tnvopur", "name": "Run The Jewels, Inc."},
-  "album": {"id": "132sdafasdfas123as97ahjg", "name": "Run The Jewels 3"}, 
+  "album": {"id": "132sdafasdfas123as97ahjg", "name": "Run The Jewels 3"},
   "artist": [
     {"id": "507f191e810c19729de860ea", "name": "Run The Jewels"},
     ...
@@ -43,16 +46,17 @@ Examples for JSON Files that might be stored in our Database
 }
 ```
 
-# Album
-  - id
-  - name
-  - totalLength
-  - releaseDate
-  - genres[...]
-  - tags[...]
-  - songs[...]
-  - -> artists[...]
-  - -> publisher
+## Album
+
+- id
+- name
+- totalLength
+- releaseDate
+- genres[...]
+- tags[...]
+- songs[...]
+- -> artists[...]
+- -> publisher
 
 ```JSON
 {
@@ -81,14 +85,15 @@ Examples for JSON Files that might be stored in our Database
 }
 ```
 
-# Artist
-  - id
-  - name
-  - genre[...]
-  - tags[...]
-  - songs[...]
-  - albums[...]
-  - publishers[...]
+## Artist
+
+- id
+- name
+- genre[...]
+- tags[...]
+- songs[...]
+- albums[...]
+- publishers[...]
 
 ```JSON
 {
@@ -116,14 +121,15 @@ Examples for JSON Files that might be stored in our Database
 }
 ```
 
-# Publisher
-  - id
-  - name
-  - tags[...]
-  - genre[...]
-  - -> Albums[...]
-  - -> Songs[...]
-  - -> Artists[...]
+## Publisher
+
+- id
+- name
+- tags[...]
+- genre[...]
+- -> Albums[...]
+- -> Songs[...]
+- -> Artists[...]
 
 ```JSON
 {
@@ -152,20 +158,22 @@ Examples for JSON Files that might be stored in our Database
 }
 ```
 
-# Genre
-  - id
-  - name
+## Genre
+
+- id
+- name
 
  ```JSON
 {
   "id": "18b9t6dnr04zfdp37tnvopur",
   "name": "HipHop/Rap"
 }
-``` 
+```
 
-# Tags
-  - id
-  - name
+## Tags
+
+- id
+- name
 
 ```JSON
 {
@@ -174,15 +182,16 @@ Examples for JSON Files that might be stored in our Database
 }
 ```
 
-# Comment
-  - id
-  - text
-  - timestamp
-  - -> User
-  - -> Album
-  - -> Song
-  - -> Artist
-  - -> Comments[...]
+## Comment
+
+- id
+- text
+- timestamp
+- -> User
+- -> Album
+- -> Song
+- -> Artist
+- -> Comments[...]
 
 ```JSON
 {
@@ -190,7 +199,7 @@ Examples for JSON Files that might be stored in our Database
   "name": "User",
   "text": "Nice Song!",
   "timestamp": "2018-04-23",
-  "Album": {}, 
+  "Album": {},
   "Song": {"id": "djfksjkje29u13j2lj1l", "name": "Legends Has it"},
   "Artist": {},
   "Comments": [
@@ -200,15 +209,16 @@ Examples for JSON Files that might be stored in our Database
 }
 ```
 
-# User
-  - id
-  - Username
-  - FirstName
-  - LastName
-  - Birthdate
-  - Gender
-  - Country
-  - isAdmin
+## User
+
+- id
+- Username
+- FirstName
+- LastName
+- Birthdate
+- Gender
+- Country
+- isAdmin
 
 ```JSON
 {
@@ -223,14 +233,15 @@ Examples for JSON Files that might be stored in our Database
 }
 ```
 
-# UserSearch
-  - -> Users[...]
+## UserSearch
+
+- -> Users[...]
 
 ```JSON
 {
   "Users":[
     {
-      "id": "kjsdljllj3l432lje2lj23l2j", 
+      "id": "kjsdljllj3l432lje2lj23l2j",
       "name": "User",
       "FirstName": "Peter",
       "LastName": "Enis",
@@ -254,9 +265,10 @@ Examples for JSON Files that might be stored in our Database
 }
 ```
 
-# SongSearch
-  - -> Songs[...]
- 
+## SongSearch
+
+- -> Songs[...]
+
 ```JSON
 {
   "Songs":[
@@ -268,7 +280,7 @@ Examples for JSON Files that might be stored in our Database
       "lyrics": "Hear what I say, we are the business today...",
       "URLs":[
         {
-          "id": "skjdd3kje3jlklj3lej3lej3l", 
+          "id": "skjdd3kje3jlklj3lej3lej3l",
           "name":"spotify",
           "link":"https://open.spotify.com/track/6bGwloiyyHXwFZ4yV1zjqR?si=kTT6pTAoSXK89xWVVLalJg"
         },
@@ -285,7 +297,7 @@ Examples for JSON Files that might be stored in our Database
         ...
       ],
       "publisher": {"id": "18b9t6dnr04zfdp37tnvopur", "name": "Run The Jewels, Inc."},
-      "album": {"id": "132sdafasdfas123as97ahjg", "name": "Run The Jewels 3"}, 
+      "album": {"id": "132sdafasdfas123as97ahjg", "name": "Run The Jewels 3"},
       "artist": [
         {"id": "507f191e810c19729de860ea", "name": "Run The Jewels"},
         ...
@@ -296,8 +308,9 @@ Examples for JSON Files that might be stored in our Database
 }
 ```
 
-# AlbumSearch
-  - -> Albums[...]
+## AlbumSearch
+
+- -> Albums[...]
 
 ```JSON
 {
@@ -308,7 +321,7 @@ Examples for JSON Files that might be stored in our Database
       "name": "Run The Jewels 3",
       "totalLength": "51:27",
       "releaseDate": "2016-12-24",
-      "genres": 
+      "genres":
       [
         {"id":"ldjflkejieij343l4l3jldjl", "name":"Hip hop/Rap"}
         ...
@@ -319,12 +332,12 @@ Examples for JSON Files that might be stored in our Database
         {"id": "dkskjdldjlwdjljwldl7wd2", "name": "BVB"}
         ...
       ],
-      "songs": 
+      "songs":
       [
         {"id": "507f191e810c19729de860ea", "name": "Legends Has It"},
         ...
       ],
-      "artist": 
+      "artist":
       [
         {"id": "116fn30gttdbor64nd63hgkw", "name": "Run The Jewels"},
         ...
@@ -336,8 +349,9 @@ Examples for JSON Files that might be stored in our Database
 }
 ```
 
-# ArtistSearch
-  - -> Artists[...]
+## ArtistSearch
+
+- -> Artists[...]
 
 ```JSON
 {
@@ -372,14 +386,15 @@ Examples for JSON Files that might be stored in our Database
 }
 ```
 
-# PublisherSearch
-  - -> Publishers[...]
+## PublisherSearch
+
+- -> Publishers[...]
 
 ```JSON
 {
   "Users":[
     {
-      "id": "kjsdljllj3l432lje2lj23l2j", 
+      "id": "kjsdljllj3l432lje2lj23l2j",
       "name": "User",
       "FirstName": "Peter",
       "LastName": "Enis",
