@@ -8,14 +8,18 @@ import de.teama.bl.data.Song;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootApplication
 @RestController
 public class Application {
 
     private final ObjectMapper mapper;
+    private String urlDB = "http://localhost:3000";
+    private String urlGUI = "http://localhost:8080";
 
     Application() {
         mapper = new ObjectMapper();
@@ -29,7 +33,10 @@ public class Application {
             @RequestParam(value = "releaseDate") String releaseDate,
             @RequestParam(value = "publisher") String publisher,
             @RequestParam(value = "album") String album
-    ) {
+    )
+    {
+        RestTemplate template = new RestTemplate();
+
         Song song = new Song("",
                 name,
                 length,
@@ -47,13 +54,15 @@ public class Application {
 
         // Send to DB
 
+
         return "";
     }
 
     @RequestMapping(value = "/song", method = RequestMethod.GET)
-    public String insertNewSong(
-            @RequestParam(value = "id") String id
-    ) {
+    public String getSong(
+            @RequestParam(value = "id") String id)
+    {
+        RestTemplate template = new RestTemplate();
         /*
         Retrieve Song from DB by id
         Song song = new Song("",
@@ -65,16 +74,28 @@ public class Application {
         );
         */
 
-        String json = "";
-//
-//        try {
-//            json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(song);
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
+        String json;
+        Map<String ,String > params = new HashMap<>();
+        params.put("id", id);
+        json = template.getForObject(
+                urlDB +
+                "/song" +
+                "/{id}",
+                String.class, params);
 
         return json;
     }
+
+//    private static void createSong()
+//    {
+//      final String uri = "http://localhost:8080/song/";
+//      Song newSong = new Song("", "Highway", "4:56", "01-01-2000", "AMW Music", "ACDC");
+//
+//      RestTemplate restTemplate = new RestTemplate();
+//      Song result = restTemplate.postForObject( uri, newSong, Song.class);
+//
+//      System.out.println(result);
+//    }
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
