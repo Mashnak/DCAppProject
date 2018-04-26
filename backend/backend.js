@@ -4,19 +4,11 @@ var mongoose = require('mongoose')
 
 var PORT = 3000
 var HOST = '0.0.0.0'
-
-app.use(express.static(__dirname))
-
-app.get('/song', (req, res) => {
-    res.send('hi')
-})
+var dbUrl = 'mongodb://127.0.0.1:27017'
 
 mongoose.Promise = Promise
 
-var dbUrl = 'mongodb://user:user@127.0.0.1:27017/test'
-
 var Song = mongoose.model('Song', {
-    id: String,
     name: String,
     length: String,
     releaseDate: String,
@@ -29,18 +21,44 @@ var Song = mongoose.model('Song', {
     artists: String,
 })
 
+app.use(express.static(__dirname))
+
+app.get('/song', (req, res) => {
+    res.send('hi')
+})
+
 app.get('/song/:song', (req, res) => {
     var songname = req.params.song
-    Message.find({
+    Song.find({
         name: songname
     }, (err, messages) => {
         res.send(messages)
     })
 })
 
-// mongoose.connect(dbUrl, (err) => {
-//     console.log('mongo db connection', err)
-// })
+app.get('/init', (req, res) => {
+    var song = new Song({
+        name: 'name',
+        length: 'length',
+        releaseDate: 'releaseDate',
+        lyrics: 'lyrics',
+        url: 'url',
+        genre: 'genre',
+        tag: 'tag',
+        publisher: 'publisher',
+        album: 'album',
+        artist: 'artist'
+    })
+
+    song.save(function (err) {
+        if (err) return handleError(err)
+    })
+    res.send('rest')
+})
+
+mongoose.connect(dbUrl, (err) => {
+     console.log('mongo db connection', err)
+})
 
 var server = app.listen(PORT, HOST, () => {
     console.log('server is listening on port', server.address().port)
