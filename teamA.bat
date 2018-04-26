@@ -20,6 +20,7 @@ if "%command%" == "init" (
   @echo off
 ) else if "%command%" == "start" (
   docker container stop mongo_int backend_int businesslogic_int
+  docker container stop mongo backend businesslogic
   cd business_logic
   .\gradlew build
   docker-compose build
