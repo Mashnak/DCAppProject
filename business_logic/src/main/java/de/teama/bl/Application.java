@@ -1,5 +1,7 @@
 package de.teama.bl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,21 +21,24 @@ import java.util.Map;
 @RestController
 public class Application implements ApplicationRunner {
 
+    private final Logger logger;
     private final ObjectMapper mapper;
-    ApplicationArguments appArg;
-    //private String urlDB = "http://localhost:3000";
-    private String urlDB = "http://";  // + args[1] (IP) + ":" + args[2] (port);
-    //private String urlGUI = "http://localhost:8080";
+    private final RestTemplate template;
+    private String urlDB = "http://";
 
     Application() {
+        logger = LoggerFactory.getLogger(Application.class);
+
         mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+
+        template = new RestTemplate();
     }
+
     @Override
     public void run(ApplicationArguments args) {
-      urlDB += args.getOptionValues("DB.ip").get(0);
-      urlDB += ":";
-      urlDB += args.getOptionValues("DB.port").get(0);
+        urlDB = String.format("http://%s:%s", args.getOptionValues("DB.ip").get(0), args.getOptionValues("DB.port").get(0));
+        logger.info("Sending db requests to {}", urlDB);
     }
 
   @RequestMapping(value = "/song", method = RequestMethod.POST)
@@ -45,26 +50,20 @@ public class Application implements ApplicationRunner {
             @RequestParam(value = "album") String album
     )
     {
-        RestTemplate template = new RestTemplate();
 
-        Song song = new Song("",
-                name,
-                length,
-                releaseDate,
-                publisher,
-                album
-        );
+        Map<String ,String > params = new HashMap<>();
+        params.put("name", name);
+        //etc
 
-        String json = "";
-        try {
-            json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(song);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        String json;
+        // postForObject?
+        json = template.getForObject(
+                urlDB +
+                "/song" +
+                "/{name}",
+                String.class, params);
 
-        // Send to DB
-
-
+        // return errorcode
         return "";
     }
 
@@ -72,40 +71,8 @@ public class Application implements ApplicationRunner {
     public String getSong(
             @RequestParam(value = "id") String id)
     {
-        RestTemplate template = new RestTemplate();
-        /*
-        Retrieve Song from DB by id
-        Song song = new Song("",
-                name,
-                length,
-                releaseDate,
-                publisher,
-                album
-        );
-        */
-
-        String json;
-        Map<String ,String > params = new HashMap<>();
-        params.put("id", id);
-        json = template.getForObject(
-                urlDB +
-                "/song" +
-                "/{id}",
-                String.class, params);
-
-        return json;
+        return template.getForObject(urlDB + "/song/" + id, String.class);
     }
-
-//    private static void createSong()
-//    {
-//      final String uri = "http://localhost:8080/song/";
-//      Song newSong = new Song("", "Highway", "4:56", "01-01-2000", "AMW Music", "ACDC");
-//
-//      RestTemplate restTemplate = new RestTemplate();
-//      Song result = restTemplate.postForObject( uri, newSong, Song.class);
-//
-//      System.out.println(result);
-//    }
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
