@@ -1,17 +1,18 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {AppComponent} from './app.component';
-
+import {SongsearchComponent} from './songsearch.component';
+import {SongitemComponent} from './songitem.component';
+import {DetailpageComponent} from './detailpage.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    SongsearchComponent, SongitemComponent, DetailpageComponent
   ],
   imports: [
     BrowserModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [SongsearchComponent]
 })
 export class AppModule {
 }
