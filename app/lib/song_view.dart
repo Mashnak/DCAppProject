@@ -7,38 +7,68 @@ import 'package:http/http.dart' as http;
 import 'common.dart';
 
 Future<SongData> fetchSongData(id) async {
-  final response =
-      await http.get('https://jsonplaceholder.typicode.com/users/1');
+  print("Sending Request with " + id);
+
+  final response = await http.get('http://10.0.2.2:8080/song?id=' + id);
   final responseJson = json.decode(response.body);
 
-  return new SongData.fromJson(responseJson);
+  // print("Artist Name: " + responseJson['artists']['name']);
+
+  print(responseJson[0]["name"]);
+
+  return new SongData.fromJson(responseJson[0]);
 }
 
 class SongData {
-  SongData(this.name, this.album, this.artist, this.publisher, this.releaseDate,
+  SongData(
+      this.id,
+      this.name,
+      this.length,
+      this.releaseDate,
+      this.lyrics,
+      this.urls,
+      this.genres,
+      this.tags,
+      this.artists,
+      this.album,
+      this.publisher,
       this.imagePath);
 
+  final String id;
   final String name;
-  final String album;
-  final String artist;
-  final String publisher;
+  final String length;
   final DateTime releaseDate;
+  final String lyrics;
+
+  final List urls;
+  final List genres;
+  final List tags;
+
+  final List artists;
+  final Map album;
+  final Map publisher;
 
   final String imagePath;
 
   SongData.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        album = json['username'],
-        artist = json['email'],
-        publisher = json['phone'],
+      : id = json['id'],
+        name = json['name'],
+        length = json['length'],
         releaseDate = new DateTime(2016),
+        lyrics = json['lyrics'],
+        urls = json['urls'],
+        genres = json['genres'],
+        tags = json['tags'],
+        artists = json['artists'],
+        album = json['album'],
+        publisher = json['publisher'],
         imagePath =
             "https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg";
 
   Map<String, dynamic> toJson() => {
         'name': name,
         'album': album,
-        'artist': artist,
+        // 'artist': artist,
         'publisher': publisher,
         'releaseData': releaseDate,
         'imagePath': imagePath,
@@ -59,10 +89,14 @@ class SongView extends StatelessWidget {
           fit: BoxFit.cover,
         ),
         new InfoSection('Song Title', viewedSongData.name),
-        new InfoSection('Album Name', viewedSongData.album),
-        new InfoSection('Artist Name', viewedSongData.artist),
-        new InfoSection('Label', viewedSongData.publisher),
+        new InfoSection('Title Length', viewedSongData.length),
         new InfoSection('Release Date', viewedSongData.releaseDate.toString()),
+        // genres
+        // tags
+        new InfoSection('Album Name', viewedSongData.album['name']),
+        // artists
+        new InfoSection('Artist Name', viewedSongData.artists[0]['name']),
+        new InfoSection('Label', viewedSongData.publisher['name']),
       ],
     );
   }
