@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.teama.bl.data.Song;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
@@ -15,18 +17,26 @@ import java.util.Map;
 
 @SpringBootApplication
 @RestController
-public class Application {
+public class Application implements ApplicationRunner {
 
     private final ObjectMapper mapper;
-    private String urlDB = "http://localhost:3000";
-    private String urlGUI = "http://localhost:8080";
+    ApplicationArguments appArg;
+    //private String urlDB = "http://localhost:3000";
+    private String urlDB = "http://";  // + args[1] (IP) + ":" + args[2] (port);
+    //private String urlGUI = "http://localhost:8080";
 
     Application() {
         mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
     }
+    @Override
+    public void run(ApplicationArguments args) {
+      urlDB += args.getOptionValues("DB.ip").get(0);
+      urlDB += ":";
+      urlDB += args.getOptionValues("DB.port").get(0);
+    }
 
-    @RequestMapping(value = "/song", method = RequestMethod.POST)
+  @RequestMapping(value = "/song", method = RequestMethod.POST)
     public String insertNewSong(
             @RequestParam(value = "name") String name,
             @RequestParam(value = "length") String length,
