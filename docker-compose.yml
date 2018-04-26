@@ -1,45 +1,50 @@
 version: "2"
 services:
   mongo:
-    container_name: mongo
+    container_name: mongo_int
     image: mongo
     volumes:
       - mongodata:/data/db
     ports:
       - "27017:27017"
   backend:
-    container_name: backend
+    container_name: backend_int
     restart: always
     build:
       context: ./backend
     ports:
       - "3000:3000"
+    environment:
+      - "DB_URL=mongodb://192.168.99.100:27017"
     links:
       - mongo
     depends_on:
       - mongo
   businesslogic:
-    container_name: businesslogic
+    container_name: businesslogic_int
     restart: always
     build:
       context: ./business_logic
     ports:
       - "8080:8080"
+    environment:
+      - "DB_IP=192.168.99.100"
+      - "DB_PORT=3000"
     links:
       - backend
     depends_on:
       - backend
-  webapp:
-    container_name: webapp
-    restart: always
-    build:
-      context: ./web_app
-    ports:
-      - "80:80"
-    links:
-      - businesslogic
-    depends_on:
-      - businesslogic
+  # webapp:
+  #   container_name: webapp
+  #   restart: always
+  #   build:
+  #     context: ./web_app
+  #   ports:
+  #     - "80:80"
+  #   links:
+  #     - businesslogic
+  #   depends_on:
+  #     - businesslogic
 
 volumes:
   mongodata:
