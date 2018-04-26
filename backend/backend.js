@@ -2,9 +2,9 @@ var express = require('express')
 var app = express()
 var mongoose = require('mongoose')
 
-var PORT = 3000
-var HOST = '0.0.0.0'
-var dbUrl = 'mongodb://192.168.99.100:27017'
+var HOST = process.env.HOST || '0.0.0.0'
+var PORT = process.env.PORT || 3000
+var dbUrl = process.env.DB_URL || 'mongodb://192.168.99.100:27017'
 
 mongoose.Promise = Promise
 var Schema = mongoose.Schema
@@ -112,6 +112,7 @@ app.get('/init', (req, res) => {
     res.send('rest')
 })
 
+console.log(process.env.DB_URL)
 mongoose.connect(dbUrl, (err) => {
     console.log('mongo db connection', err)
 })

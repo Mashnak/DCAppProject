@@ -6,4 +6,4 @@ WORKDIR /app
 COPY . /app/
 RUN npm install
 
-ENTRYPOINT cd /app && npm start
+CMD sleep 10 && cd /app && npm start

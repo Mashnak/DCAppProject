@@ -8,6 +8,10 @@ services:
       - "3000:3000"
     links:
       - mongo
+    depends_on:
+      - mongo
+    environment:
+      - "DB_URL=mongodb://192.168.99.100:27017"
   mongo:
     container_name: mongo
     image: mongo
