@@ -18,7 +18,7 @@ import java.util.Map;
 public class Application {
 
     private final ObjectMapper mapper;
-    private String urlDB = "http://192.168.99.100:3000";
+    private String urlDB = "http://localhost:3000";
     private String urlGUI = "http://localhost:8080";
 
     Application() {
