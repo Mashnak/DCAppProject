@@ -3,16 +3,17 @@ import {NgModule} from '@angular/core';
 import {SongsearchComponent} from './songsearch.component';
 import {SongitemComponent} from './songitem.component';
 import {DetailpageComponent} from './detailpage.component';
+import {routing} from './app.routing';
 
 @NgModule({
   declarations: [
     SongsearchComponent, SongitemComponent, DetailpageComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule, routing
   ],
   providers: [],
-  bootstrap: [SongsearchComponent]
+  bootstrap: [SongsearchComponent] // Html entry point after index.html
 })
 export class AppModule {
 }

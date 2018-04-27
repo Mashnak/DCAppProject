@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-songsearch',
@@ -7,4 +7,19 @@ import { Component } from '@angular/core';
 })
 export class SongsearchComponent {
   title = 'Song Search Example';
+
+  firstsongitem = {
+    id: 1,
+    title: 'Gangnamstyle',
+    artist: 'Psy'
+  };
+  secondsongitem = {
+    id: 2,
+    title: 'Highway to hell',
+    artist: 'AC/DC'
+  };
+
+  search() {
+    // send get request to business logic;
+  }
 }

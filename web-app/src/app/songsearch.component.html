@@ -1,16 +1,15 @@
 <section class="jumbotron text-center">
   <div class="container">
     <h1 class="jumbotron-heading jumbotron-fluid display-3">{{title}}</h1>
-    <form>
-      <div class="form-group mx-sm-2 mb-2">
-        <input type="text" id="inputSong" placeholder="Song">
-        <button type="submit" class="btn btn-primary mb-sm-2">Search</button>
-      </div>
-    </form>
+    <div class="form-group mx-sm-2 mb-2">
+      <input type="text" id="inputSong" placeholder="Song">
+      <a (click)="search()" class="btn btn-primary mb-sm-2">Search</a>
+    </div>
     <p class="lead text-muted">See the results for your search</p>
   </div>
 </section>
 <div class="row">
-  <app-songitem></app-songitem>
-</div>
+  <app-songitem [songitem]="firstsongitem"></app-songitem>
+  <app-songitem [songitem]="secondsongitem"></app-songitem>
 
+</div>
