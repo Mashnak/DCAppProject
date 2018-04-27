@@ -9,14 +9,14 @@ export class SongsearchComponent {
   title = 'Song Search Example';
 
   firstsongitem = {
-    id: 1,
-    title: 'Gangnamstyle',
-    artist: 'Psy'
-  };
-  secondsongitem = {
-    id: 2,
-    title: 'Highway to hell',
-    artist: 'AC/DC'
+    number: '507f191e810c19729de860ea',
+    title: 'Legend Has It',
+    length: '3:25',
+    releaseDate: '2016-12-24',
+    lyrics: 'Her what I say, whe are the business today...',
+    genres: 'Hip Hop/Rap',
+    album: 'Run The Jewels 3',
+    artist: 'Run The Jewels'
   };
 
   search() {
