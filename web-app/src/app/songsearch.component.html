@@ -6,7 +6,7 @@
       <a (click)="getSong()" class="btn btn-primary mb-sm-2">Search</a>
       <a (click)="postSong()" class="btn btn-primary mb-sm-2">Post</a>
     </div>
-    <p class="lead text-muted">See the results for your search</p>
+    <p class="lead text-muted" *ngIf="songs!= null">See the results for your search</p>
   </div>
 </section>
 
