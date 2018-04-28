@@ -3,7 +3,7 @@
     <h1 class="jumbotron-heading jumbotron-fluid display-3">{{title}}</h1>
     <div class="form-group mx-sm-2 mb-2">
       <input type="text" id="inputSong" placeholder="Song">
-      <a (click)="search()" class="btn btn-primary mb-sm-2">Search</a>
+      <a (click)="getPosts()" class="btn btn-primary mb-sm-2">Search</a>
     </div>
     <p class="lead text-muted">See the results for your search</p>
   </div>
@@ -12,5 +12,7 @@
   <!--<app-songitem [songitem]="firstsongitem"></app-songitem>
   <app-songitem [songitem]="secondsongitem"></app-songitem>
 -->
-  <app-detailpage [songitem]="firstsongitem"></app-detailpage>
+<div *ngFor="let post of posts | async">
+  {{post | json}}
+</div>
 

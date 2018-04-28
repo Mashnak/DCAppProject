@@ -4,13 +4,14 @@ import {SongsearchComponent} from './songsearch.component';
 import {SongitemComponent} from './songitem.component';
 import {DetailpageComponent} from './detailpage.component';
 import {routing} from './app.routing';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
     SongsearchComponent, SongitemComponent, DetailpageComponent
   ],
   imports: [
-    BrowserModule, routing
+    BrowserModule, routing,  HttpClientModule
   ],
   providers: [],
   bootstrap: [SongsearchComponent] // Html entry point after index.html

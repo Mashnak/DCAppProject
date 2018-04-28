@@ -1,25 +1,23 @@
 import {Component} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-songsearch',
   templateUrl: './songsearch.component.html',
   styleUrls: ['./songsearch.component.css']
 })
+
 export class SongsearchComponent {
+  readonly ROOT_URL = 'https://jsonplaceholder.typicode.com';
+
+  posts: any;
+
+  constructor(private http: HttpClient) {
+  }
+
   title = 'Song Search Example';
 
-  firstsongitem = {
-    number: '507f191e810c19729de860ea',
-    title: 'Legend Has It',
-    length: '3:25',
-    releaseDate: '2016-12-24',
-    lyrics: 'Her what I say, whe are the business today...',
-    genres: 'Hip Hop/Rap',
-    album: 'Run The Jewels 3',
-    artist: 'Run The Jewels'
-  };
-
-  search() {
-    // send get request to business logic;
+  getPosts() {
+    this.posts = this.http.get(this.ROOT_URL + '/posts');
   }
 }
