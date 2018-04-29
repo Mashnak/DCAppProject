@@ -19,6 +19,7 @@ import java.util.Map;
 
 @SpringBootApplication
 @RestController
+@CrossOrigin(origins = "*")
 public class Application implements ApplicationRunner {
 
     private final Logger logger;

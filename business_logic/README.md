@@ -32,7 +32,7 @@ java -jar build/libs/business-logic-0.1.0.jar
 Build a new Docker Image and then run
 
 ```Bash
-docker run -p 8080:8080 -t businesslogic
+docker run -p 8080:8080 -e "DB_IP=192.168.99.100" -e "DB_PORT=3000" -t businesslogic
 ```
 
 #### Create new docker image using the gradle plugin
