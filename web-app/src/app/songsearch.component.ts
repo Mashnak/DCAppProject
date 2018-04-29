@@ -13,7 +13,7 @@ import 'rxjs/add/observable/of';
 })
 
 export class SongsearchComponent {
-  readonly ROOT_URL = 'https://jsonplaceholder.typicode.com'; // Fix the ROOT_URL to the correct springboot URL then get and post should work
+  readonly ROOT_URL = 'http:/192.168.99.100:8080'; // Fix the ROOT_URL to the correct springboot URL then get and post should work
 
   songs: Observable<any>;
   newSong: Observable<any>;
@@ -24,9 +24,9 @@ export class SongsearchComponent {
   title = 'Song Search Example';
 
   getSong() {
-    let params = new HttpParams().set('userId', '1');
+    // let params = new HttpParams().set('userId', '1');
 
-    this.songs = this.http.get<Song[]>(this.ROOT_URL + '/posts', {params}); // Switch /posts to /song when the URL is updated
+    this.songs = this.http.get<Song[]>(this.ROOT_URL + '/song'); // Switch /posts to /song when the URL is updated
   }
 
   postSong() {

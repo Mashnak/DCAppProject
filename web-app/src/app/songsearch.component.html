@@ -10,8 +10,8 @@
   </div>
 </section>
 
-<div *ngFor="let post of songs | async">
-  {{post | json}}
+<div *ngFor="let songs of songs | async">
+  {{songs | json}}
 </div>
 
 <div *ngIf="newSong!=null"> {{newSong | async | json}}
