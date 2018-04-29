@@ -14,7 +14,22 @@ class DebugView extends StatelessWidget {
       new List<SongData>.from(<SongData>[
         new SongData(
             "",
-            'Legend Has It',
+            'Down',
+            "",
+            new DateTime(2016),
+            "",
+            [],
+            [],
+            [],
+            [
+              {"name": "Run The Jewels"}
+            ],
+            {"name": "Run The Jewels 3"},
+            {"name": 'Run The Jewels, Inc.'},
+            "https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg"),
+        new SongData(
+            "",
+            'Talk to Me',
             "",
             new DateTime(2016),
             "",
@@ -44,7 +59,7 @@ class DebugView extends StatelessWidget {
             "https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg"),
         new SongData(
             "",
-            'Legend Has It',
+            'Call Ticketron',
             "",
             new DateTime(2016),
             "",
@@ -59,7 +74,7 @@ class DebugView extends StatelessWidget {
             "https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg"),
         new SongData(
             "",
-            'Legend Has It',
+            'Hey Kids (Bumaye)',
             "",
             new DateTime(2016),
             "",
@@ -74,7 +89,127 @@ class DebugView extends StatelessWidget {
             "https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg"),
         new SongData(
             "",
-            'Legend Has It',
+            'Stay Gold',
+            "",
+            new DateTime(2016),
+            "",
+            [],
+            [],
+            [],
+            [
+              {"name": "Run The Jewels"}
+            ],
+            {"name": "Run The Jewels 3"},
+            {"name": 'Run The Jewels, Inc.'},
+            "https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg"),
+        new SongData(
+            "",
+            'Don\'t Get Captured',
+            "",
+            new DateTime(2016),
+            "",
+            [],
+            [],
+            [],
+            [
+              {"name": "Run The Jewels"}
+            ],
+            {"name": "Run The Jewels 3"},
+            {"name": 'Run The Jewels, Inc.'},
+            "https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg"),
+        new SongData(
+            "",
+            'Thieves! (Screamed the Ghost)',
+            "",
+            new DateTime(2016),
+            "",
+            [],
+            [],
+            [],
+            [
+              {"name": "Run The Jewels"}
+            ],
+            {"name": "Run The Jewels 3"},
+            {"name": 'Run The Jewels, Inc.'},
+            "https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg"),
+        new SongData(
+            "",
+            '2100',
+            "",
+            new DateTime(2016),
+            "",
+            [],
+            [],
+            [],
+            [
+              {"name": "Run The Jewels"}
+            ],
+            {"name": "Run The Jewels 3"},
+            {"name": 'Run The Jewels, Inc.'},
+            "https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg"),
+        new SongData(
+            "",
+            'Panther Like a Panther (Miracle Mix)',
+            "",
+            new DateTime(2016),
+            "",
+            [],
+            [],
+            [],
+            [
+              {"name": "Run The Jewels"}
+            ],
+            {"name": "Run The Jewels 3"},
+            {"name": 'Run The Jewels, Inc.'},
+            "https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg"),
+        new SongData(
+            "",
+            'Everybody Stay Calm',
+            "",
+            new DateTime(2016),
+            "",
+            [],
+            [],
+            [],
+            [
+              {"name": "Run The Jewels"}
+            ],
+            {"name": "Run The Jewels 3"},
+            {"name": 'Run The Jewels, Inc.'},
+            "https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg"),
+        new SongData(
+            "",
+            'Oh Mama',
+            "",
+            new DateTime(2016),
+            "",
+            [],
+            [],
+            [],
+            [
+              {"name": "Run The Jewels"}
+            ],
+            {"name": "Run The Jewels 3"},
+            {"name": 'Run The Jewels, Inc.'},
+            "https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg"),
+        new SongData(
+            "",
+            'Thursday in the Danger Room',
+            "",
+            new DateTime(2016),
+            "",
+            [],
+            [],
+            [],
+            [
+              {"name": "Run The Jewels"}
+            ],
+            {"name": "Run The Jewels 3"},
+            {"name": 'Run The Jewels, Inc.'},
+            "https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg"),
+        new SongData(
+            "",
+            'A Report to the Shareholders / Kill Your Masters',
             "",
             new DateTime(2016),
             "",

@@ -26,8 +26,8 @@ class AlbumView extends StatelessWidget {
   Widget _buildAlbumInfoTab() {
     return new ListView(
       children: <Widget>[
-        new Image.asset(
-          viewedAlbumData.imagePath,
+        new Image.network(
+          "https://images-na.ssl-images-amazon.com/images/I/61t5JGdjXsL._SY355_.jpg",
           height: 240.0,
           fit: BoxFit.cover,
         ),

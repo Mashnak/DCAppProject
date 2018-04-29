@@ -63,7 +63,7 @@ class SongData {
         album = json['album'],
         publisher = json['publisher'],
         imagePath =
-            "https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg";
+            "https://images-eu.ssl-images-amazon.com/images/I/41WIm4pDLBL._SS500.jpg";
 
   Map<String, dynamic> toJson() => {
         'name': name,
@@ -91,11 +91,12 @@ class SongView extends StatelessWidget {
         new InfoSection('Song Title', viewedSongData.name),
         new InfoSection('Title Length', viewedSongData.length),
         new InfoSection('Release Date', viewedSongData.releaseDate.toString()),
-        // genres
-        // tags
+        new InfoSection(
+            'Genres', viewedSongData.genres[0]['name']), // TODO: genres list
+        // TODO: tags
         new InfoSection('Album Name', viewedSongData.album['name']),
-        // artists
-        new InfoSection('Artist Name', viewedSongData.artists[0]['name']),
+        new InfoSection(
+            'Artist Name', viewedSongData.artists[0]['name']), // TODO: artists
         new InfoSection('Label', viewedSongData.publisher['name']),
       ],
     );

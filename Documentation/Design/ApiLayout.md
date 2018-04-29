@@ -1,8 +1,8 @@
-[comment]: <> (Author: Khaled Ahmed)
-
 # API - Layout
 
-Client to Business-Logic  
+[comment]: <> (Author: Khaled Ahmed)
+
+Client to Business-Logic
 Request is forwarded if business logic allows it
 
 - GetSongInfo
