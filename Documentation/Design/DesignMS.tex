@@ -1,0 +1,67 @@
+\documentclass[a4paper, 12pt]{scrartcl} %A4Format, 12ptSchrift, "scrartclt" für Berichte
+\usepackage[utf8]{inputenc} %utf8 mit Umlauten
+\usepackage[ngerman]{babel} %deutsches Sprachpaket
+\usepackage{mathptmx}
+\usepackage[T1]{fontenc} %AusgabeFont
+\usepackage{graphicx} %Einbinden von Grafiken
+\usepackage{titletoc} %Formatierung von TableofContent
+\usepackage{here}
+\usepackage{underscore}
+\usepackage[headsepline]{scrpage2}
+
+
+
+\author{Markus Schmidgall}
+\date{\today}
+
+\begin{document}
+
+	\centering
+	{\huge\bfseries Design Status Report für die Erstellung unserer Musik Applikation basierend auf Microservices \par}
+	\vspace{4cm}
+Markus Schmidgall, Simon Winterhalter, Khaled Ahmed und Timur Bahadir
+\vspace{0.2cm}
+
+% Bottom of the page
+	Aalen, \today\par
+
+\vspace{3cm}
+
+\section*{Milestones}
+
+\begin{table}[h]
+\begin{tabular}{|c|c|c|}
+\hline
+Milestone                            & Datum      & Fortschritt          \\ \hline
+Analysis                             & 09.04.2018 & Abgeschlossen        \\ \hline
+Design                               & 30.04.2018 & Abgeschlossen        \\ \hline
+Beta Release                         & 11.06.2018 & Noch nicht gestartet \\ \hline
+Release and Acceptance Certification & 25.06.2018 & Noch nicht gestartet \\ \hline
+\end{tabular}
+\end{table}
+
+\section*{Progress vs. Milestones}
+\begin{itemize}
+\item GUI-Designkonzept 50\% (Webapp fehlt noch)
+\item Festlegung der einzelnen APIs 100\%
+\item Software-Architektur spezifizieren 100\%
+\item Design des Datenbankschemas 100\%
+\end{itemize}
+\section*{Probleme}
+\begin{itemize}
+\item Flutter noch nie benutzt
+\item Flutter relativ neu, deshalb wenig Dokumentation
+\item Angular noch nie benutzt
+\item Kommunikation zwischen Docker Containern
+\item Nebenher noch andere Projekte an der Hochschule die erledigt werden müssen
+\end{itemize}
+\section*{Risiken}
+\begin{itemize}
+\item Möglicherweise fehlerhafte Architektur
+\item Zeitliche Kollision von verschiedenen Projekten
+\end{itemize}
+\section*{Nächste Iteration}
+\begin{itemize}
+\item Implementation
+\end{itemize}
+\end{document}

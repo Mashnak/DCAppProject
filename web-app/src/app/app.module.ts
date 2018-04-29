@@ -14,7 +14,7 @@ import {HttpClientModule} from '@angular/common/http';
     BrowserModule, routing,  HttpClientModule
   ],
   providers: [],
-  bootstrap: [SongsearchComponent] // Html entry point after index.html
+  bootstrap: [SongsearchComponent]
 })
 export class AppModule {
 }
