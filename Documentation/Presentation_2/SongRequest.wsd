@@ -1,0 +1,23 @@
+@startuml SongRequest
+
+title Simple Song Request
+
+participant User
+
+User -> MobileApp: Select Song
+
+MobileApp -> BusinessLogic: GetSong
+activate BusinessLogic
+
+BusinessLogic -> Backend: GetSongData
+activate Backend
+
+BusinessLogic <- Backend: ReturnSongData
+deactivate Backend
+
+MobileApp <- BusinessLogic: ReturnSong
+deactivate BusinessLogic
+
+User <- MobileApp: Display Song
+
+@enduml
