@@ -31,14 +31,17 @@ export class SongsearchComponent {
 
   postSong() {
     const data: Song = {
-      number: '507f191e810c19729de860ea',
-      title: 'Legend Has It',
+      id: '507f191e810c19729de860ea',
+      name: 'Legend Has It',
       length: '3:25',
       releaseDate: '2016-12-24',
       lyrics: 'Her what I say, whe are the business today...',
-      genres: 'Hip Hop/Rap',
+      urls: [],
+      genres: ['Hip Hop/Rap'],
+      tags: [],
+      publisher: '',
       album: 'Run The Jewels 3',
-      artist: 'Run The Jewels'
+      artists: ['Run The Jewels']
     };
     this.newSong = this.http.post(this.ROOT_URL + 'posts', data)
       .retry(3)
