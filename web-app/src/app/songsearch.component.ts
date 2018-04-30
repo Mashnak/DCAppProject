@@ -13,7 +13,7 @@ import 'rxjs/add/observable/of';
 })
 
 export class SongsearchComponent {
-  readonly ROOT_URL = 'http:/192.168.99.100:8080'; // Fix the ROOT_URL to the correct springboot URL then get and post should work
+  readonly ROOT_URL = 'http://192.168.99.100:8080'; // Fix the ROOT_URL to the correct springboot URL then get and post should work
 
   songs: Observable<any>;
   newSong: Observable<any>;

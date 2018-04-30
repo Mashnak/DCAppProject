@@ -70,7 +70,7 @@ public class Application implements ApplicationRunner {
 
     @RequestMapping(value = "/song", method = RequestMethod.GET)
     public String getSong(
-            @RequestParam(value = "id") String id)
+            @RequestParam(value = "id",defaultValue = "507f191e810c19729de860ea") String id)
     {
         return template.getForObject(urlDB + "/song/" + id, String.class);
     }
