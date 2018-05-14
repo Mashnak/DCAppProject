@@ -1,6 +1,7 @@
 *.gz
 *.aux
 *.toc
+*.log
 backend/node/node_modules/
 Documentation/Design/.idea/workspace.xml
 Documentation/Design/.idea/modules.xml
