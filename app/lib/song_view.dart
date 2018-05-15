@@ -7,14 +7,8 @@ import 'package:http/http.dart' as http;
 import 'common.dart';
 
 Future<SongData> fetchSongData(id) async {
-  print("Sending Request with " + id);
-
   final response = await http.get('http://10.0.2.2:8080/song?id=' + id);
   final responseJson = json.decode(response.body);
-
-  // print("Artist Name: " + responseJson['artists']['name']);
-
-  print(responseJson[0]["name"]);
 
   return new SongData.fromJson(responseJson[0]);
 }
@@ -68,7 +62,6 @@ class SongData {
   Map<String, dynamic> toJson() => {
         'name': name,
         'album': album,
-        // 'artist': artist,
         'publisher': publisher,
         'releaseData': releaseDate,
         'imagePath': imagePath,

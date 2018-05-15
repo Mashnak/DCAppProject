@@ -36,6 +36,45 @@ class InfoSection extends StatelessWidget {
   }
 }
 
+class MultiInfoSection extends StatelessWidget {
+  final String sectionName;
+  final List<String> sectionValues;
+
+  MultiInfoSection(this.sectionName, this.sectionValues);
+
+  List<Widget> _buildList() {
+    List<Widget> ret;
+    ret.add(new Container(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: new Text(
+        sectionName,
+        style: new TextStyle(color: Colors.grey),
+      ),
+    ));
+    ret.addAll(sectionValues.map((String val) {
+      return new Text(val);
+    }));
+    return ret;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      padding: const EdgeInsets.all(12.0),
+      child: new Row(
+        children: <Widget>[
+          new Expanded(
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: _buildList(),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
 class NestedComment extends StatelessWidget {
   final debugComment = new Lorem();
   final debugDate = new DateTime.now();
