@@ -34,17 +34,19 @@ services:
       - backend
     depends_on:
       - backend
-  # webapp:
-  #   container_name: webapp
-  #   restart: always
-  #   build:
-  #     context: ./web_app
-  #   ports:
-  #     - "80:80"
-  #   links:
-  #     - businesslogic
-  #   depends_on:
-  #     - businesslogic
+  webapp:
+    container_name: webapp_int
+    restart: always
+    build:
+      context: ./web-app
+      args:
+        - "env=dev"
+    ports:
+      - "4200:80"
+    links:
+      - businesslogic
+    depends_on:
+      - businesslogic
 
 volumes:
   mongodata:

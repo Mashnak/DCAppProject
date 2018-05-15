@@ -19,8 +19,8 @@ if "%command%" == "init" (
   docker image build -t businesslogic .
   @echo off
 ) else if "%command%" == "start" (
-  docker container stop mongo_int backend_int businesslogic_int
-  docker container stop mongo backend businesslogic
+  docker container stop mongo_int backend_int businesslogic_int webapp_int
+  docker container stop mongo backend businesslogic webapp
   cd business_logic
   .\gradlew build
   docker-compose build
