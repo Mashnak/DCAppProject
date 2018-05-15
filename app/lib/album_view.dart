@@ -48,7 +48,7 @@ class AlbumView extends StatelessWidget {
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => new SongView(fetchSongData("id"))));
+                builder: (context) => new SongView(fetchSongData(songData.id))));
       },
     );
   }
