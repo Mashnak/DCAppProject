@@ -1,5 +1,5 @@
 import { TestBed, async } from '@angular/core/testing';
-import { SongsearchComponent } from './songsearch.component';
+import { SongsearchComponent } from './songsearch/songsearch.component';
 describe('SongsearchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
