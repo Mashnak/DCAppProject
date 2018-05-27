@@ -1,0 +1,149 @@
+{
+	"info": {
+		"_postman_id": "4c34fd7e-6756-4a05-adfe-70e5a1b83961",
+		"name": "Business Logic",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Songs",
+			"description": "",
+			"item": [
+				{
+					"name": "GetSong",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://192.168.99.100:8080/song?id=507f191e810c19729de860ea",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"99",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"song"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "507f191e810c19729de860ea"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Albums",
+			"description": "",
+			"item": [
+				{
+					"name": "GetAlbum",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://192.168.99.100:8080/album?id=507f191e810c19729de860ea",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"99",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"album"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "507f191e810c19729de860ea"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Artists",
+			"description": "",
+			"item": [
+				{
+					"name": "GetArtist",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://192.168.99.100:8080/artist?id=507f191e810c19729de860ea",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"99",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"artist"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "507f191e810c19729de860ea"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Publishers",
+			"description": "",
+			"item": [
+				{
+					"name": "GetPublisher",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://192.168.99.100:8080/publisher?id=507f191e810c19729de860ea",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"99",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"publisher"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "507f191e810c19729de860ea"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

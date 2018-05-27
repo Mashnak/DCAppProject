@@ -74,11 +74,11 @@ Examples for JSON Files that might be stored in our Database
     ...
   ],
   "songs": [
-    {"id": "507f191e810c19729de860ea", "name": "Legends Has It"},
+    {"id": "507f191e810c19729de860ea", "name": "Legends Has It"}
     ...
   ],
-  "artist": [
-    {"id": "116fn30gttdbor64nd63hgkw", "name": "Run The Jewels"},
+  "artists": [
+    {"id": "116fn30gttdbor64nd63hgkw", "name": "Run The Jewels"}
     ...
   ],
   "publisher": {"id": "18b9t6dnr04zfdp37tnvopur", "name": "Run The Jewels, Inc."}
@@ -107,15 +107,15 @@ Examples for JSON Files that might be stored in our Database
     {"id": "dkskjdldjlwdjljwldl7wd2", "name": "BVB"}
   ],
   "songs": [
-    {"id": "507f191e810c19729de860ea", "name": "Legend Has It"},
+    {"id": "507f191e810c19729de860ea", "name": "Legend Has It"}
     ...
   ],
   "albums": [
-    {"id": "132sdafasdfas123as97ahjg", "name": "Run The Jewels 3"},
+    {"id": "132sdafasdfas123as97ahjg", "name": "Run The Jewels 3"}
     ...
   ],
   "publishers": [
-    {"id": "18b9t6dnr04zfdp37tnvopur", "name": "Run The Jewels, Inc."},
+    {"id": "18b9t6dnr04zfdp37tnvopur", "name": "Run The Jewels, Inc."}
     ...
   ]
 }
@@ -125,10 +125,10 @@ Examples for JSON Files that might be stored in our Database
 
 - id
 - name
-- tags[...]
 - genre[...]
-- -> Albums[...]
+- tags[...]
 - -> Songs[...]
+- -> Albums[...]
 - -> Artists[...]
 
 ```JSON
@@ -143,18 +143,17 @@ Examples for JSON Files that might be stored in our Database
     {"id":"ldjflkejieij343l4l3jldjl", "name":"Hip hop/Rap"}
   ],
   "songs": [
-    {"id": "507f191e810c19729de860ea", "name": "Legends Has It"},
+    {"id": "507f191e810c19729de860ea", "name": "Legends Has It"}
     ...
   ],
   "albums": [
-    {"id": "132sdafasdfas123as97ahjg", "name": "Run The Jewels 3"},
+    {"id": "132sdafasdfas123as97ahjg", "name": "Run The Jewels 3"}
     ...
   ],
-  "artist": [
-    {"id": "116fn30gttdbor64nd63hgkw", "name": "Run The Jewels"},
+  "artists": [
+    {"id": "116fn30gttdbor64nd63hgkw", "name": "Run The Jewels"}
     ...
   ]
-}
 }
 ```
 
