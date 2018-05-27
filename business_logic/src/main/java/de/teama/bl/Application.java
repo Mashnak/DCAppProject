@@ -38,41 +38,52 @@ public class Application implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        urlDB = String.format("http://%s:%s", args.getOptionValues("DB.ip").get(0), args.getOptionValues("DB.port").get(0));
+        urlDB = String.format("http://%s:%s", args.getOptionValues("DB.ip").get(0),
+                args.getOptionValues("DB.port").get(0));
         logger.info("Sending db requests to {}", urlDB);
     }
 
-  @RequestMapping(value = "/song", method = RequestMethod.POST)
-    public String insertNewSong(
-            @RequestParam(value = "name") String name,
-            @RequestParam(value = "length") String length,
-            @RequestParam(value = "releaseDate") String releaseDate,
-            @RequestParam(value = "publisher") String publisher,
-            @RequestParam(value = "album") String album
-    )
-    {
+    @RequestMapping(value = "/alive", method = RequestMethod.GET)
+    public String getAlive() {
+        return "Alive";
+    }
 
-        Map<String ,String > params = new HashMap<>();
+    @RequestMapping(value = "/song", method = RequestMethod.POST)
+    public String insertNewSong(@RequestParam(value = "name") String name,
+            @RequestParam(value = "length") String length, @RequestParam(value = "releaseDate") String releaseDate,
+            @RequestParam(value = "publisher") String publisher, @RequestParam(value = "album") String album) {
+
+        Map<String, String> params = new HashMap<>();
         params.put("name", name);
-        //etc
+        // etc
 
         String json;
         // postForObject?
-        json = template.getForObject(
-                urlDB +
-                "/song" +
-                "/{name}",
-                String.class, params);
+        json = template.getForObject(urlDB + "/song" + "/{name}", String.class, params);
 
         // return errorcode
         return "";
     }
 
     @RequestMapping(value = "/song", method = RequestMethod.GET)
-    public String getSong(
-            @RequestParam(value = "id",defaultValue = "507f191e810c19729de860ea") String id)
-    {
+    public String getSong(@RequestParam(value = "id", defaultValue = "507f191e810c19729de860ea") String id) {
         return template.getForObject(urlDB + "/song/" + id, String.class);
+    }
+
+    @RequestMapping(value = "/album", method = RequestMethod.GET)
+    public String getAlbum(@RequestParam(value = "id", defaultValue = "507f191e810c19729de860ea") String id) {
+        // Genius level code
+        return "{\"id\": \"132sdafasdfas123as97ahjg\",\"name\": \"Run The Jewels 3\",\"totalLength\": \"51:27\",\"releaseDate\": \"2016-12-24\",\"genres\": [{\"id\": \"ldjflkejieij343l4l3jldjl\",\"name\": \"Hip hop/Rap\"}],\"tags\": [{\"id\": \"lflwlejelwkjkwejrkj4330\",\"name\": \"Fussballhymne\"},{\"id\": \"dkskjdldjlwdjljwldl7wd2\",\"name\": \"BVB\"}],\"songs\": [{\"id\": \"507f191e810c19729de860ea\",\"name\": \"Legends Has It\"}],\"artists\": [{\"id\": \"116fn30gttdbor64nd63hgkw\",\"name\": \"Run The Jewels\"}],\"publisher\": {\"id\": \"18b9t6dnr04zfdp37tnvopur\",\"name\": \"Run The Jewels, Inc.\"}}";
+    }
+
+    @RequestMapping(value = "/artist", method = RequestMethod.GET)
+    public String getArtist(@RequestParam(value = "id", defaultValue = "507f191e810c19729de860ea") String id) {
+        return "{\"id\": \"507f191e810c19729de860ea\",\"name\": \"Run The Jewels\",\"genres\": [{\"id\": \"ldjflkejieij343l4l3jldjl\",\"name\": \"Hip hop/Rap\"}],\"tags\": [{\"id\": \"lflwlejelwkjkwejrkj4330\",\"name\": \"Fussballhymne\"},{\"id\": \"dkskjdldjlwdjljwldl7wd2\",\"name\": \"BVB\"}],\"songs\": [{\"id\": \"507f191e810c19729de860ea\",\"name\": \"Legend Has It\"}],\"albums\": [{\"id\": \"132sdafasdfas123as97ahjg\",\"name\": \"Run The Jewels 3\"}],\"publishers\": [{\"id\": \"18b9t6dnr04zfdp37tnvopur\",\"name\": \"Run The Jewels, Inc.\"}]}";
+    }
+
+    @RequestMapping(value = "/publisher", method = RequestMethod.GET)
+    public String getPublisher(@RequestParam(value = "id", defaultValue = "507f191e810c19729de860ea") String id) {
+        return "{\"id\": \"18b9t6dnr04zfdp37tnvopur\",\"name\": \"Run The Jewels, Inc.\",\"tags\": [{\"id\": \"lflwlejelwkjkwejrkj4330\",\"name\": \"Fussballhymne\"},{\"id\": \"dkskjdldjlwdjljwldl7wd2\",\"name\": \"BVB\"}],\"genres\": [{\"id\": \"ldjflkejieij343l4l3jldjl\",\"name\": \"Hip hop/Rap\"}],\"songs\": [{\"id\": \"507f191e810c19729de860ea\",\"name\": \"Legends Has It\"}],\"albums\": [{\"id\": \"132sdafasdfas123as97ahjg\",\"name\": \"Run The Jewels 3\"}],\"artists\": [{\"id\": \"116fn30gttdbor64nd63hgkw\",\"name\": \"Run The Jewels\"}]}";
     }
 
     public static void main(String[] args) {

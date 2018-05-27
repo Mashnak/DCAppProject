@@ -69,28 +69,64 @@ app.get('/init', (req, res) => {
         releaseDate: "2016-12-24",
         lyrics: "Hear what I say, we are the business today...",
         URLs: [{
-                id: "507f191e810c19729de860e1",
-                name: "spotify",
-                link: "https://open.spotify.com/track/6bGwloiyyHXwFZ4yV1zjqR?si=kTT6pTAoSXK89xWVVLalJg"
-            },
-            {
-                id: "507f191e810c19729de860e2",
-                name: "youtube",
-                link: "https://youtu.be/vWaljXUiCaE"
-            }
+            id: "507f191e810c19729de860e1",
+            name: "spotify",
+            link: "https://open.spotify.com/track/6bGwloiyyHXwFZ4yV1zjqR?si=kTT6pTAoSXK89xWVVLalJg"
+        },
+        {
+            id: "507f191e810c19729de860e2",
+            name: "youtube",
+            link: "https://youtu.be/vWaljXUiCaE"
+        }
         ],
         genres: [{
             id: "507f191e810c19729de860e3",
             name: "Hip Hop/Rap"
+        },
+        {
+            id: "507f191e810c19729de860e3",
+            name: "Pretty Good"
+        },
+        {
+            id: "507f191e810c19729de860e3",
+            name: "Hype Music"
+        },
+        {
+            id: "507f191e810c19729de860e3",
+            name: "Duo"
+        },
+        {
+            id: "507f191e810c19729de860e3",
+            name: "Not Bad"
+        },
+        {
+            id: "507f191e810c19729de860e3",
+            name: "Gangster Rap"
+        },
+        {
+            id: "507f191e810c19729de860e3",
+            name: "Padding 1"
+        },
+        {
+            id: "507f191e810c19729de860e3",
+            name: "Padding 2"
+        },
+        {
+            id: "507f191e810c19729de860e3",
+            name: "Padding 3"
+        },
+        {
+            id: "507f191e810c19729de860e3",
+            name: "Padding 4"
         }],
         tags: [{
-                id: "507f191e810c19729de860e4",
-                name: "Fussballhymne"
-            },
-            {
-                id: "507f191e810c19729de860e5",
-                name: "BVB"
-            }
+            id: "507f191e810c19729de860e4",
+            name: "Fussballhymne"
+        },
+        {
+            id: "507f191e810c19729de860e5",
+            name: "BVB"
+        }
         ],
         publisher: {
             id: "507f191e810c19729de860e6",
