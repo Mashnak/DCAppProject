@@ -38,12 +38,12 @@ class InfoSection extends StatelessWidget {
 
 class MultiInfoSection extends StatelessWidget {
   final String sectionName;
-  final List<String> sectionValues;
+  final List sectionValues;
 
   MultiInfoSection(this.sectionName, this.sectionValues);
 
-  List<Widget> _buildList() {
-    List<Widget> ret;
+  List<Widget> _buildSection() {
+    List<Widget> ret = [];
     ret.add(new Container(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: new Text(
@@ -51,8 +51,9 @@ class MultiInfoSection extends StatelessWidget {
         style: new TextStyle(color: Colors.grey),
       ),
     ));
-    ret.addAll(sectionValues.map((String val) {
-      return new Text(val);
+    ret.addAll(sectionValues.map((val) {
+      return new Text(val["name"],
+          style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold));
     }));
     return ret;
   }
@@ -61,13 +62,21 @@ class MultiInfoSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Container(
       padding: const EdgeInsets.all(12.0),
-      child: new Row(
-        children: <Widget>[
-          new Expanded(
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _buildList(),
+      child: new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          new Container(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: new Text(
+              sectionName,
+              style: new TextStyle(color: Colors.grey),
             ),
+          ),
+          new GridView.extent(children: sectionValues.map((val) {
+            return new Text(val["name"],
+                style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold));
+          }).toList(),
+          shrinkWrap: true, maxCrossAxisExtent: 200.0, childAspectRatio: 6.0,
           )
         ],
       ),

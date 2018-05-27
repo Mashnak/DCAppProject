@@ -4,102 +4,71 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'song_view.dart';
+import 'artist_view.dart';
 import 'common.dart';
 
-Future<AlbumData> fetchAlbumData(id) async {
-  final response = await http.get('http://192.168.99.100:8080/album?id=' + id);
+Future<PublisherData> fetchPublisherData(id) async {
+  final response =
+      await http.get('http://192.168.99.100:8080/publisher?id=' + id);
   final responseJson = json.decode(response.body);
 
-  return new AlbumData.fromJson(responseJson);
+  return new PublisherData.fromJson(responseJson);
 }
 
-class AlbumData {
-  AlbumData(this.id, this.name, this.totalLength, this.releaseDate, this.genres,
-      this.tags, this.songs, this.artists, this.publishers, this.imagePath);
+class PublisherData {
+  PublisherData(this.id, this.name, this.genres, this.tags, this.songs,
+      this.albums, this.artists, this.imagePath);
 
   final String id;
   final String name;
-  final String totalLength;
-  final DateTime releaseDate;
   final List genres;
   final List tags;
   final List songs;
+  final List albums;
   final List artists;
-
-  final Map publishers;
 
   final String imagePath;
 
-  AlbumData.fromJson(Map<String, dynamic> json)
+  PublisherData.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         name = json['name'],
-        totalLength = json['totalLength'],
-        releaseDate = new DateTime(2016),
         genres = json['genres'],
         tags = json['tags'],
         songs = json['songs'],
+        albums = json['albums'],
         artists = json['artists'],
-        publishers = json['publisher'],
         imagePath =
             "https://images-eu.ssl-images-amazon.com/images/I/41WIm4pDLBL._SS500.jpg";
 }
 
-class AlbumView extends StatelessWidget {
-  final Future<AlbumData> futureAlbumData;
+class PublisherView extends StatelessWidget {
+  final Future<PublisherData> futurePublisherData;
 
-  const AlbumView(this.futureAlbumData);
+  const PublisherView(this.futurePublisherData);
 
-  Widget _buildAlbumInfoTab(viewedAlbumData) {
+  Widget _buildPublisherInfoTab(PublisherData viewedPublisherData) {
     return new ListView(
       children: <Widget>[
         new Image.network(
-          "https://images-na.ssl-images-amazon.com/images/I/61t5JGdjXsL._SY355_.jpg",
+          viewedPublisherData.imagePath,
           height: 240.0,
           fit: BoxFit.cover,
         ),
-        new InfoSection('Album Title', viewedAlbumData.name),
-        new InfoSection('Total length', viewedAlbumData.totalLength),
-        new InfoSection('Release Date', viewedAlbumData.releaseDate.toString()),
-        new MultiInfoSection('Songs', viewedAlbumData.songs),
-        new MultiInfoSection('Artists', viewedAlbumData.artists),
-        new MultiInfoSection('Genres', viewedAlbumData.genres),
-        new MultiInfoSection('Tags', viewedAlbumData.tags),
-        new InfoSection('Publisher', viewedAlbumData.publishers["name"]),
+        new InfoSection('Publisher Name', viewedPublisherData.name),
+        new MultiInfoSection('Artists', viewedPublisherData.artists),
+        new MultiInfoSection('Albums', viewedPublisherData.albums),
+        new MultiInfoSection('Songs', viewedPublisherData.songs),
+        new MultiInfoSection('Genres', viewedPublisherData.genres),
+        new MultiInfoSection('Tags', viewedPublisherData.tags),
       ],
     );
   }
 
-  Widget _buildSongItem(BuildContext context, Map songEntry) {
-    return new ListTile(
-      title: new Text(songEntry["name"]),
-      trailing: new Icon(Icons.play_arrow),
-      onTap: () {
-        Navigator.push(
-            context,
-            new MaterialPageRoute(
-                builder: (context) =>
-                    new SongView(fetchSongData(songEntry["id"]))));
-      },
-    );
+  Widget _buildPublisherAlbumsTab(BuildContext context, PublisherData data) {
+    return new Icon(Icons.info);
   }
 
-  Widget _buildAlbumContentTab(
-      BuildContext context, AlbumData viewedAlbumData) {
-    final songs = viewedAlbumData.songs.map((entry) {
-      return _buildSongItem(context, entry);
-    });
-
-    final dividedSongs =
-        ListTile.divideTiles(context: context, tiles: songs).toList();
-
-    return new ListView(
-      padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
-      children: dividedSongs, //<Widget>[].map(),
-    );
-  }
-
-  Widget _buildAlbumCommentsTab() {
+  Widget _buildPublisherCommentsTab() {
     return new Icon(Icons.comment);
   }
 
@@ -109,9 +78,8 @@ class AlbumView extends StatelessWidget {
       length: 3,
       child: new Scaffold(
           appBar: new AppBar(
-            title: new Text("Album View"),
             bottom: new TabBar(
-              tabs: <Widget>[
+              tabs: [
                 new Tab(
                   icon: new Icon(Icons.info),
                 ),
@@ -123,16 +91,17 @@ class AlbumView extends StatelessWidget {
                 )
               ],
             ),
+            // title: new Text(viewedSongData.name),
           ),
-          body: new FutureBuilder<AlbumData>(
-            future: futureAlbumData,
+          body: new FutureBuilder<PublisherData>(
+            future: futurePublisherData,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return new TabBarView(
                   children: [
-                    _buildAlbumInfoTab(snapshot.data),
-                    _buildAlbumContentTab(context, snapshot.data),
-                    _buildAlbumCommentsTab(),
+                    _buildPublisherInfoTab(snapshot.data),
+                    _buildPublisherAlbumsTab(context, snapshot.data),
+                    _buildPublisherCommentsTab(),
                   ],
                 );
               } else if (snapshot.hasError) {

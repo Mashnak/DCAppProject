@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'common.dart';
 
 Future<SongData> fetchSongData(id) async {
-  final response = await http.get('http://10.0.2.2:8080/song?id=' + id);
+  final response = await http.get('http://192.168.99.100:8080/song?id=' + id);
   final responseJson = json.decode(response.body);
 
   return new SongData.fromJson(responseJson[0]);
@@ -84,13 +84,11 @@ class SongView extends StatelessWidget {
         new InfoSection('Song Title', viewedSongData.name),
         new InfoSection('Title Length', viewedSongData.length),
         new InfoSection('Release Date', viewedSongData.releaseDate.toString()),
-        new InfoSection(
-            'Genres', viewedSongData.genres[0]['name']), // TODO: genres list
-        // TODO: tags
         new InfoSection('Album Name', viewedSongData.album['name']),
-        new InfoSection(
-            'Artist Name', viewedSongData.artists[0]['name']), // TODO: artists
+        new MultiInfoSection('Artists', viewedSongData.artists),
         new InfoSection('Label', viewedSongData.publisher['name']),
+        new MultiInfoSection('Genres', viewedSongData.genres),
+        new MultiInfoSection("Tags", viewedSongData.tags)
       ],
     );
   }
@@ -184,6 +182,31 @@ class SongView extends StatelessWidget {
             );
           },
         ),
+        floatingActionButton: new FloatingActionButton(
+            child: new Icon(Icons.add),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext conteext) {
+                    return new SimpleDialog(
+                      title: const Text("Select action"),
+                      children: <Widget>[
+                        new SimpleDialogOption(
+                          onPressed: () {},
+                          child: const Text("Add Tag"),
+                        ),
+                        new SimpleDialogOption(
+                          onPressed: () {},
+                          child: const Text("Add to Playlist"),
+                        ),
+                        new SimpleDialogOption(
+                          onPressed: () {},
+                          child: const Text("Add Comment"),
+                        ),
+                      ],
+                    );
+                  });
+            }),
       ),
     );
   }
