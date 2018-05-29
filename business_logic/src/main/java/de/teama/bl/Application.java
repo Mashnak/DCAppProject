@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.teama.bl.data.Song;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,6 +21,9 @@ import java.util.Map;
 @RestController
 @CrossOrigin(origins = "*")
 public class Application implements ApplicationRunner {
+
+    @Autowired
+    private SongRepository repository;
 
     private final Logger logger;
     private final ObjectMapper mapper;
@@ -38,9 +41,9 @@ public class Application implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        urlDB = String.format("http://%s:%s", args.getOptionValues("DB.ip").get(0),
+        /*urlDB = String.format("http://%s:%s", args.getOptionValues("DB.ip").get(0),
                 args.getOptionValues("DB.port").get(0));
-        logger.info("Sending db requests to {}", urlDB);
+        logger.info("Sending db requests to {}", urlDB);*/
     }
 
     @RequestMapping(value = "/alive", method = RequestMethod.GET)
@@ -66,8 +69,10 @@ public class Application implements ApplicationRunner {
     }
 
     @RequestMapping(value = "/song", method = RequestMethod.GET)
-    public String getSong(@RequestParam(value = "id", defaultValue = "507f191e810c19729de860ea") String id) {
-        return template.getForObject(urlDB + "/song/" + id, String.class);
+    public String getSong(@RequestParam(value = "name") String name) {
+        Map<String, String> params = new HashMap<>();
+        params.put("name", name);
+        return repository.findByName(name).toString();
     }
 
     @RequestMapping(value = "/album", method = RequestMethod.GET)
