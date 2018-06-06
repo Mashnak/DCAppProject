@@ -1,0 +1,25 @@
+version: "2"
+services:
+  businesslogic:
+    container_name: logic
+    restart: always
+    build: .
+    ports:
+      - "8080:8080"
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    environment:
+      - "DB_IP=192.168.99.100:27017"
+      - "DB_PORT=27017"
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"
+
+volumes:
+  mongodata:
