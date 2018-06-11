@@ -1,24 +1,26 @@
 package de.teama.bl.data;
 
+import org.springframework.data.annotation.Id;
+
 public class Song {
+  @Id
   private String id;
 
   private String name;
   private String length;
   private String releaseDate; // TODO: turn into DateTime?
 
-  private Publisher publisher;
-  private Album album;
+  private String publisher;
+  private String album;
 
-  public Song(String id, String name, String length, String releaseDate, String publisherName, String albumName){
-    this.id =  id;
+  public Song(String name, String length, String releaseDate, String publisher, String album){
 
     this.name = name;
     this.length = length;
     this.releaseDate = releaseDate; // TODO: turn into DateTime?
 
-    this.publisher = new Publisher(publisherName);
-    this.album = new Album(albumName);
+    this.publisher = publisher;
+    this.album = album;
   }
 
   @Override
@@ -43,11 +45,11 @@ public class Song {
     return releaseDate;
   }
 
-  public Publisher getPublisher() {
+  public String getPublisher() {
     return publisher;
   }
 
-  public Album getAlbum() {
+  public String getAlbum() {
     return album;
   }
 }
