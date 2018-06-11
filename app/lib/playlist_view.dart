@@ -37,32 +37,32 @@ class PlaylistView extends StatelessWidget {
               children: <Widget>[
                 new ListTile(
                   title: new Text("Song 1"),
-                  leading: new Icon(Icons.note),
+                  leading: new Icon(Icons.music_note),
                   trailing: new Icon(Icons.play_arrow),
                 ),
                 new ListTile(
                   title: new Text("Song 2"),
-                  leading: new Icon(Icons.note),
+                  leading: new Icon(Icons.music_note),
                   trailing: new Icon(Icons.play_arrow),
                 ),
                 new ListTile(
                   title: new Text("Song 3"),
-                  leading: new Icon(Icons.note),
+                  leading: new Icon(Icons.music_note),
                   trailing: new Icon(Icons.play_arrow),
                 ),
                 new ListTile(
                   title: new Text("Song 4"),
-                  leading: new Icon(Icons.note),
+                  leading: new Icon(Icons.music_note),
                   trailing: new Icon(Icons.play_arrow),
                 ),
                 new ListTile(
                   title: new Text("Song 5"),
-                  leading: new Icon(Icons.note),
+                  leading: new Icon(Icons.music_note),
                   trailing: new Icon(Icons.play_arrow),
                 ),
                 new ListTile(
                   title: new Text("Song 6"),
-                  leading: new Icon(Icons.note),
+                  leading: new Icon(Icons.music_note),
                   trailing: new Icon(Icons.play_arrow),
                 ),
               ],
