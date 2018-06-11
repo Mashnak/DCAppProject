@@ -35,7 +35,7 @@ export class AppComponent {
     username: 'KhaledAhmed',
     firstname: 'Khaled',
     lastname: 'Ahmed',
-    birthdate: '31.12.2000',
+    birthdate: '31.12.1994',
     gender: 'male',
     country: 'Germany',
     isAdmin: true
@@ -50,7 +50,7 @@ export class AppComponent {
     urls: [],
     genres: ['Hip Hop/Rap'],
     tags: [],
-    publisher: '',
+    publisher: 'Testpublisher',
     album: 'Run The Jewels 3',
     artists: ['Run The Jewels']
   };
@@ -63,7 +63,7 @@ export class AppComponent {
     tags: [],
     songs: ['Legend Has It'],
     artists: ['Run The Jewels'],
-    publisher: ''
+    publisher: 'TestPublisher'
   };
 
   artist = {
@@ -72,13 +72,13 @@ export class AppComponent {
     genres: ['Hip Hop/Rap'],
     tags: [],
     songs: ['Legend Has It'],
-    publishers: [''],
+    publishers: ['TestPublisher'],
     albums: ['Run The Jewels 3']
   };
 
   publisher = {
     id: '507f191e810c19729de860ea',
-    name: '',
+    name: 'TestPublisher',
     genres: ['Hip Hop/Rap'],
     tags: [],
     songs: ['Legend Has It'],

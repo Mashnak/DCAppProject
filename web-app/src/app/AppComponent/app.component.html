@@ -5,13 +5,9 @@
       <input type="text" id="inputSong" placeholder="Song">
       <a (click)="getResult()" class="btn btn-primary mb-sm-2">Search</a>
     </div>
-    <p class="lead text-muted" *ngIf="songs!= null">See the results for your search</p>
+    <p class="lead text-muted" *ngIf="songs!=null">See the results for your search</p>
   </div>
 </section>
-
-<div *ngFor="let songs of songs | async">
-  {{songs | json}}
-</div>
 <div class="row">
   <div class="col-xl-2" style="background-color: lightgray; min-height: 800px">
     <p>Benutzerbereich!</p>
@@ -27,16 +23,26 @@
         <a (click)="getUser()" class="btn btn-primary mb-sm-2">Login</a>
       </div>
     </div>
-   <app-useritem [useritem]="user"></app-useritem>
+    <div *ngIf="user!=null">
+      <p class="lead">{{user.username}}</p>
+      <p class="lead">{{user.firstname}}</p>
+      <p class="lead">{{user.lastname}}</p>
+      <p class="lead">{{user.birthdate}}</p>
+      <p class="lead">{{user.gender}}</p>
+      <p class="lead">{{user.country}}</p>
+    </div>
   </div>
   <div class="col-xl-10">
-    <div class="row">
-      <app-songitem [songitem]="song"></app-songitem>
-      <app-albumitem [albumitem]="album"></app-albumitem>
-      <app-artistitem [artistitem]="artist"></app-artistitem>
-      <app-publisheritem [publisheritem]="publisher"></app-publisheritem>
-      <div *ngIf="newSong!=null"> {{newSong | async | json}}
-      </div>
+    Song<hr>
+    <app-songitem [songitem]="song"></app-songitem>
+    <br><br>
+    Album<hr>
+    <app-albumitem [albumitem]="album"></app-albumitem>
+    <br><br>Artist<hr>
+    <app-artistitem [artistitem]="artist"></app-artistitem>
+    <br><br>  Publisher<hr>
+    <app-publisheritem [publisheritem]="publisher"></app-publisheritem>
+    <div *ngIf="newSong!=null"> {{newSong | async | json}}
     </div>
   </div>
 </div>
