@@ -1,22 +1,20 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {SongsearchComponent} from './songsearch/songsearch.component';
-import {SongitemComponent} from './songitem.component';
+import {AppComponent} from './AppComponent/app.component';
+import {SongitemComponent} from './songitem/songitem.component';
 import {DetailpageComponent} from './detailpage/detailpage.component';
 import {routing} from './app.routing';
 import {HttpClientModule} from '@angular/common/http';
-import {NavbarComponent} from './navbar/navbar.component';
-import {LoginComponent} from './login/login.component';
 
 @NgModule({
   declarations: [
-    SongsearchComponent, SongitemComponent, DetailpageComponent, NavbarComponent, LoginComponent
+    AppComponent, SongitemComponent, DetailpageComponent
   ],
   imports: [
     BrowserModule, routing,  HttpClientModule
   ],
   providers: [],
-  bootstrap: [SongsearchComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

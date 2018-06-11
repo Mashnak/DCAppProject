@@ -1,14 +1,14 @@
 export interface Song {
-  id: String;
-  name: String;
-  length: String;
-  releaseDate: String;
-  lyrics: String;
+  id: string;
+  name: string;
+  length: string;
+  releaseDate: string;
+  lyrics: string;
   urls: Array<string>;
   genres: Array<string>;
   tags: Array<string>;
-  publisher: String;
-  album: String;
+  publisher: string;
+  album: string;
   artists: Array<string>;
 }
 

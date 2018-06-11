@@ -1,0 +1,28 @@
+<section class="jumbotron text-center">
+  <div class="container">
+    <h1 class="jumbotron-heading jumbotron-fluid display-3">{{title}}</h1>
+    <div class="form-group mx-sm-2 mb-2">
+      <input type="text" id="inputSong" placeholder="Song">
+      <a (click)="getSong()" class="btn btn-primary mb-sm-2">Search</a>
+    </div>
+    <p class="lead text-muted" *ngIf="songs!= null">See the results for your search</p>
+  </div>
+</section>
+
+<div *ngFor="let songs of songs | async">
+  {{songs | json}}
+</div>
+<div class="row">
+  <div class="col-xl-2" style="background-color: lightgray; min-height: 800px">
+    Benutzerbereich!
+    <div>
+      <a (click)="getUser()" class="btn btn-primary mb-sm-2">Login</a>
+    </div>
+    <p class="lead" *ngIf="users!= null">{{user.name}}</p>
+  </div>
+  <div class="col-xl-10">
+    <app-songitem [songitem]="song"></app-songitem>
+    <div *ngIf="newSong!=null"> {{newSong | async | json}}
+    </div>
+  </div>
+</div>
