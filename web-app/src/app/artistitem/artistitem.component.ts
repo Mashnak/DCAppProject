@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 
 
 @Component({
-  selector: 'app-albumitem',
+  selector: 'app-artistitem',
   templateUrl: './artistitem.component.html',
   styleUrls: ['./artistitem.component.css']
 })

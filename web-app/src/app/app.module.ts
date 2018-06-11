@@ -8,11 +8,12 @@ import {HttpClientModule} from '@angular/common/http';
 import {AlbumitemComponent} from './albumitem/albumitem.component';
 import {ArtistitemComponent} from './artistitem/artistitem.component';
 import {PublisheritemComponent} from './publisheritem/publisheritem.component';
+import {UseritemComponent} from './useritem/useritem.component';
 
 @NgModule({
   declarations: [
 
-    AppComponent, SongitemComponent, AlbumitemComponent, ArtistitemComponent, PublisheritemComponent, DetailpageComponent
+    AppComponent, SongitemComponent, AlbumitemComponent, ArtistitemComponent, PublisheritemComponent, UseritemComponent, DetailpageComponent
   ],
   imports: [
     BrowserModule, routing, HttpClientModule

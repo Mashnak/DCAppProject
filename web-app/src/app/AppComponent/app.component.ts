@@ -31,7 +31,14 @@ export class AppComponent {
   title = 'Song Search';
 
   user = {
-    name: 'testuser'
+    id: 'askldfn246245',
+  username: 'KhaledAhmed',
+  firstname: 'Khaled',
+  lastname: 'Ahmed',
+  birthdate: '31.12.2000',
+  gender: 'male',
+  country: 'Germany',
+  isAdmin: true
   };
 
   song = {
@@ -99,7 +106,7 @@ export class AppComponent {
 
   getUser() {
     // let params = new HttpParams().set('userId', '1');
-    console.log(this.user.name);
+    console.log(this.user.username);
     this.users = this.http.get<User[]>(this.ROOT_URL + '/profile');
   }
 
