@@ -32,13 +32,13 @@ export class AppComponent {
 
   user = {
     id: 'askldfn246245',
-  username: 'KhaledAhmed',
-  firstname: 'Khaled',
-  lastname: 'Ahmed',
-  birthdate: '31.12.2000',
-  gender: 'male',
-  country: 'Germany',
-  isAdmin: true
+    username: 'KhaledAhmed',
+    firstname: 'Khaled',
+    lastname: 'Ahmed',
+    birthdate: '31.12.2000',
+    gender: 'male',
+    country: 'Germany',
+    isAdmin: true
   };
 
   song = {
@@ -86,26 +86,17 @@ export class AppComponent {
     artists: 'Run The Jewels',
   };
 
-  getSong() {
+  getResult() {
     // let params = new HttpParams().set('userId', '1');
 
     this.songs = this.http.get<Song[]>(this.ROOT_URL + '/song');
-  }
-
-  getAlbum() {
     this.albums = this.http.get<Album[]>(this.ROOT_URL + '/album');
-  }
-
-  getArtist() {
     this.artists = this.http.get<Artist[]>(this.ROOT_URL + '/artist');
-  }
-
-  getPublisher() {
     this.publishers = this.http.get<Publisher[]>(this.ROOT_URL + '/publisher');
   }
 
   getUser() {
-    // let params = new HttpParams().set('userId', '1');
+    // let params = new HttpParams().set('username', '1');
     console.log(this.user.username);
     this.users = this.http.get<User[]>(this.ROOT_URL + '/profile');
   }

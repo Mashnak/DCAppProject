@@ -3,7 +3,7 @@
     <h1 class="jumbotron-heading jumbotron-fluid display-3">{{title}}</h1>
     <div class="form-group mx-sm-2 mb-2">
       <input type="text" id="inputSong" placeholder="Song">
-      <a (click)="getSong()" class="btn btn-primary mb-sm-2">Search</a>
+      <a (click)="getResult()" class="btn btn-primary mb-sm-2">Search</a>
     </div>
     <p class="lead text-muted" *ngIf="songs!= null">See the results for your search</p>
   </div>
@@ -27,7 +27,7 @@
         <a (click)="getUser()" class="btn btn-primary mb-sm-2">Login</a>
       </div>
     </div>
-    <app-useritem [useritem]="user"></app-useritem>
+   <app-useritem [useritem]="user"></app-useritem>
   </div>
   <div class="col-xl-10">
     <div class="row">
