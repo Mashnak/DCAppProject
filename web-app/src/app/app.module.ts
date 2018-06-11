@@ -5,10 +5,12 @@ import {SongitemComponent} from './songitem/songitem.component';
 import {DetailpageComponent} from './detailpage/detailpage.component';
 import {routing} from './app.routing';
 import {HttpClientModule} from '@angular/common/http';
+import {AlbumitemComponent} from './AlbumComponent/albumitem.component';
+import {ArtistitemComponent} from './ArtistComponent/artistitem.component';
 
 @NgModule({
   declarations: [
-    AppComponent, SongitemComponent, DetailpageComponent
+    AppComponent, SongitemComponent, AlbumitemComponent, ArtistitemComponent, DetailpageComponent
   ],
   imports: [
     BrowserModule, routing,  HttpClientModule
