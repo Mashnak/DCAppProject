@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'artist_view.dart';
 import 'common.dart';
 
 Future<PublisherData> fetchPublisherData(id) async {

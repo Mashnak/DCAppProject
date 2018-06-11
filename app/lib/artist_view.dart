@@ -56,9 +56,9 @@ class ArtistView extends StatelessWidget {
         new InfoSection('Artist Name', viewedArtistData.name),
         new MultiInfoSection('Albums', viewedArtistData.albums),
         new MultiInfoSection('Songs', viewedArtistData.songs),
+        new MultiInfoSection('Publishers', viewedArtistData.publishers),
         new MultiInfoSection('Genres', viewedArtistData.genres),
         new MultiInfoSection('Tags', viewedArtistData.tags),
-        new MultiInfoSection('Publishers', viewedArtistData.publishers),
       ],
     );
   }

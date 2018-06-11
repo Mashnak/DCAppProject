@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'playlist_view.dart';
+import 'profile_view.dart';
+import 'search_view.dart';
 import 'song_view.dart';
 import 'album_view.dart';
 import 'artist_view.dart';
@@ -32,7 +35,7 @@ class DebugView extends StatelessWidget {
                     context,
                     new MaterialPageRoute(
                         builder: (context) =>
-                        new AlbumView(fetchAlbumData(""))));
+                            new AlbumView(fetchAlbumData(""))));
               },
             ),
             new RaisedButton(
@@ -53,6 +56,35 @@ class DebugView extends StatelessWidget {
                     new MaterialPageRoute(
                         builder: (context) =>
                             new PublisherView(fetchPublisherData(""))));
+              },
+            ),
+            new RaisedButton(
+              child: new Text('Search View'),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new SearchView()));
+              },
+            ),
+            new RaisedButton(
+              child: new Text('Profile View'),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) =>
+                            new ProfileView(fetchProfileData(""))));
+              },
+            ),
+            new RaisedButton(
+              child: new Text('Playlist View'),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) =>
+                            new PlaylistView(fetchPlaylistData(""))));
               },
             ),
           ],
