@@ -1,22 +1,31 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {SongsearchComponent} from './songsearch/songsearch.component';
-import {SongitemComponent} from './songitem.component';
-import {DetailpageComponent} from './detailpage/detailpage.component';
+import {AppComponent} from './AppComponent/app.component';
 import {routing} from './app.routing';
 import {HttpClientModule} from '@angular/common/http';
-import {NavbarComponent} from './navbar/navbar.component';
-import {LoginComponent} from './login/login.component';
+import {SongitemComponent} from './songitem/songitem.component';
+import {AlbumitemComponent} from './albumitem/albumitem.component';
+import {ArtistitemComponent} from './artistitem/artistitem.component';
+import {PublisheritemComponent} from './publisheritem/publisheritem.component';
+import {DetailpageComponent} from './detailpage/detailpage.component';
+import {UseritemComponent} from './useritem/useritem.component';
 
 @NgModule({
   declarations: [
-    SongsearchComponent, SongitemComponent, DetailpageComponent, NavbarComponent, LoginComponent
+
+    AppComponent,
+    SongitemComponent,
+    AlbumitemComponent,
+    ArtistitemComponent,
+    PublisheritemComponent,
+    DetailpageComponent,
+    UseritemComponent
   ],
   imports: [
-    BrowserModule, routing,  HttpClientModule
+    BrowserModule, routing, HttpClientModule
   ],
   providers: [],
-  bootstrap: [SongsearchComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }
