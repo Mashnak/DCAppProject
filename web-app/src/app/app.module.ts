@@ -5,15 +5,17 @@ import {SongitemComponent} from './songitem/songitem.component';
 import {DetailpageComponent} from './detailpage/detailpage.component';
 import {routing} from './app.routing';
 import {HttpClientModule} from '@angular/common/http';
-import {AlbumitemComponent} from './AlbumComponent/albumitem.component';
-import {ArtistitemComponent} from './ArtistComponent/artistitem.component';
+import {AlbumitemComponent} from './albumitem/albumitem.component';
+import {ArtistitemComponent} from './artistitem/artistitem.component';
+import {PublisheritemComponent} from './publisheritem/publisheritem.component';
 
 @NgModule({
   declarations: [
-    AppComponent, SongitemComponent, AlbumitemComponent, ArtistitemComponent, DetailpageComponent
+
+    AppComponent, SongitemComponent, AlbumitemComponent, ArtistitemComponent, PublisheritemComponent, DetailpageComponent
   ],
   imports: [
-    BrowserModule, routing,  HttpClientModule
+    BrowserModule, routing, HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
