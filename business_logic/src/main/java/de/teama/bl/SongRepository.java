@@ -9,6 +9,13 @@ import java.util.List;
 public interface SongRepository extends MongoRepository<Song, String> {
 
     List<Song> findByName(@Param("name") String name);
+
+    List<Song> findByLength(@Param("length") String length);
+
+    List<Song> findByReleaseDate(@Param("releaseData") String releaseDate);
+
     List<Song> findByPublisher(@Param("publisher") String publisher);
-    //List<Song> findAll(String name);
+
+    List<Song> findByAlbum(@Param("album") String album);
+    //List<Song> findAll();
 }
