@@ -5,6 +5,8 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import de.teama.bl.data.Publisher;
 import de.teama.bl.data.Song;
+import de.teama.bl.data.User;
+import org.json.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -20,6 +22,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+
+/*
+TODO Authentication
+TODO Comments
+TODO Monitoring
+TODO Clean up Data classes
+TODO Documentation
+ */
 
 @SpringBootApplication
 @RestController
@@ -38,11 +48,15 @@ public class Application implements ApplicationRunner {
     @Autowired
     private AlbumRepository albumRepository;
 
+    @Autowired
+    private ActiveSessionRepository sessions;
+
     private MongoClient mongoClient;
     private final Logger logger;
     private final ObjectMapper mapper;
     private final RestTemplate template;
     private String urlDB;
+    private String monitoringURL;
     private ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
     Application() {
@@ -76,10 +90,6 @@ public class Application implements ApplicationRunner {
                                 @RequestParam(value = "publisher") String publisher,
                                 @RequestParam(value = "album") String album) {
 
-        Map<String, String> params = new HashMap<>();
-        params.put("name", name);
-        // etc
-
         String json;
         Song data = new Song(name, length, releaseDate, publisher, album);
         logger.info("Sending Song dataset: {}, {}, {}, {}, {}", name, length, releaseDate, publisher, album);
@@ -99,10 +109,6 @@ public class Application implements ApplicationRunner {
     @RequestMapping(value = "/publisher", method = RequestMethod.POST)
     public String insertNewPublisher(@RequestParam(value = "name") String name) {
 
-        Map<String, String> params = new HashMap<>();
-        params.put("name", name);
-        // etc
-
         String json;
         Publisher data = new Publisher(name);
         logger.info("Sending Publisher dataset: {}", name);
@@ -116,6 +122,32 @@ public class Application implements ApplicationRunner {
         }
     }
 
+    @RequestMapping(value = "/AliveStatus", method = RequestMethod.POST)
+    public String aliveStatus(@RequestParam(value = "msID") String msID,
+                              @RequestParam(value = "appID") String appID,
+                              @RequestParam(value = "eventUrl") String eventUrl,
+                              @RequestParam(value = "status") String status,
+                              @RequestParam(value = "noOfUser") String noOfUser) {
+
+        String json;
+
+        msID = "business-logic";    //TODO
+        appID = "Music App";        //TODO
+        monitoringURL = eventUrl;
+        logger.info("Setting Event Monitoring URL to {}", monitoringURL);
+        status = "1";
+        noOfUser = "" + sessions.count();
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("msID",msID);
+        jsonObject.put("appID",appID);
+        jsonObject.put("eventUrl",monitoringURL);
+        jsonObject.put("status",status);
+        jsonObject.put("noOfUser",noOfUser);
+        json = jsonObject.toString();
+        return json;
+    }
+
     @RequestMapping(value = "/song", method = RequestMethod.GET)
     public String getSong(@RequestParam(value = "name", required = false) String name,
                           @RequestParam(value = "length", required = false) String length,
@@ -123,10 +155,7 @@ public class Application implements ApplicationRunner {
                           @RequestParam(value = "publisher", required = false) String publisher,
                           @RequestParam(value = "album", required = false) String album) {
 
-        Map<String, String> params = new HashMap<>();
-        params.put("name", name);
-        params.put("publisher", publisher);
-        logger.info("Searching for Songs with name {}, length {}, releaseDate{}, publisher {}, album {}", name, length, releaseDate, publisher, album);
+        logger.info("Searching for Songs with name {}, length {}, releaseDate{}, publisher {}, album {}\n", name, length, releaseDate, publisher, album);
         String json;
         Set<Song> data;
         try {
@@ -151,8 +180,6 @@ public class Application implements ApplicationRunner {
     @RequestMapping(value = "/album", method = RequestMethod.GET)
     public String getAlbum(@RequestParam(value = "name") String name) {
 
-        Map<String, String> params = new HashMap<>();
-        params.put("name", name);
         logger.info("Searching for album with name {}", name);
         String json;
         try {
@@ -161,17 +188,12 @@ public class Application implements ApplicationRunner {
             json = "Search failed! See server log for detail";
             logger.info(e.getMessage());
         }
-
         return json;
-
-        //return "{\"id\": \"132sdafasdfas123as97ahjg\",\"name\": \"Run The Jewels 3\",\"totalLength\": \"51:27\",\"releaseDate\": \"2016-12-24\",\"genres\": [{\"id\": \"ldjflkejieij343l4l3jldjl\",\"name\": \"Hip hop/Rap\"}],\"tags\": [{\"id\": \"lflwlejelwkjkwejrkj4330\",\"name\": \"Fussballhymne\"},{\"id\": \"dkskjdldjlwdjljwldl7wd2\",\"name\": \"BVB\"}],\"songs\": [{\"id\": \"507f191e810c19729de860ea\",\"name\": \"Legends Has It\"}],\"artists\": [{\"id\": \"116fn30gttdbor64nd63hgkw\",\"name\": \"Run The Jewels\"}],\"publisher\": {\"id\": \"18b9t6dnr04zfdp37tnvopur\",\"name\": \"Run The Jewels, Inc.\"}}";
     }
 
     @RequestMapping(value = "/artist", method = RequestMethod.GET)
     public String getArtist(@RequestParam(value = "name") String name) {
 
-        Map<String, String> params = new HashMap<>();
-        params.put("name", name);
         logger.info("Searching for artist with name {}", name);
         String json;
         try {
@@ -188,8 +210,6 @@ public class Application implements ApplicationRunner {
     @RequestMapping(value = "/publisher", method = RequestMethod.GET)
     public String getPublisher(@RequestParam(value = "name") String name) {
 
-        Map<String, String> params = new HashMap<>();
-        params.put("name", name);
         logger.info("Searching for publisher with name {}", name);
         String json;
         try {
@@ -208,7 +228,27 @@ public class Application implements ApplicationRunner {
         artistRepository.deleteAll();
         publisherRepository.deleteAll();
         artistRepository.deleteAll();
+        sessions.deleteAll();
         return "Cleared Repositories";
+    }
+
+    public void login(String username){
+        logger.info("Current User with name {}: {}", username, sessions.findByName(username));
+        if (sessions.findByName(username) == null){
+            logger.info("Logging in {}", username);
+            sessions.save(new User(username));
+        }else{
+            logger.info("User with name {} is already logged in.", username);
+        }
+    }
+
+    public void logout(String username){
+        if (sessions.findByName(username) != null){
+            logger.info("Logging out {}", username);
+            sessions.deleteByName(username);
+        }else{
+            logger.info("User {} is not logged in.", username);
+        }
     }
 
     public static void main(String[] args) {
