@@ -24,6 +24,7 @@ export class AppComponent {
   albums: Observable<any>;
   artists: Observable<any>;
   publishers: Observable<any>;
+  flist: Observable<any>;
 
   constructor(private http: HttpClient) {
   }
@@ -41,9 +42,9 @@ export class AppComponent {
     isAdmin: true
   };
 
-  song = {
+  song = [{
     id: '507f191e810c19729de860ea',
-    name: 'Legend Has It',
+    name: 'Test',
     length: '3:25',
     releaseDate: '2016-12-24',
     lyrics: 'Her what I say, whe are the business today...',
@@ -53,7 +54,20 @@ export class AppComponent {
     publisher: 'Testpublisher',
     album: 'Run The Jewels 3',
     artists: ['Run The Jewels']
-  };
+  },
+    {
+      id: '507f191e810c19729de860ea',
+      name: 'Legend Has It',
+      length: '3:25',
+      releaseDate: '2016-12-24',
+      lyrics: 'Her what I say, whe are the business today...',
+      urls: [],
+      genres: ['Hip Hop/Rap'],
+      tags: [],
+      publisher: 'Testpublisher',
+      album: 'Run The Jewels 3',
+      artists: ['Run The Jewels']
+    }];
 
   album = {
     id: '507f191e810c19729de860ea',
@@ -97,8 +111,8 @@ export class AppComponent {
 
   getUser() {
     // let params = new HttpParams().set('username', '1');
-    console.log(this.user.username);
     this.users = this.http.get<User[]>(this.ROOT_URL + '/profile');
+    this.flist = this.http.get<Flist[]>(this.ROOT_URL + '/flist');
   }
 
 }

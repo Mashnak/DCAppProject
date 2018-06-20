@@ -4,5 +4,11 @@
     <h5 class="card-title"><strong>{{songitem.name}}</strong></h5>
     <p>by {{songitem.artists}}</p>
     <a routerLink="add" class="btn btn-primary" (click)="detailpage()">Detail Page</a>
+    <button (click)="addtofavorite()" class="btn">Add to Favorite</button>
+    <form #songitem="ngForm"  (ngSubmit)="onSubmit()">
+      <label for="tags" >Add new Tag</label>
+      <input type="text" name="tags" id="tags" ngModel>
+      <button type="submit">Add Tag</button>
+    </form>
   </div>
 </div>

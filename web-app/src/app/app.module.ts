@@ -9,6 +9,7 @@ import {ArtistitemComponent} from './artistitem/artistitem.component';
 import {PublisheritemComponent} from './publisheritem/publisheritem.component';
 import {DetailpageComponent} from './detailpage/detailpage.component';
 import {UseritemComponent} from './useritem/useritem.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,10 @@ import {UseritemComponent} from './useritem/useritem.component';
     UseritemComponent
   ],
   imports: [
-    BrowserModule, routing, HttpClientModule
+    BrowserModule,
+    routing,
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

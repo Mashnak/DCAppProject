@@ -2,7 +2,6 @@
   <div class="container">
     <h1 class="jumbotron-heading jumbotron-fluid display-3">{{title}}</h1>
     <div class="form-group mx-sm-2 mb-2">
-      <input type="text" id="inputSong" placeholder="Song">
       <a (click)="getResult()" class="btn btn-primary mb-sm-2">Search</a>
     </div>
     <p class="lead text-muted" *ngIf="songs!=null">See the results for your search</p>
@@ -33,15 +32,29 @@
     </div>
   </div>
   <div class="col-xl-10">
-    Song<hr>
-    <app-songitem [songitem]="song"></app-songitem>
-    <br><br>
-    Album<hr>
-    <app-albumitem [albumitem]="album"></app-albumitem>
-    <br><br>Artist<hr>
-    <app-artistitem [artistitem]="artist"></app-artistitem>
-    <br><br>  Publisher<hr>
-    <app-publisheritem [publisheritem]="publisher"></app-publisheritem>
+    <div *ngIf="song!=null">
+      Song
+      <hr>
+        <div class="row"> <app-songitem *ngFor="let song of song" [songitem]="song"></app-songitem></div>
+      <br><br>
+    </div>
+    <div *ngIf="album!=null">
+      Album
+      <hr>
+      <app-albumitem [albumitem]="album"></app-albumitem>
+      <br><br>
+    </div>
+    <div *ngIf="artist!=null">
+      Artist
+      <hr>
+      <app-artistitem [artistitem]="artist"></app-artistitem>
+      <br><br>
+    </div>
+    <div *ngIf="publisher!=null">
+      Publisher
+      <hr>
+      <app-publisheritem [publisheritem]="publisher"></app-publisheritem>
+    </div>
     <div *ngIf="newSong!=null"> {{newSong | async | json}}
     </div>
   </div>
