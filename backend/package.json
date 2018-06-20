@@ -11,7 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apiseeds-lyrics": "^2.0.0",
     "express": "^4.16.3",
-    "mongoose": "^5.0.15"
+    "mongoose": "^5.0.15",
+    "node-spotify-api": "^1.0.7"
   }
 }
