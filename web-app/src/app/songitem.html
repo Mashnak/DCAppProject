@@ -1,17 +1,18 @@
-<div class="row">
-  <div class="col-lg-6">
-    <div><h4>{{songItem.name}}</h4></div>
-    <div>Albumname: {{songItem.album}}</div>
-    <div>Artistname: {{songItem.artists}}</div>
-    <div>ReleaseDate: {{songItem.releaseDate}}</div>
-    <div>Tags: {{songItem.tags}}</div>
-    <div class="tools">
-      <a class="details" (click)="postSongToFavorites()">
-        favorite
-      </a>
-      <a class="details">
-        Details
-      </a>
-    </div>
+<div><h4>{{songItem.name}}</h4></div>
+<div>Albumname: {{songItem.album}}</div>
+<div>Artistname: {{songItem.artists}}</div>
+<div>Songlength: {{songItem.length}}</div>
+<div>ReleaseDate: {{songItem.releaseDate}}</div>
+<div>Tags: {{songItem.tags}}</div>
+<div class="row tools">
+  <div class="col-lg-2">
+    <button class="details" (click)="postSongToFavorites()">
+      favorite
+    </button>
+  </div>
+  <div class="col-lg-1">
+    <button class="details">
+      Details
+    </button>
   </div>
 </div>
