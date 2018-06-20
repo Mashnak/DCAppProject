@@ -14,8 +14,6 @@ public interface SongRepository extends MongoRepository<Song, String> {
 
     List<Song> findByReleaseDate(@Param("releaseData") String releaseDate);
 
-    List<Song> findByPublisher(@Param("publisher") String publisher);
-
     List<Song> findByAlbum(@Param("album") String album);
     //List<Song> findAll();
 }
