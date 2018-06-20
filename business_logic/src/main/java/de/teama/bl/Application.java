@@ -13,6 +13,11 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.boot.ApplicationArguments;
@@ -27,8 +32,7 @@ import java.util.*;
 /*
 TODO Authentication
 TODO Comments
-TODO Monitoring
-TODO Clean up Data classes
+TODO Monitoring: Send Status
 TODO Documentation
  */
 
@@ -52,12 +56,10 @@ public class Application implements ApplicationRunner {
     private MongoClient mongoClient;
     private final Logger logger;
     private final ObjectMapper mapper;
-    private final RestTemplate template;
+    private final RestTemplate restTemplate;
+    private MongoTemplate mongoTemplate;
     private String urlDB;
-
-    private String msID;
-    private String appID;
-    private String monitoringURL;
+    private AliveStatus currentStatus;
     private ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
     Application() {
@@ -66,7 +68,7 @@ public class Application implements ApplicationRunner {
         mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
 
-        template = new RestTemplate();
+        restTemplate = new RestTemplate();
     }
 
     @Override
@@ -90,7 +92,7 @@ public class Application implements ApplicationRunner {
                                 @RequestParam(value = "releaseDate") String releaseDate,
                                 @RequestParam(value = "album") String album) {
 
-        Song data = new Song(name, length, releaseDate, album);
+        Song data = new Song();
         logger.info("Sending Song dataset: {}, {}, {}, {}", name, length, releaseDate, album);
         songRepository.insert(data);
         // postForObject?
@@ -107,11 +109,13 @@ public class Application implements ApplicationRunner {
 
     @RequestMapping(value = "/msAliveSignal", method = RequestMethod.POST)
     public ResponseEntity<AliveStatus> addApp(@RequestBody AliveStatus app) {
-        AliveStatus currentStatus = app; 
+        currentStatus = app;
 
         currentStatus.setStatus(AliveStatus.STATUS_ONLINE);
+        currentStatus.setNoOfUser((int)sessions.count());
 
-        currentStatus.setNoOfUser(42);
+        logger.info("Received AliveSignal");
+        logger.info("Event URL has been set to {}", currentStatus.getEventUrl());
 
         return new ResponseEntity<AliveStatus>(currentStatus, HttpStatus.OK);
     }
@@ -123,7 +127,7 @@ public class Application implements ApplicationRunner {
                           @RequestParam(value = "publisher", required = false) String publisher,
                           @RequestParam(value = "album", required = false) String album) {
 
-        logger.info("Searching for Songs with name {}, length {}, releaseDate{}, publisher {}, album {}\n", name, length, releaseDate, publisher, album);
+        logger.info("Searching for Songs with name {}, length {}, releaseDate{}, publisher {}, album {}", name, length, releaseDate, publisher, album);
         String json;
         Set<Song> data;
         try {
@@ -131,7 +135,6 @@ public class Application implements ApplicationRunner {
             data = new HashSet<>(songRepository.findByName(name));
             data.addAll(songRepository.findByLength(length));
             data.addAll(songRepository.findByReleaseDate(releaseDate));
-            data.addAll(songRepository.findByPublisher(publisher));
             data.addAll(songRepository.findByAlbum(album));
 
             json = ow.writeValueAsString(data);
@@ -141,6 +144,39 @@ public class Application implements ApplicationRunner {
         }
         return json;
 
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String search(@RequestParam(value = "term") String term) {
+
+        logger.info("Searching database for term {}", term);
+        logger.info("");
+        JSONObject jsonObject;
+
+        TextCriteria criteria = TextCriteria.forDefaultLanguage()
+                .matchingAny(term);
+
+        logger.info("Parsed Criteria {}", criteria.toString());
+        logger.info("");
+
+        Query query = TextQuery.queryText(criteria)
+                .sortByScore()
+                .with(new PageRequest(0, 5));
+
+        logger.info("Created query {}, {}", query.toString(), Song.class.toString());
+        logger.info("");
+
+        List<Song> result = mongoTemplate.find(query, Song.class);
+
+        logger.info("Retrieved result list {}", result.toString());
+        logger.info("");
+        jsonObject = new JSONObject(result);
+
+        logger.info("done");
+        logger.info("");
+
+        //TODO Fulltext search https://spring.io/blog/2014/07/17/text-search-your-documents-with-spring-data-mongodb
+        return jsonObject.toString();
     }
 
     @RequestMapping(value = "/album", method = RequestMethod.GET)
@@ -171,15 +207,6 @@ public class Application implements ApplicationRunner {
 
         return json;
 
-    }
-
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String search(@RequestParam(value = "term") String term) {
-
-        logger.info("Searching database for term {}", term);
-        JSONObject jsonObject = new JSONObject();
-        //TODO Fulltext search https://spring.io/blog/2014/07/17/text-search-your-documents-with-spring-data-mongodb
-        return jsonObject.toString();
     }
 
     @RequestMapping(value = "/clear", method = RequestMethod.DELETE)

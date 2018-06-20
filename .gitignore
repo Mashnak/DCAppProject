@@ -9,3 +9,4 @@ Documentation/Design/.idea/Design.iml
 app/android/app/.settings/org.eclipse.buildship.core.prefs
 app/android/.settings/org.eclipse.buildship.core.prefs
 Austausch_TeamD_Monitoring/
+business_logic/rebuild.sh

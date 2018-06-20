@@ -2,6 +2,7 @@ package de.teama.bl.data;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 @Document
 public class Playlist {
 
-    @Id @Indexed
+    @Id @Indexed @TextIndexed
     private String id;
 
     private String name;

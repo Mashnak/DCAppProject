@@ -2,13 +2,14 @@ package de.teama.bl.data;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 @Document
 public class Song {
-    @Id @Indexed
+    @Id @Indexed @TextIndexed
     private String name;
 
     private String length;
@@ -19,14 +20,6 @@ public class Song {
     private String tag;
     private String img;
     private String album;
-
-    public Song(String name, String length, String releaseDate, String album) {
-
-        this.name = name;
-        this.length = length;
-        this.releaseDate = releaseDate; // TODO: turn into DateTime?
-        this.album = album;
-    }
 
     @Override
     public String toString() {

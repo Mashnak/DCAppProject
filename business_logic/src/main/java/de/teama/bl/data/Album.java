@@ -2,13 +2,12 @@ package de.teama.bl.data;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Album {
-//    @Id
-//    private String id;
-    @Id @Indexed
+    @Id @Indexed @TextIndexed
     private String name;
     @Indexed
     private String releaseDate;
@@ -16,18 +15,6 @@ public class Album {
     private String genre;
     private String publisher;
     private String tag;
-
-    public Album(String name, String releaseDate, String genre, String publisher, String tag) {
-        this.name = name;
-        this.releaseDate = releaseDate;
-        this.genre = genre;
-        this.publisher = publisher;
-        this.tag = tag;
-    }
-
-//    public String getId() {
-//        return id;
-//    }
 
     public String getName() {
         return name;
