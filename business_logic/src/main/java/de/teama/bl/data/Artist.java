@@ -1,46 +1,41 @@
 package de.teama.bl.data;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+
+@Document
 public class Artist {
-    @Id
-    private String id;
+//    @Id
+//    private String id;
+    @Id @Indexed
     private String name;
 
-    private String genre;
+    private List<String> genre;
+    private List<String> tag;
 
-    private List<Song> songs;
-    private List<Album> albums;
-    private List<Publisher> publishers;
-
-    public Artist(String name, String genre) {
+    public Artist(String name, String genre, String tag) {
         this.name = name;
-        this.genre = genre;
+        this.genre.add(genre);
+        this.tag.add(tag);
     }
 
-    public String getId() {
-        return id;
-    }
+//    public String getId() {
+//        return id;
+//    }
 
     public String getName() {
         return name;
     }
 
-    public String getGenre() {
+    public List<String> getGenre() {
         return genre;
     }
 
-    public List<Song> getSongs() {
-        return songs;
-    }
-
-    public List<Album> getAlbums() {
-        return albums;
-    }
-
-    public List<Publisher> getPublishers() {
-        return publishers;
+    public List<String> getTag() {
+        return tag;
     }
 }

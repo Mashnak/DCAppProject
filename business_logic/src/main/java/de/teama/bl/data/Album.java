@@ -1,37 +1,36 @@
 package de.teama.bl.data;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
+@Document
 public class Album {
-    @Id
-    private String id;
-
+//    @Id
+//    private String id;
+    @Id @Indexed
     private String name;
-    private String totalLength;
+    @Indexed
+    private String releaseDate;
+
     private String genre;
-    private String releaseDate; // TODO: turn into DateTIme?
+    private String publisher;
+    private String tag;
 
-    private List<Song> songs;
-
-    private Publisher publisher;
-    private Artist artist;
-
-    public Album(String name) {
+    public Album(String name, String releaseDate, String genre, String publisher, String tag) {
         this.name = name;
+        this.releaseDate = releaseDate;
+        this.genre = genre;
+        this.publisher = publisher;
+        this.tag = tag;
     }
 
-    public String getId() {
-        return id;
-    }
+//    public String getId() {
+//        return id;
+//    }
 
     public String getName() {
         return name;
-    }
-
-    public String getTotalLength() {
-        return totalLength;
     }
 
     public String getGenre() {
@@ -42,16 +41,8 @@ public class Album {
         return releaseDate;
     }
 
-    public List<Song> getSongs() {
-        return songs;
-    }
-
-    public Publisher getPublisher() {
+    public String getPublisher() {
         return publisher;
-    }
-
-    public Artist getArtist() {
-        return artist;
     }
 
     @Override

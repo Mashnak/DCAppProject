@@ -3,7 +3,6 @@ package de.teama.bl;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
-import de.teama.bl.data.Publisher;
 import de.teama.bl.data.Song;
 import de.teama.bl.data.User;
 import org.json.*;
@@ -14,6 +13,8 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -43,9 +44,6 @@ public class Application implements ApplicationRunner {
     private ArtistRepository artistRepository;
 
     @Autowired
-    private PublisherRepository publisherRepository;
-
-    @Autowired
     private AlbumRepository albumRepository;
 
     @Autowired
@@ -56,6 +54,9 @@ public class Application implements ApplicationRunner {
     private final ObjectMapper mapper;
     private final RestTemplate template;
     private String urlDB;
+
+    private String msID;
+    private String appID;
     private String monitoringURL;
     private ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
@@ -87,12 +88,10 @@ public class Application implements ApplicationRunner {
     public String insertNewSong(@RequestParam(value = "name") String name,
                                 @RequestParam(value = "length") String length,
                                 @RequestParam(value = "releaseDate") String releaseDate,
-                                @RequestParam(value = "publisher") String publisher,
                                 @RequestParam(value = "album") String album) {
 
-        String json;
-        Song data = new Song(name, length, releaseDate, publisher, album);
-        logger.info("Sending Song dataset: {}, {}, {}, {}, {}", name, length, releaseDate, publisher, album);
+        Song data = new Song(name, length, releaseDate, album);
+        logger.info("Sending Song dataset: {}, {}, {}, {}", name, length, releaseDate, album);
         songRepository.insert(data);
         // postForObject?
         //json = template.getForObject(urlDB + "/song" + "/{name}", String.class, params);
@@ -106,46 +105,15 @@ public class Application implements ApplicationRunner {
         }
     }
 
-    @RequestMapping(value = "/publisher", method = RequestMethod.POST)
-    public String insertNewPublisher(@RequestParam(value = "name") String name) {
+    @RequestMapping(value = "/msAliveSignal", method = RequestMethod.POST)
+    public ResponseEntity<AliveStatus> addApp(@RequestBody AliveStatus app) {
+        AliveStatus currentStatus = app; 
 
-        String json;
-        Publisher data = new Publisher(name);
-        logger.info("Sending Publisher dataset: {}", name);
-        publisherRepository.insert(data);
+        currentStatus.setStatus(AliveStatus.STATUS_ONLINE);
 
-        try {
-            return ow.writeValueAsString(data);
-        } catch (JsonProcessingException e) {
-            logger.info(e.getMessage());
-            return "Transaction failed! See server log for detail";
-        }
-    }
+        currentStatus.setNoOfUser(42);
 
-    @RequestMapping(value = "/AliveStatus", method = RequestMethod.POST)
-    public String aliveStatus(@RequestParam(value = "msID") String msID,
-                              @RequestParam(value = "appID") String appID,
-                              @RequestParam(value = "eventUrl") String eventUrl,
-                              @RequestParam(value = "status") String status,
-                              @RequestParam(value = "noOfUser") String noOfUser) {
-
-        String json;
-
-        msID = "business-logic";    //TODO
-        appID = "Music App";        //TODO
-        monitoringURL = eventUrl;
-        logger.info("Setting Event Monitoring URL to {}", monitoringURL);
-        status = "1";
-        noOfUser = "" + sessions.count();
-
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("msID",msID);
-        jsonObject.put("appID",appID);
-        jsonObject.put("eventUrl",monitoringURL);
-        jsonObject.put("status",status);
-        jsonObject.put("noOfUser",noOfUser);
-        json = jsonObject.toString();
-        return json;
+        return new ResponseEntity<AliveStatus>(currentStatus, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/song", method = RequestMethod.GET)
@@ -171,8 +139,6 @@ public class Application implements ApplicationRunner {
             json = "Search failed! See server log for detail";
             logger.info(e.getMessage());
         }
-        logger.info("");
-
         return json;
 
     }
@@ -207,26 +173,19 @@ public class Application implements ApplicationRunner {
 
     }
 
-    @RequestMapping(value = "/publisher", method = RequestMethod.GET)
-    public String getPublisher(@RequestParam(value = "name") String name) {
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String search(@RequestParam(value = "term") String term) {
 
-        logger.info("Searching for publisher with name {}", name);
-        String json;
-        try {
-            json = ow.writeValueAsString(publisherRepository.findByName(name));
-        } catch (JsonProcessingException e) {
-            json = "Search failed! See server log for detail";
-            logger.info(e.getMessage());
-        }
-
-        return json;
+        logger.info("Searching database for term {}", term);
+        JSONObject jsonObject = new JSONObject();
+        //TODO Fulltext search https://spring.io/blog/2014/07/17/text-search-your-documents-with-spring-data-mongodb
+        return jsonObject.toString();
     }
 
     @RequestMapping(value = "/clear", method = RequestMethod.DELETE)
     public String clearRepository() {
         songRepository.deleteAll();
         artistRepository.deleteAll();
-        publisherRepository.deleteAll();
         artistRepository.deleteAll();
         sessions.deleteAll();
         return "Cleared Repositories";
