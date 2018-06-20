@@ -3,16 +3,28 @@
 <div>Artistname: {{songItem.artists}}</div>
 <div>Songlength: {{songItem.length}}</div>
 <div>ReleaseDate: {{songItem.releaseDate}}</div>
+<div>Genres: {{songItem.genres}}</div>
 <div>Tags: {{songItem.tags}}</div>
 <div class="row tools">
   <div class="col-lg-2">
     <button class="details" (click)="postSongToFavorites()">
-      favorite
+      Favorite
     </button>
   </div>
-  <div class="col-lg-1">
+  <div class="col-sm-2">
     <button class="details">
-      Details
+      Lyrics
     </button>
   </div>
+  <div class="col-lg-4">
+    <button class="details">
+      Link to Song
+    </button>
+  </div>
+</div>
+<div class="row tools" style="padding: 15px">
+<form>
+  <input>
+  <button class="details">Add Tag</button>
+</form>
 </div>
