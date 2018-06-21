@@ -3,21 +3,17 @@ package de.teama.bl;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
+import de.teama.bl.data.Album;
+import de.teama.bl.data.Artist;
 import de.teama.bl.data.Song;
 import de.teama.bl.data.User;
-import org.json.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.TextCriteria;
-import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.boot.ApplicationArguments;
@@ -27,6 +23,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /*
@@ -53,6 +50,9 @@ public class Application implements ApplicationRunner {
     @Autowired
     private ActiveSessionRepository sessions;
 
+    @Autowired
+    private UserRepository registeredUsers;
+
     private MongoClient mongoClient;
     private final Logger logger;
     private final ObjectMapper mapper;
@@ -77,34 +77,35 @@ public class Application implements ApplicationRunner {
                 args.getOptionValues("DB.port").get(0));
         logger.info("Sending db requests to {}", urlDB);
         mongoClient = new MongoClient(String.format("%s", args.getOptionValues("DB.ip").get(0)));
-        logger.info("{}", mongoClient.getUsedDatabases());
+        logger.info("Using databases: {}", mongoClient.getUsedDatabases());
+        logger.info("");
 
     }
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
-    public String getAlive() {
-        return "No. 5 Alive";
+    public ResponseEntity<String> getAlive() {
+        return new ResponseEntity<>("No. 5 alive", HttpStatus.OK);
     }
 
     @RequestMapping(value = "/song", method = RequestMethod.POST)
-    public String insertNewSong(@RequestParam(value = "name") String name,
+    public ResponseEntity<Song> insertNewSong(@RequestParam(value = "name") String name,
                                 @RequestParam(value = "length") String length,
                                 @RequestParam(value = "releaseDate") String releaseDate,
+                                @RequestParam(value = "lyrics") String lyrics,
+                                @RequestParam(value = "link") String link,
+                                @RequestParam(value = "genre") String genre,
+                                @RequestParam(value = "tag") String tag,
+                                @RequestParam(value = "img") String img,
                                 @RequestParam(value = "album") String album) {
 
-        Song data = new Song();
-        logger.info("Sending Song dataset: {}, {}, {}, {}", name, length, releaseDate, album);
-        songRepository.insert(data);
-        // postForObject?
-        //json = template.getForObject(urlDB + "/song" + "/{name}", String.class, params);
+        LinkedList<String> links = new LinkedList<>();
+        links.add(link);
 
-        // return errorcode
-        try {
-            return ow.writeValueAsString(data);
-        } catch (JsonProcessingException e) {
-            logger.info(e.getMessage());
-            return "Transaction failed! See server log for detail";
-        }
+        Song data = new Song(name, length, releaseDate, lyrics, links, genre, tag, img, album);
+        logger.info("Saving Song dataset: {}, {}, {}, {}, {}, {}, {}, {}, {}", name, length, releaseDate, lyrics, link, genre, tag, img, album);
+        logger.info("");
+        songRepository.insert(data);
+        return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/msAliveSignal", method = RequestMethod.POST)
@@ -116,124 +117,86 @@ public class Application implements ApplicationRunner {
 
         logger.info("Received AliveSignal");
         logger.info("Event URL has been set to {}", currentStatus.getEventUrl());
+        logger.info("");
+        mongoTemplate = new MongoTemplate(mongoClient, currentStatus.getAppID());
+        return new ResponseEntity<>(currentStatus, HttpStatus.OK);
+    }
 
-        return new ResponseEntity<AliveStatus>(currentStatus, HttpStatus.OK);
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseEntity<User> registerUser(@RequestParam(value = "name") String name,
+                                             @RequestParam(value = "password") String password,
+                                             @RequestParam(value = "isAdmin") String admin) {
+        logger.info("Registering user with name {}", name);
+        logger.info("");
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        boolean isAdmin = Boolean.valueOf(admin);
+        User newUser = new User(name, password, date, isAdmin);
+        return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/song", method = RequestMethod.GET)
-    public String getSong(@RequestParam(value = "name", required = false) String name,
-                          @RequestParam(value = "length", required = false) String length,
-                          @RequestParam(value = "releaseDate", required = false) String releaseDate,
-                          @RequestParam(value = "publisher", required = false) String publisher,
-                          @RequestParam(value = "album", required = false) String album) {
-
-        logger.info("Searching for Songs with name {}, length {}, releaseDate{}, publisher {}, album {}", name, length, releaseDate, publisher, album);
-        String json;
-        Set<Song> data;
-        try {
-
-            data = new HashSet<>(songRepository.findByName(name));
-            data.addAll(songRepository.findByLength(length));
-            data.addAll(songRepository.findByReleaseDate(releaseDate));
-            data.addAll(songRepository.findByAlbum(album));
-
-            json = ow.writeValueAsString(data);
-        } catch (JsonProcessingException e) {
-            json = "Search failed! See server log for detail";
-            logger.info(e.getMessage());
-        }
-        return json;
-
+    public ResponseEntity<Song> getSong(@RequestParam(value = "name", required = false) String name) {
+        logger.info("Searching for Songs with name {}", name);
+        logger.info("");
+        return new ResponseEntity<>(songRepository.findByName(name), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String search(@RequestParam(value = "term") String term) {
+    public ResponseEntity<Set<Song>> search(@RequestParam(value = "term") String term) {
 
-        logger.info("Searching database for term {}", term);
-        logger.info("");
-        JSONObject jsonObject;
+        Set<Song> result = new HashSet<>();
+        result.addAll(songRepository.findByNameLike(term));
+        result.addAll(songRepository.findByAlbumLike(term));
 
-        TextCriteria criteria = TextCriteria.forDefaultLanguage()
-                .matchingAny(term);
 
-        logger.info("Parsed Criteria {}", criteria.toString());
-        logger.info("");
-
-        Query query = TextQuery.queryText(criteria)
-                .sortByScore()
-                .with(new PageRequest(0, 5));
-
-        logger.info("Created query {}, {}", query.toString(), Song.class.toString());
-        logger.info("");
-
-        List<Song> result = mongoTemplate.find(query, Song.class);
-
-        logger.info("Retrieved result list {}", result.toString());
-        logger.info("");
-        jsonObject = new JSONObject(result);
-
-        logger.info("done");
-        logger.info("");
-
-        //TODO Fulltext search https://spring.io/blog/2014/07/17/text-search-your-documents-with-spring-data-mongodb
-        return jsonObject.toString();
+        //TODO Add every property of every entity
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/album", method = RequestMethod.GET)
-    public String getAlbum(@RequestParam(value = "name") String name) {
-
+    public ResponseEntity<Album> getAlbum(@RequestParam(value = "name") String name) {
         logger.info("Searching for album with name {}", name);
-        String json;
-        try {
-            json = ow.writeValueAsString(albumRepository.findByName(name));
-        } catch (JsonProcessingException e) {
-            json = "Search failed! See server log for detail";
-            logger.info(e.getMessage());
-        }
-        return json;
+        logger.info("");
+        return new ResponseEntity<>(albumRepository.findByName(name), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/artist", method = RequestMethod.GET)
-    public String getArtist(@RequestParam(value = "name") String name) {
+    public ResponseEntity<Artist> getArtist(@RequestParam(value = "name") String name) {
 
         logger.info("Searching for artist with name {}", name);
-        String json;
-        try {
-            json = ow.writeValueAsString(artistRepository.findByName(name));
-        } catch (JsonProcessingException e) {
-            json = "Search failed! See server log for detail";
-            logger.info(e.getMessage());
-        }
-
-        return json;
-
+        logger.info("");
+        return new ResponseEntity<>(artistRepository.findByName(name), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/clear", method = RequestMethod.DELETE)
-    public String clearRepository() {
+    public ResponseEntity<String> clearRepositories() {
         songRepository.deleteAll();
         artistRepository.deleteAll();
         artistRepository.deleteAll();
         sessions.deleteAll();
-        return "Cleared Repositories";
+        return new ResponseEntity<>("Cleared Repositories", HttpStatus.OK);
     }
 
     public void login(String username){
         logger.info("Current User with name {}: {}", username, sessions.findByName(username));
         if (sessions.findByName(username) == null){
             logger.info("Logging in {}", username);
+            logger.info("");
             sessions.save(new User(username));
         }else{
             logger.info("User with name {} is already logged in.", username);
+            logger.info("");
         }
     }
 
     public void logout(String username){
         if (sessions.findByName(username) != null){
             logger.info("Logging out {}", username);
+            logger.info("");
             sessions.deleteByName(username);
         }else{
             logger.info("User {} is not logged in.", username);
+            logger.info("");
         }
     }
 

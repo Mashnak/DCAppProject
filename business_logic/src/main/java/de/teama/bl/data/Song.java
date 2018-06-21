@@ -1,5 +1,6 @@
 package de.teama.bl.data;
 
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
@@ -21,9 +22,21 @@ public class Song {
     private String img;
     private String album;
 
+    public Song(String name, String length, String releaseDate, String lyrics, List<String> links, String genre, String tag, String img, String album) {
+        this.name = name;
+        this.length = length;
+        this.releaseDate = releaseDate;
+        this.lyrics = lyrics;
+        this.links = links;
+        this.genre = genre;
+        this.tag = tag;
+        this.img = img;
+        this.album = album;
+    }
+
     @Override
     public String toString() {
-        return name;
+        return new JSONObject(this).toString();
     }
 
     public String getName() {
@@ -44,6 +57,10 @@ public class Song {
 
     public List<String> getLinks() {
         return links;
+    }
+
+    public void addLink(String link){
+        this.links.add(link);
     }
 
     public String getGenre() {

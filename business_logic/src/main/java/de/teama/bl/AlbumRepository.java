@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface AlbumRepository extends MongoRepository<Album, String> {
-
-    List<Album> findByName(@Param("name") String name);
+    Album findByName(@Param("name") String name);
+    List<Album> findByNameLike(@Param("name") String name);
 
 }

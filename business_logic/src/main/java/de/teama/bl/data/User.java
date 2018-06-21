@@ -5,7 +5,10 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Document
 public class User {
@@ -14,16 +17,16 @@ public class User {
 
     private String password;
     private String birthdate;
-    private List<String> friends;
+    private Set<String> friends;
     private List<String> playlists;
     private boolean isAdmin;
 
-    public User(String name, String password, String birthdate, List<String> friends, List<String> playlists, boolean isAdmin) {
+    public User(String name, String password, String birthdate, boolean isAdmin) {
         this.name = name;
         this.password = password;
         this.birthdate = birthdate;
-        this.friends = friends;
-        this.playlists = playlists;
+        this.friends = new HashSet<>();
+        this.playlists = new LinkedList<>();
         this.isAdmin = isAdmin;
     }
 
@@ -36,7 +39,12 @@ public class User {
     }
 
     public List<String> getFriends() {
+        List<String> friends = new LinkedList<>();
+        friends.addAll(this.friends);
         return friends;
+    }
+    public void addFriend(String friend) {
+        this.friends.add(friend);
     }
 
     public List<String> getPlaylists() {
