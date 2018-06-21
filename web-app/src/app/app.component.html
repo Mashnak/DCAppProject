@@ -3,7 +3,7 @@
     <h1 class="jumbotron-heading jumbotron-fluid display-3">{{title}}</h1>
     <div class="row">
       <form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm.value)">
-        <input type="text" name="search" id="search" ngModel>
+        <input type="text" name="searchText" id="searchText" ngModel>
         <button class="btn btn-dark" type="submit">Search</button>
       </form>
     </div>
