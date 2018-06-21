@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {Song} from '../song';
 
 @Component({
   selector: 'app-component',
@@ -134,7 +136,7 @@ export class AppComponent {
       artists: ['Testartist1']
     },
     {
-      id: 2,
+      id: 3,
       name: 'Testname3',
       length: '3:50',
       releaseDate: '14-5-1992',
@@ -193,7 +195,7 @@ export class AppComponent {
       artists: ['Testartist1']
     },
     {
-      id: 2,
+      id: 4,
       name: 'Testname4',
       length: '3:50',
       releaseDate: '14-5-1992',
@@ -252,7 +254,7 @@ export class AppComponent {
       artists: ['Testartist1']
     },
     {
-      id: 2,
+      id: 5,
       name: 'Testname5',
       length: '3:50',
       releaseDate: '14-5-1992',
@@ -311,7 +313,7 @@ export class AppComponent {
       artists: ['Testartist1']
     },
     {
-      id: 2,
+      id: 6,
       name: 'Testname6',
       length: '3:50',
       releaseDate: '14-5-1992',
@@ -370,7 +372,7 @@ export class AppComponent {
       artists: ['Testartist1']
     },
     {
-      id: 2,
+      id: 7,
       name: 'Testname7',
       length: '3:50',
       releaseDate: '14-5-1992',
@@ -429,7 +431,7 @@ export class AppComponent {
       artists: ['Testartist1']
     },
     {
-      id: 2,
+      id: 8,
       name: 'Testname8',
       length: '3:50',
       releaseDate: '14-5-1992',
@@ -488,7 +490,7 @@ export class AppComponent {
       artists: ['Testartist1']
     },
     {
-      id: 2,
+      id: 9,
       name: 'Testname9',
       length: '3:50',
       releaseDate: '14-5-1992',
@@ -666,14 +668,18 @@ export class AppComponent {
     }
   ];
 
+  readonly ROOT_URL = 'http://192.168.99.100:8080';
+  songs: Observable<any>;
+
   onAddedToFavorites(songItem) {
     console.log(songItem);
     // Add the post method to the BL!!!!
   }
 
   onSubmit(searchForm) {
-    console.log(searchForm);
     const searchValue = (JSON.stringify(searchForm.searchText));
-    console.log(' http://192.168.99.10:8080/search?term=' + searchValue);
+    const params = new HttpParams().set('?term', searchValue);
+    this.songs = this.http.get<Song[]>(this.ROOT_URL + '/search' + params);
+    console.log(this.ROOT_URL + '/search' + params);
   }
 }
