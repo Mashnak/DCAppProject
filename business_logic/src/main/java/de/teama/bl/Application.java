@@ -105,7 +105,7 @@ public class Application implements ApplicationRunner {
         logger.info("Saving Song dataset: {}, {}, {}, {}, {}, {}, {}, {}, {}", name, length, releaseDate, lyrics, link, genre, tag, img, album);
         logger.info("");
         songRepository.insert(data);
-        return new ResponseEntity<>(data, HttpStatus.OK);
+        return new ResponseEntity<>(data, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/msAliveSignal", method = RequestMethod.POST)
@@ -135,18 +135,28 @@ public class Application implements ApplicationRunner {
     }
 
     @RequestMapping(value = "/song", method = RequestMethod.GET)
-    public ResponseEntity<Song> getSong(@RequestParam(value = "name", required = false) String name) {
-        logger.info("Searching for Songs with name {}", name);
+    public ResponseEntity<Object> getSong(@RequestParam(value = "name", required = false) String name) {
+        logger.info("Searching for Song with name {}", name);
         logger.info("");
-        return new ResponseEntity<>(songRepository.findByName(name), HttpStatus.OK);
+        Song result = songRepository.findByName(name);
+        if (result == null) {
+            return new ResponseEntity<>("No song with this name in database", HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity<Set<Song>> search(@RequestParam(value = "term") String term) {
 
+        logger.info("Searching for songs containing {}", term);
+
         Set<Song> result = new HashSet<>();
         result.addAll(songRepository.findByNameLike(term));
         result.addAll(songRepository.findByAlbumLike(term));
+
+        logger.info("Found {} different results", result.size());
+        logger.info("");
 
 
         //TODO Add every property of every entity
@@ -177,6 +187,8 @@ public class Application implements ApplicationRunner {
         return new ResponseEntity<>("Cleared Repositories", HttpStatus.OK);
     }
 
+    //end of REST interfaces
+
     public void login(String username){
         logger.info("Current User with name {}: {}", username, sessions.findByName(username));
         if (sessions.findByName(username) == null){
@@ -198,6 +210,12 @@ public class Application implements ApplicationRunner {
             logger.info("User {} is not logged in.", username);
             logger.info("");
         }
+    }
+
+    public Set<Song> composeAlbum(String name) {
+        Set<Song> result = new HashSet<>();
+        result.addAll(songRepository.findByAlbum(name));
+        return result;
     }
 
     public static void main(String[] args) {

@@ -10,14 +10,15 @@ public interface SongRepository extends MongoRepository<Song, String> {
 
     Song findByName(@Param("name") String name);
     List<Song> findByNameLike(@Param("name") String name);
+    List<Song> findByNameLikeOrderByNameAsc(@Param("name") String name);
 
-    Song findByLength(@Param("length") String length);
+    List<Song> findByLength(@Param("length") String length);
     List<Song> findByLengthLike(@Param("name") String name);
 
-    Song findByReleaseDate(@Param("releaseData") String releaseDate);
+    List<Song> findByReleaseDate(@Param("releaseData") String releaseDate);
     List<Song> findByReleaseDateLike(@Param("name") String name);
 
-    Song findByAlbum(@Param("album") String album);
+    List<Song> findByAlbum(@Param("album") String album);
     List<Song> findByAlbumLike(@Param("name") String name);
     //List<Song> findAll();
 }
