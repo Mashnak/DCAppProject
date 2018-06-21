@@ -21,5 +21,6 @@ export class SongitemComponent {
 
   onSubmit(songTag) {
     console.log(songTag);
+    // http request to post song tag!
   }
 }
