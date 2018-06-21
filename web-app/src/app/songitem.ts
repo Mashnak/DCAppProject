@@ -18,4 +18,8 @@ export class SongitemComponent {
     this.addedToFavorites.emit(this.songItem);
     console.log('added ' + ' to favorites');
   }
+
+  onSubmit(songTag) {
+    console.log(songTag);
+  }
 }

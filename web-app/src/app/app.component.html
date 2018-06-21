@@ -2,8 +2,10 @@
   <div class="container">
     <h1 class="jumbotron-heading jumbotron-fluid display-3">{{title}}</h1>
     <div class="row">
-      <form><input></form>
-      <button class="btn btn-dark" (click)="getSongs()">Search</button>
+      <form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm.value)">
+        <input type="text" name="search" id="search" ngModel>
+        <button class="btn btn-dark" type="submit">Search</button>
+      </form>
     </div>
   </div>
 </section>

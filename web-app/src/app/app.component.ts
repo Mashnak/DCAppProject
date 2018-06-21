@@ -160,8 +160,8 @@ export class AppComponent {
     // Add the post method to the BL!!!!
   }
 
-  getSongs() {
-    console.log('Search');
+  onSubmit(searchForm) {
+    console.log(searchForm);
     // http request to get songs!
   }
 }

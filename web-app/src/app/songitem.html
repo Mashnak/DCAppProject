@@ -23,8 +23,8 @@
   </div>
 </div>
 <div class="row tools" style="padding: 15px">
-<form>
-  <input>
-  <button class="details">Add Tag</button>
+<form #songTagForm="ngForm" (ngSubmit)="onSubmit(songTagForm.value)">
+  <input type="text" name="tags" id="tags" ngModel>
+  <button class="details" type="submit">Add Tag</button>
 </form>
 </div>
