@@ -7,7 +7,7 @@ var PORT = process.env.PORT || 3000
 //MongoDB
 var mongoose = require('mongoose')
 mongoose.Promise = Promise
-var dbUrl = process.env.DB_URL || 'mongodb://192.168.99.100:27017'
+var dbUrl = process.env.DB_URL || 'mongodb://192.168.99.100:27017/test'
 
 var Album     = require('./model/album.model')
 var Song      = require('./model/song.model')

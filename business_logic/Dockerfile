@@ -5,4 +5,4 @@ VOLUME /tmp
 EXPOSE 8080
 ADD build/libs/business-logic-0.1.0.jar app.jar
 # ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar", "--DB.ip=$ip", "--DB.port=$port"]
-ENTRYPOINT java -Djava.security.egd=file:/dev/./urandom -jar /app.jar --DB.ip=$DB_IP --DB.port=$DB_PORT
+ENTRYPOINT sleep 20 && java -Djava.security.egd=file:/dev/./urandom -jar /app.jar --DB.ip=$DB_IP --DB.port=$DB_PORT

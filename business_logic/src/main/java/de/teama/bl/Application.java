@@ -53,7 +53,9 @@ public class Application implements ApplicationRunner {
     @Autowired
     private UserRepository registeredUsers;
 
+    @Autowired
     private MongoClient mongoClient;
+
     private final Logger logger;
     private final ObjectMapper mapper;
     private final RestTemplate restTemplate;
@@ -75,7 +77,7 @@ public class Application implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         urlDB = String.format("%s:%s", args.getOptionValues("DB.ip").get(0), args.getOptionValues("DB.port").get(0));
         logger.info("Sending db requests to {}", urlDB);
-        mongoClient = new MongoClient(urlDB);
+        // mongoClient = new MongoClient(urlDB);
         logger.info("Using databases: {}", mongoClient.getUsedDatabases());
         logger.info("");
     }
