@@ -9,7 +9,7 @@ var AlbumSchema = new Schema({
         required : true, 
         dropDups: true
     },
-    releaseDate: Date,
+    releaseDate: String,
     img:String,
     genres: String,
     tags: String,

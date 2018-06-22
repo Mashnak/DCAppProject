@@ -1,10 +1,10 @@
-{"name":"Rhein-Neckar-Helden","genre":[{"name":"Pop"}],"tags":[{"name":"Hymne"},{"name":"Fussball"},{"name":"Bundesliga"},{"name":"TSG Hoffenheim"}]}
-{"name":"Karl-Heinz Bandosz","genre":[{"name":"Pop"}],"tags":[{"name":"Hymne"},{"name":"Fussball"},{"name":"Bundesliga"},{"name":"Schalke 04"}]}
-{"name":"Willy Astor","genre":[{"name":"Pop"}],"tags":[{"name":"Hymne"},{"name":"Fussball"},{"name":"Bundesliga"},{"name":"FC Bayern"}]}
-{"name":"Arnd Zeigler","genre":[{"name":"Pop"}],"tags":[{"name":"Hymne"},{"name":"Fussball"},{"name":"Bundesliga"},{"name":"SV Werder Bremen"}]}
-{"name":"Lotto King Karl","genre":[{"name":"Pop"}],"tags":[{"name":"Hymne"},{"name":"Fussball"},{"name":"Bundesliga"},{"name":"Hamburger SV"}]}
-{"name":"August Heinrich Hoffmann von Fallersleben","genre":[{"name":"Pop"}],"tags":[{"name":"Hymne"},{"name":"National"},{"name":"Deutschland"}]}
-{"name":"Michele Novaro","tags":[{"name":"Hymne"},{"name":"National"},{"name":"Italien"}]}
-{"name":"David Davidson","tags":[{"name":"Movie"}]}
-{"name":"Hans Zimmer","tags":[{"name":"Movie"}]}
-{"name":"James Newton Howard","tags":[{"name":"Movie"}]}
+{"name":"Rhein-Neckar-Helden","img":"https://i.scdn.co/image/4a5133102ed9e032cfd4ac7b639a62baa3fcdd2a" ,"genre":[{"name":"Pop"}],"tag":[{"name":"Hymne"},{"name":"Fussball"},{"name":"Bundesliga"},{"name":"TSG Hoffenheim"}]}
+{"name":"Karl-Heinz Bandosz","img":"https://i.scdn.co/image/01b4021bc4a352f2de85a01537b6b32bb6d260d5" ,"genre":[{"name":"Pop"}],"tag":[{"name":"Hymne"},{"name":"Fussball"},{"name":"Bundesliga"},{"name":"Schalke 04"}]}
+{"name":"Willy Astor","img":"https://i.scdn.co/image/6d44b62916c6b07b1a93e58f50a0ad98095b9b16","genre":[{"name":"Pop"}],"tag":[{"name":"Hymne"},{"name":"Fussball"},{"name":"Bundesliga"},{"name":"FC Bayern"}]}
+{"name":"Arnd Zeigler","img":"https://i.scdn.co/image/e686fd7612892be6d0c9de332c720dd4ea3a1cc5","genre":[{"name":"Pop"}],"tag":[{"name":"Hymne"},{"name":"Fussball"},{"name":"Bundesliga"},{"name":"SV Werder Bremen"}]}
+{"name":"Lotto King Karl","img":"https://i.scdn.co/image/68793e168fa74a82fc22ddadccc0a04c4883ac13","genre":[{"name":"Pop"}],"tag":[{"name":"Hymne"},{"name":"Fussball"},{"name":"Bundesliga"},{"name":"Hamburger SV"}]}
+{"name":"August Heinrich Hoffmann von Fallersleben","img":"https://burschenschaft.de/fileadmin/_processed_/csm_august_heinrich_hoffmann_von_fallersleben_67bbe7c41b.jpg","genre":[{"name":"Pop"}],"tag":[{"name":"Hymne"},{"name":"National"},{"name":"Deutschland"}]}
+{"name":"Michele Novaro","img":"https://www.ilmemoriale.it/images/personaggi/camillo-benso-counte-di-cavour22.jpeg","tag":[{"name":"Hymne"},{"name":"National"},{"name":"Italien"}]}
+{"name":"David Davidson","img":"https://i.scdn.co/image/c4038e4e3969af7cfcc9eda7bc138dc8c25e6d29","tag":[{"name":"Movie"}]}
+{"name":"Hans Zimmer","img":"https://i.scdn.co/image/960a8d4afdf777c543618e384428aacffdcf517a","tag":[{"name":"Movie"}]}
+{"name":"James Newton Howard","img":"https://i.scdn.co/image/998e3bfa6efb8832802670a015b03b1e334dc311","tag":[{"name":"Movie"}]}
