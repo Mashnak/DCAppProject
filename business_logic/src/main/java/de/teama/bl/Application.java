@@ -159,6 +159,22 @@ public class Application implements ApplicationRunner {
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<Object> loginUser(@RequestParam(value = "name") String name,
+                                          @RequestParam(value = "password")String password){
+        User user = registeredUsers.findByName(name);
+        try {
+            if (user.getPassword().equals(password)){
+                login(name);
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
+            }
+        }catch (NullPointerException e){
+            return new ResponseEntity<>("Invalid username", HttpStatus.NOT_FOUND);
+        }
+    }
+
     // end of POST interfaces
 
     /**
@@ -171,29 +187,34 @@ public class Application implements ApplicationRunner {
      * @return      a Set of JSON Objects containing the search result
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public ResponseEntity<Set<JSONObject>> search(@RequestParam(value = "term") String term) {
+    public ResponseEntity<Set<Song>> search(@RequestParam(value = "term") String term) {
 
         logger.info("Searching for songs containing {}", term);
 
-        Set<JSONObject> result = new HashSet<>();
+        Set<Song> result = new HashSet<>();
 
         result.addAll(songRepository.findByNameLike(term));
-        result.addAll(songRepository.findByLengthLike(term));
-        result.addAll(songRepository.findByReleaseDateLike(term));
-        result.addAll(songRepository.findByLyricsLike(term));
-        result.addAll(songRepository.findByGenreLike(term));
+//        result.addAll(songRepository.findByLengthLike(term));
+//        result.addAll(songRepository.findByReleaseDateLike(term));
+//        result.addAll(songRepository.findByLyricsLike(term));
+//        result.addAll(songRepository.findByGenreLike(term));
         result.addAll(songRepository.findByTagLike(term));
-        result.addAll(songRepository.findByAlbumLike(term));
+//        result.addAll(songRepository.findByAlbumLike(term));
 
-        result.addAll(albumRepository.findByNameLike(term));
-        result.addAll(albumRepository.findByPublisherLike(term));
-        result.addAll(albumRepository.findByGenreLike(term));
-        result.addAll(albumRepository.findByTagLike(term));
+        Set<Album> albumResults = new HashSet<>();
+        albumResults.addAll(albumRepository.findByNameLike(term));
+//        albumResults.addAll(albumRepository.findByPublisherLike(term));
+//        albumResults.addAll(albumRepository.findByGenreLike(term));
+        albumResults.addAll(albumRepository.findByTagLike(term));
 
-
-
-        logger.info("Found {} different results", result.size());
-        logger.info("");
+//        int size = 0;
+//        String result = "";
+//        JSONObject test = new JSONObject();
+//        result += new JSONObject(songResults).toString();
+//        result += new JSONObject(albumResults).toString();
+//
+//        logger.info("Found {} different results", size);
+//        logger.info("");
 
         // TODO Add every property of every entity
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -278,8 +299,8 @@ public class Application implements ApplicationRunner {
         }
     }
 
-    public Set<JSONObject> composeAlbum(String name) {
-        Set<JSONObject> result = new HashSet<>();
+    public Set<Song> composeAlbum(String name) {
+        Set<Song> result = new HashSet<>();
         result.addAll(songRepository.findByAlbum(name));
         return result;
     }

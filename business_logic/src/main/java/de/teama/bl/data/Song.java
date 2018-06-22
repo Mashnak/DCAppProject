@@ -22,7 +22,8 @@ public class Song {
     private String img;
     private String album;
 
-    public Song(String name, String length, String releaseDate, String lyrics, List<JSONObject> link, List<String> genre, List<String> tag, String img, String album) {
+    public Song(String name, String length, String releaseDate, String lyrics, List<JSONObject> link,
+                List<String> genre, List<String> tag, String img, String album) {
         this.name = name;
         this.length = length;
         this.releaseDate = releaseDate;
@@ -55,8 +56,8 @@ public class Song {
         return lyrics;
     }
 
-    public List<JSONObject> getLink() {
-        return link;
+    public String getLink() {
+        return link.toString();
     }
 
     public void addlink(String name, String url){
