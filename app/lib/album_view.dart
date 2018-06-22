@@ -116,7 +116,7 @@ class AlbumView extends StatelessWidget {
                   icon: new Icon(Icons.info),
                 ),
                 new Tab(
-                  icon: new Icon(Icons.music_note),
+                  icon: new Icon(Icons.view_list),
                 ),
                 new Tab(
                   icon: new Icon(Icons.comment),
