@@ -1,11 +1,18 @@
 <div><h4>{{songItem.name}}</h4></div>
-<div>Albumname: {{songItem.album}}</div>
-<div>Artistname: {{songItem.artists}}</div>
-<div>Songlength: {{songItem.length}}</div>
-<div>ReleaseDate: {{songItem.releaseDate}}</div>
-<div>Genres: {{songItem.genres}}</div>
-<div>Tags: {{songItem.tags}}</div>
-<div class="row tools">
+<div class="row">
+  <div style="padding-left: 20px">
+    <div>Albumname: {{songItem.album}}</div>
+    <div>Artistname: {{songItem.artists}}</div>
+    <div>Songlength: {{songItem.length}}</div>
+    <div>ReleaseDate: {{songItem.releaseDate}}</div>
+    <div>Genres: {{songItem.genres}}</div>
+    <div>Tags: {{songItem.tags}}</div>
+  </div>
+  <div style="padding-left: 40px">
+    <img style="width:130px; height:130px" [src]="songItem.img"/>
+  </div>
+</div>
+<div class="row tools" style="padding-top: 40px">
   <div class="col-lg-2">
     <button class="details" (click)="postSongToFavorites()">
       Favorite
@@ -36,7 +43,7 @@
     </button>
   </div>
   <div class="modal-body">
-   {{songItem.lyrics}}
+    {{songItem.lyrics}}
     <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Close</button>
   </div>
 </ng-template>

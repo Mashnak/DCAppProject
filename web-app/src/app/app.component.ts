@@ -74,7 +74,8 @@ export class AppComponent {
     tags: ['test1', 'test2'],
     publisher: 'Testpublisher',
     album: 'Testalbum',
-    artists: ['Testartist1']
+    artists: ['Testartist1'],
+    img: 'https://i.scdn.co/image/716410ed2e63347bfb326d1c768e1fcb316f9542'
   }
   ];
 
@@ -83,7 +84,7 @@ export class AppComponent {
 
   onAddedToFavorites(songItem) {
     console.log(songItem);
-      return this.http.post<Song>(this.ROOT_URL, songItem);
+    return this.http.post<Song>(this.ROOT_URL, songItem);
   }
 
   onSubmit(searchForm) {
