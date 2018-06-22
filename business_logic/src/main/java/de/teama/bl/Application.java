@@ -57,7 +57,7 @@ public class Application implements ApplicationRunner {
     private final Logger logger;
     private final ObjectMapper mapper;
     private final RestTemplate restTemplate;
-    private MongoTemplate mongoTemplate;
+    //private MongoTemplate mongoTemplate;
     private String urlDB;
     private AliveStatus currentStatus;
     private ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -82,6 +82,11 @@ public class Application implements ApplicationRunner {
 
     }
 
+    /**
+     * Returns a string and HTPP 200 if the service is alive.
+     *
+     * @return  A Response Entity with a String in the body and HTTP Status 200
+     */
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public ResponseEntity<String> getAlive() {
         return new ResponseEntity<>("No. 5 alive", HttpStatus.OK);
@@ -108,6 +113,14 @@ public class Application implements ApplicationRunner {
         return new ResponseEntity<>(data, HttpStatus.CREATED);
     }
 
+    /**
+     * Returns a Response Entity for monitoring purposes, containing the current app status and the number of users
+     * currently logged in, as well as IDs and a URL required by Team D: Monitoring.
+     *
+     * @param app   a template object to be filled out
+     * @return      the filled out template
+     * @see         AliveStatus of Team D: Monitoring
+     */
     @RequestMapping(value = "/msAliveSignal", method = RequestMethod.POST)
     public ResponseEntity<AliveStatus> addApp(@RequestBody AliveStatus app) {
         currentStatus = app;
@@ -118,20 +131,56 @@ public class Application implements ApplicationRunner {
         logger.info("Received AliveSignal");
         logger.info("Event URL has been set to {}", currentStatus.getEventUrl());
         logger.info("");
-        mongoTemplate = new MongoTemplate(mongoClient, currentStatus.getAppID());
+        //mongoTemplate = new MongoTemplate(mongoClient, currentStatus.getAppID());
         return new ResponseEntity<>(currentStatus, HttpStatus.OK);
     }
 
+    /**
+     * Registers a User and enters it into the database. If the Username already exists the database returns
+     * 500 Bad request
+     *
+     * @param name      the desired unique Username
+     * @param password  the password of the User
+     * @param admin     whether the User is an admin or not
+     * @return          the created User
+     */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<User> registerUser(@RequestParam(value = "name") String name,
                                              @RequestParam(value = "password") String password,
                                              @RequestParam(value = "isAdmin") String admin) {
+        //TODO Message Body or Parameters???
         logger.info("Registering user with name {}", name);
         logger.info("");
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         boolean isAdmin = Boolean.valueOf(admin);
         User newUser = new User(name, password, date, isAdmin);
         return new ResponseEntity<>(newUser, HttpStatus.OK);
+    }
+
+    //end of POST interfaces
+    
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public ResponseEntity<Set<Song>> search(@RequestParam(value = "term") String term) {
+
+        logger.info("Searching for songs containing {}", term);
+
+        Set<Song> result = new HashSet<>();
+
+        result.addAll(songRepository.findByNameLike(term));
+        result.addAll(songRepository.findByLengthLike(term));
+        result.addAll(songRepository.findByReleaseDateLike(term));
+        result.addAll(songRepository.findByLyricsLike(term));
+        result.addAll(songRepository.findByGenreLike(term));
+        result.addAll(songRepository.findByTagLike(term));
+        result.addAll(songRepository.findByAlbumLike(term));
+
+
+        logger.info("Found {} different results", result.size());
+        logger.info("");
+
+
+        //TODO Add every property of every entity
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/song", method = RequestMethod.GET)
@@ -146,22 +195,6 @@ public class Application implements ApplicationRunner {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public ResponseEntity<Set<Song>> search(@RequestParam(value = "term") String term) {
-
-        logger.info("Searching for songs containing {}", term);
-
-        Set<Song> result = new HashSet<>();
-        result.addAll(songRepository.findByNameLike(term));
-        result.addAll(songRepository.findByAlbumLike(term));
-
-        logger.info("Found {} different results", result.size());
-        logger.info("");
-
-
-        //TODO Add every property of every entity
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
 
     @RequestMapping(value = "/album", method = RequestMethod.GET)
     public ResponseEntity<Album> getAlbum(@RequestParam(value = "name") String name) {
@@ -172,11 +205,29 @@ public class Application implements ApplicationRunner {
 
     @RequestMapping(value = "/artist", method = RequestMethod.GET)
     public ResponseEntity<Artist> getArtist(@RequestParam(value = "name") String name) {
-
         logger.info("Searching for artist with name {}", name);
         logger.info("");
         return new ResponseEntity<>(artistRepository.findByName(name), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/random", method = RequestMethod.GET)
+    public ResponseEntity<Set<Song>> getRandomSong(@RequestParam(value = "count") String count){
+        int cnt = 0;
+        Set<Song> result = new HashSet<>(cnt);
+        try {
+            cnt = Integer.parseInt(count);
+        }catch (NumberFormatException e){
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        }
+        logger.info("Generating list of {} random Songs");
+
+
+        result.addAll(songRepository.findAll());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    //end of GET interfaces
 
     @RequestMapping(value = "/clear", method = RequestMethod.DELETE)
     public ResponseEntity<String> clearRepositories() {
