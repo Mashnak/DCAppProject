@@ -35,7 +35,7 @@ services:
       - mongo_service
     depends_on:
       - mongo_service
-  webapp:
+  webapp_service:
     container_name: webapp_int
     restart: always
     build:
@@ -45,9 +45,9 @@ services:
     ports:
       - "4200:80"
     links:
-      - businesslogic
+      - businesslogic_service
     depends_on:
-      - businesslogic
+      - businesslogic_service
 
 volumes:
   mongodata:

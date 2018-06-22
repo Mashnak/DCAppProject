@@ -10,4 +10,7 @@ public interface AlbumRepository extends MongoRepository<Album, String> {
     Album findByName(@Param("name") String name);
     List<Album> findByNameLike(@Param("name") String name);
 
+    List<Album> findByPublisherLike(@Param("publisher") String publisher);
+    List<Album> findByGenreLike(@Param("genre") String genre);
+    List<Album> findByTagLike(@Param("tag") String tag);
 }

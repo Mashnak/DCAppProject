@@ -14,20 +14,21 @@ public class Song {
     private String name;
 
     private String length;
-    private String releaseDate; // TODO: turn into DateTime?
+    private String releaseDate;
     private String lyrics;
-    private List<String> links;
-    private String genre;
-    private String tag;
+    private List<JSONObject> link;
+    private List<String> genre;
+    private List<String> tag;
     private String img;
     private String album;
 
-    public Song(String name, String length, String releaseDate, String lyrics, List<String> links, String genre, String tag, String img, String album) {
+    public Song(String name, String length, String releaseDate, String lyrics, List<JSONObject> link,
+                List<String> genre, List<String> tag, String img, String album) {
         this.name = name;
         this.length = length;
         this.releaseDate = releaseDate;
         this.lyrics = lyrics;
-        this.links = links;
+        this.link = link;
         this.genre = genre;
         this.tag = tag;
         this.img = img;
@@ -55,19 +56,22 @@ public class Song {
         return lyrics;
     }
 
-    public List<String> getLinks() {
-        return links;
+    public String getLink() {
+        return link.toString();
     }
 
-    public void addLink(String link){
-        this.links.add(link);
+    public void addlink(String name, String url){
+        JSONObject newLink = new JSONObject();
+        newLink.put("name",name);
+        newLink.put("url",url);
+        link.add(newLink);
     }
 
-    public String getGenre() {
+    public List<String> getGenre() {
         return genre;
     }
 
-    public String getTag() {
+    public List<String> getTag() {
         return tag;
     }
 
