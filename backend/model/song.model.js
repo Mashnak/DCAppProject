@@ -18,8 +18,8 @@ var SongSchema = new Schema({
     }],
     album: {
         type: Schema.Types.String,
-        ref: 'Album'
+        ref: 'album'
     }
 })
 
-module.exports = mongoose.model('Song', SongSchema)
+module.exports = mongoose.model('song', SongSchema)

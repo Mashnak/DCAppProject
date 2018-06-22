@@ -2,14 +2,14 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 
 var ArtistSongSchema = new Schema({
-    Song: {
+    song: {
         type: Schema.Types.String,
-        ref: 'Song'
+        ref: 'song'
     },
     artist: {
         type: Schema.Types.String,
-        ref: 'Artist'
+        ref: 'artist'
     }
 })
 
-module.exports = mongoose.model('ArtistSong', ArtistSongSchema)
+module.exports = mongoose.model('artistsong', ArtistSongSchema)

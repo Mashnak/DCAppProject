@@ -13,4 +13,4 @@ var ArtistSchema = new Schema({
     tags:String
 })
 
-module.exports = mongoose.model('Artist', ArtistSchema)
+module.exports = mongoose.model('artist', ArtistSchema)

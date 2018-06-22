@@ -4,12 +4,12 @@ var Schema = mongoose.Schema
 var ArtistAlbumSchema = new Schema({
     album: {
         type: Schema.Types.String,
-        ref: 'Album'
+        ref: 'album'
     },
     artist: {
         type: Schema.Types.String,
-        ref: 'Artist'
+        ref: 'artist'
     }
 })
 
-module.exports = mongoose.model('ArtistAlbum', ArtistAlbumSchema)
+module.exports = mongoose.model('artistalbum', ArtistAlbumSchema)

@@ -15,4 +15,4 @@ var AlbumSchema = new Schema({
     tags: String,
 })
 
-module.exports = mongoose.model('Album', AlbumSchema)
+module.exports = mongoose.model('album', AlbumSchema)
