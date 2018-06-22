@@ -1,19 +1,17 @@
 package de.teama.bl;
 
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
 import de.teama.bl.data.Album;
 import de.teama.bl.data.Artist;
 import de.teama.bl.data.Song;
 import de.teama.bl.data.User;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.boot.ApplicationArguments;
@@ -62,7 +60,6 @@ public class Application implements ApplicationRunner {
     // private MongoTemplate mongoTemplate;
     private String urlDB;
     private AliveStatus currentStatus;
-    private ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
     Application() {
         logger = LoggerFactory.getLogger(Application.class);
@@ -75,7 +72,8 @@ public class Application implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        urlDB = String.format("%s:%s", args.getOptionValues("DB.ip").get(0), args.getOptionValues("DB.port").get(0));
+        urlDB = String.format("%s:%s", args.getOptionValues("DB.ip").get(0),
+                args.getOptionValues("DB.port").get(0));
         logger.info("Sending db requests to {}", urlDB);
         // mongoClient = new MongoClient(urlDB);
         logger.info("Using databases: {}", mongoClient.getUsedDatabases());
@@ -99,10 +97,17 @@ public class Application implements ApplicationRunner {
             @RequestParam(value = "genre") String genre, @RequestParam(value = "tag") String tag,
             @RequestParam(value = "img") String img, @RequestParam(value = "album") String album) {
 
-        LinkedList<String> links = new LinkedList<>();
-        links.add(link);
+        List<JSONObject> links = new LinkedList<>();
+        JSONObject tmp = new JSONObject();
+        tmp.put("name", "TESTNAME");
+        tmp.put("url", link);
+        links.add(tmp);
 
-        Song data = new Song(name, length, releaseDate, lyrics, links, genre, tag, img, album);
+        LinkedList<String> genres=new LinkedList<>(), tags=new LinkedList<>();
+        genres.add(genre);
+        tags.add(tag);
+
+        Song data = new Song(name, length, releaseDate, lyrics, links, genres, tags, img, album);
         logger.info("Saving Song dataset: {}, {}, {}, {}, {}, {}, {}, {}, {}", name, length, releaseDate, lyrics, link,
                 genre, tag, img, album);
         logger.info("");
@@ -156,12 +161,21 @@ public class Application implements ApplicationRunner {
 
     // end of POST interfaces
 
+    /**
+     * Returns a list of Objects containing the given term in any of the relevant text bast properties:
+     * name, length, release date, lyrics, genre, tag and album.
+     *
+     * If nothing is found the result is an empty set.
+     *
+     * @param term  the term to search for
+     * @return      a Set of JSON Objects containing the search result
+     */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public ResponseEntity<Set<Song>> search(@RequestParam(value = "term") String term) {
+    public ResponseEntity<Set<JSONObject>> search(@RequestParam(value = "term") String term) {
 
         logger.info("Searching for songs containing {}", term);
 
-        Set<Song> result = new HashSet<>();
+        Set<JSONObject> result = new HashSet<>();
 
         result.addAll(songRepository.findByNameLike(term));
         result.addAll(songRepository.findByLengthLike(term));
@@ -170,6 +184,13 @@ public class Application implements ApplicationRunner {
         result.addAll(songRepository.findByGenreLike(term));
         result.addAll(songRepository.findByTagLike(term));
         result.addAll(songRepository.findByAlbumLike(term));
+
+        result.addAll(albumRepository.findByNameLike(term));
+        result.addAll(albumRepository.findByPublisherLike(term));
+        result.addAll(albumRepository.findByGenreLike(term));
+        result.addAll(albumRepository.findByTagLike(term));
+
+
 
         logger.info("Found {} different results", result.size());
         logger.info("");
@@ -201,7 +222,8 @@ public class Application implements ApplicationRunner {
     public ResponseEntity<Artist> getArtist(@RequestParam(value = "name") String name) {
         logger.info("Searching for artist with name {}", name);
         logger.info("");
-        return new ResponseEntity<>(artistRepository.findByName(name), HttpStatus.OK);
+        Artist result = artistRepository.findByName(name);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/random", method = RequestMethod.GET)
@@ -256,8 +278,8 @@ public class Application implements ApplicationRunner {
         }
     }
 
-    public Set<Song> composeAlbum(String name) {
-        Set<Song> result = new HashSet<>();
+    public Set<JSONObject> composeAlbum(String name) {
+        Set<JSONObject> result = new HashSet<>();
         result.addAll(songRepository.findByAlbum(name));
         return result;
     }

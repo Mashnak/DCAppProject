@@ -5,24 +5,23 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Document
 public class Album {
     @Id @Indexed @TextIndexed
     private String name;
-    @Indexed
-    private String releaseDate;
 
-    private String genre;
+    private String releaseDate;
     private String publisher;
-    private String tag;
+    private List<String> genre; //TODO List of Strings
+    private List<String> tag; //TODO List of Strings
+    private String img;
 
     public String getName() {
         return name;
     }
 
-    public String getGenre() {
-        return genre;
-    }
 
     public String getReleaseDate() {
         return releaseDate;
@@ -30,6 +29,18 @@ public class Album {
 
     public String getPublisher() {
         return publisher;
+    }
+
+    public List<String> getGenre() {
+        return genre;
+    }
+
+    public List<String> getTag() {
+        return tag;
+    }
+
+    public String getImg() {
+        return img;
     }
 
     @Override

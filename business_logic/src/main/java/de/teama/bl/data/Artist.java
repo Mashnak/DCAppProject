@@ -15,6 +15,7 @@ public class Artist {
 
     private List<String> genre;
     private List<String> tag;
+    private String img;
 
     public String getName() {
         return name;
@@ -26,5 +27,9 @@ public class Artist {
 
     public List<String> getTag() {
         return tag;
+    }
+
+    public String getImg() {
+        return img;
     }
 }
