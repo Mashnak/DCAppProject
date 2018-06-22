@@ -88,10 +88,13 @@ export class AppComponent {
   }
 
   onSubmit(searchForm) {
-    const searchValue = (JSON.stringify(searchForm.searchText));
-    const params = new HttpParams().set('?term', searchValue);
+    console.log(searchForm);
+    let searchValue = (JSON.stringify(searchForm.searchText));
+    console.log(typeof (searchValue));
     console.log(searchValue);
-    this.songs = this.http.get<Song[]>(this.ROOT_URL + '/search' + searchValue);
-    console.log(this.ROOT_URL + '/search' + params);
+    searchValue = searchValue.replace(/\"/g, '');
+    searchValue = searchValue.replace(/ /g, '_');
+    this.songs = this.http.get<Song[]>(this.ROOT_URL + '/search?term\=' + searchValue);
+    console.log(this.ROOT_URL + '/search?term\=' + searchValue);
   }
 }
