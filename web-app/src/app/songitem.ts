@@ -6,6 +6,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Song} from '../song';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'songitem',
@@ -15,8 +16,8 @@ import {Song} from '../song';
 
 @Injectable()
 export class SongitemComponent {
-
-  constructor(private http: HttpClient) {
+  closeResult: string;
+  constructor(private http: HttpClient, private modalService: NgbModal) {
   }
   readonly ROOT_URL = 'http://192.168.99.100:8080';
   Songs: Observable<any>;
@@ -32,5 +33,22 @@ export class SongitemComponent {
   onSubmit(songTag) {
     console.log(songTag);
     return this.http.post<Song>(this.ROOT_URL, songTag);
+  }
+  open(content) {
+    this.modalService.open(content).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
   }
 }
