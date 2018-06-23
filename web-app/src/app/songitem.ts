@@ -1,8 +1,6 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Song} from '../song';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -19,7 +17,6 @@ export class SongitemComponent {
   }
 
   readonly ROOT_URL = 'http://192.168.99.100:8080';
-  Songs: Observable<any>;
 
   @Input() songItem;
   @Output() addedToFavorites = new EventEmitter();
@@ -32,7 +29,7 @@ export class SongitemComponent {
 
   onSubmit(songTag) {
     console.log(songTag);
-    return this.http.post<Song>(this.ROOT_URL, songTag);
+    return this.http.post(this.ROOT_URL, songTag);
   }
 
   open(content) {

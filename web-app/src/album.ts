@@ -1,15 +1,10 @@
-import {URL} from './URL';
-
-export interface Song {
+export interface Album {
   id: string;
   name: string;
-  length: string;
+  totalLength: string;
   releaseDate: string;
-  lyrics: string;
-  urls: Array<URL>;
   genres: Array<string>;
+  songs: Array<string>;
   tags: Array<string>;
-  album: string;
   artists: Array<string>;
 }
-

@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import {Song} from '../song';
 import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import {Result} from '../Result';
 
 @Component({
   selector: 'app-component',
@@ -20,14 +20,14 @@ export class AppComponent {
   }
 
   readonly ROOT_URL = 'http://192.168.99.100:8080';
-  songItems: any;
+  songItem: any;
 
   onSubmit(searchForm) {
     let searchValue = (JSON.stringify(searchForm.searchText));
     searchValue = searchValue.replace(/\"/g, '');
     searchValue = searchValue.replace(/ /g, '_');
-    this.songItems = this.httpClient.get(this.ROOT_URL + '/search?term=Stupid Love');
-    console.log(this.songItems);
+    this.songItem = this.httpClient.get(this.ROOT_URL + '/search?term=' + searchValue);
+    console.log(typeof this.songItem, this.songItem, this.ROOT_URL + '/search?term=' + searchValue );
   }
 
   onAddedToFavorites(songItem) {
