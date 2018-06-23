@@ -20,7 +20,7 @@ public class Albums {
     private List<String> genre; //TODO List of Strings
     private List<String> tag; //TODO List of Strings
     private String img;
-    
+
     @Override
     public String toString() {
         return new JSONObject(this).toString();

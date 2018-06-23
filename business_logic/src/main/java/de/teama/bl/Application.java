@@ -249,7 +249,7 @@ public class Application implements ApplicationRunner {
         if (songResults.size() > 0){
             Songs[] songs = new Songs[songResults.size()];
             songs = songResults.toArray(songs);
-            result += songs[0];
+            result += songs[0].toString();
             for (int i = 1; i<songs.length; i++){
                 result += ("," + songs[i].toString());
             }
@@ -259,7 +259,7 @@ public class Application implements ApplicationRunner {
             result += ",";
             Albums[] albums = new Albums[albumResults.size()];
             albums = albumResults.toArray(albums);
-            result += albums[0];
+            result += albums[0].toString();
             for (int i = 1; i<albums.length; i++) {
                 result += ("," + albums[i].toString());
             }
@@ -269,7 +269,7 @@ public class Application implements ApplicationRunner {
             result += ",";
             Artists[] artists = new Artists[artistResults.size()];
             artists = artistResults.toArray(artists);
-            result += artists[0];
+            result += artists[0].toString();
             for (int i = 1; i<artists.length; i++) {
                 result += ("," + artists[i].toString());
             }
