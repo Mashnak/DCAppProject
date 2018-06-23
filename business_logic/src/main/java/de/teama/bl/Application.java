@@ -2,6 +2,7 @@ package de.teama.bl;
 
 import com.mongodb.MongoClient;
 import de.teama.bl.data.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -248,9 +249,22 @@ public class Application implements ApplicationRunner {
         if (songResults.size() > 0) {
             Songs[] songs = new Songs[songResults.size()];
             songs = songResults.toArray(songs);
-            result += songs[0].toString();
-            for (int i = 1; i < songs.length; i++) {
-                result += ("," + songs[i].toString());
+            JSONObject artistSong = new JSONObject(songs[0]);
+            JSONArray artists = new JSONArray();
+            for (Artists artist :artistSongRepository.findBySong(songs[0].getName())){
+                artists.put(artist);
+            }
+            artistSong.put("artists", artists);
+            result += artistSong;
+            for (int i = 1; i<songs.length; i++){
+                result += ",";
+                artistSong = new JSONObject(songs[i]);
+                artists = new JSONArray();
+                for (Artists artist :artistSongRepository.findBySong(songs[0].getName())){
+                    artists.put(artist);
+                }
+                artistSong.put("artists", artists);
+                result += artistSong;
             }
         }
 
@@ -288,10 +302,15 @@ public class Application implements ApplicationRunner {
         logger.info("Searching for Songs with name {}", name);
         logger.info("");
         Songs result = songRepository.findByName(name);
+        JSONObject artistSong = new JSONObject(result);
+        JSONArray artists = new JSONArray();
+        for (Artists artist : artistSongRepository.findBySong(result.getName())){
+            artists.put(artist);
+        }
+        artistSong.put("artists", artists);
         if (result == null) {
             return new ResponseEntity<>("No song with this name in database", HttpStatus.NOT_FOUND);
         }
-
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
