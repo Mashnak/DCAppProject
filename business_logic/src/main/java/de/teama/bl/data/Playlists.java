@@ -1,6 +1,5 @@
 package de.teama.bl.data;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.LinkedList;
@@ -9,7 +8,6 @@ import java.util.List;
 @Document
 public class Playlists {
 
-    @Id
     private String id;
 
     private String name;
