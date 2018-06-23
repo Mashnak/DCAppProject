@@ -30,9 +30,8 @@ export class AppComponent implements OnInit {
   }
 
   onSubmit(searchForm) {
-    let searchValue = searchForm.searchText;
+    const searchValue = searchForm.searchText;
     console.log(searchValue);
-    searchValue = searchValue.replace(/ /g, '_');
     const url = this.ROOT_URL + '/search?term=' + searchValue;
     console.log(url);
     this.http.get(url).subscribe(res => console.log(res.json()));
