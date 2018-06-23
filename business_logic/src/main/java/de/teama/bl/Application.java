@@ -46,6 +46,12 @@ public class Application implements ApplicationRunner {
     private AlbumRepository albumRepository;
 
     @Autowired
+    private ArtistSongRepository artistSongRepository;
+
+    @Autowired
+    private ArtistAlbumsRepository artistAlbumsRepository;
+
+    @Autowired
     private ActiveSessionRepository sessions;
 
     @Autowired
@@ -74,13 +80,12 @@ public class Application implements ApplicationRunner {
         urlDB = String.format("%s:%s", args.getOptionValues("DB.ip").get(0),
                 args.getOptionValues("DB.port").get(0));
         logger.info("Sending db requests to {}", urlDB);
-        // mongoClient = new MongoClient(urlDB);
         logger.info("Using databases: {}", mongoClient.getUsedDatabases());
         logger.info("");
     }
 
     /**
-     * Returns a string and HTPP 200 if the service is alive.
+     * Returns a string and HTTP 200 if the service is alive.
      *
      * @return A Response Entity with a String in the body and HTTP Status 200
      */
@@ -106,7 +111,7 @@ public class Application implements ApplicationRunner {
         genres.add(genre);
         tags.add(tag);
 
-        Songs data = new Songs(name, length, releaseDate, lyrics, links, genres, tags, img, album);
+         Songs data = new Songs(name, length, releaseDate, lyrics, links, genres, tags, img, album);
         logger.info("Saving Songs dataset: {}, {}, {}, {}, {}, {}, {}, {}, {}", name, length, releaseDate, lyrics, link,
                 genre, tag, img, album);
         logger.info("");
@@ -137,26 +142,38 @@ public class Application implements ApplicationRunner {
     }
 
     /**
-     * Registers a Users and enters it into the database. If the Username already
-     * exists the database returns 500 Bad request
+     * Registers a Users and enters it into the database.
+     * If the Username already exists the database this returns 500 Bad request
      *
-     * @param name     the desired unique Username
-     * @param password the password of the Users
-     * @param admin    whether the Users is an admin or not
-     * @return the created Users
+     * @param name      the desired unique Username
+     * @param password  the password of the User
+     * @param admin     whether the Users is an admin or not
+     * @return          the created User
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<Users> registerUser(@RequestParam(value = "name") String name,
-                                              @RequestParam(value = "password") String password, @RequestParam(value = "isAdmin") String admin) {
+                                              @RequestParam(value = "password") String password,
+                                              @RequestParam(value = "isAdmin") String admin) {
         // TODO Message Body or Parameters???
         logger.info("Registering user with name {}", name);
         logger.info("");
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         boolean isAdmin = Boolean.valueOf(admin);
         Users newUser = new Users(name, password, date, isAdmin);
+        registeredUsers.save(newUser);
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
+    /**
+     * Validates the credentials, a username and a password, of a user. If these credentials are correct,
+     * the user is logged in and will be saved as an active session.
+     * If the user is not registered this returns 404 not found.
+     * If the password is incorrect this returns 401 unauthorized.
+     *
+     * @param name      the username of the user logging in
+     * @param password  the password of the user
+     * @return          the user object that has been logged in
+     */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<Object> loginUser(@RequestParam(value = "name") String name,
                                           @RequestParam(value = "password")String password){
@@ -173,6 +190,19 @@ public class Application implements ApplicationRunner {
         }
     }
 
+    /**
+     * Logs out the user with the given name and ends its session
+     *
+     * @param name  the username of the user logging out
+     * @return      the user object that has been logged out
+     */
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public ResponseEntity<Object> logoutUser(@RequestParam(value = "name") String name){
+        Users user = registeredUsers.findByName(name);
+        logout(name);
+        return new ResponseEntity<>(user.toString(), HttpStatus.OK);
+    }
+
     // end of POST interfaces
 
     /**
@@ -182,7 +212,7 @@ public class Application implements ApplicationRunner {
      * If nothing is found the result is an empty set.
      *
      * @param term  the term to search for
-     * @return      a Set of JSON Objects containing the search result
+     * @return      a stringified Set of JSON Objects containing the search result
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity<String> search(@RequestParam(value = "term") String term) {
@@ -313,7 +343,8 @@ public class Application implements ApplicationRunner {
         if (sessions.findByName(username) == null) {
             logger.info("Logging in {}", username);
             logger.info("");
-            sessions.save(new Users(username));
+            Users user = registeredUsers.findByName(username);
+            sessions.save(user);
         } else {
             logger.info("Users with name {} is already logged in.", username);
             logger.info("");

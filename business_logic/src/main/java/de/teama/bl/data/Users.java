@@ -1,5 +1,6 @@
 package de.teama.bl.data;
 
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
@@ -30,6 +31,10 @@ public class Users {
         this.isAdmin = isAdmin;
     }
 
+    public String toString(){
+        return new JSONObject(this).toString();
+    }
+
     public String getPassword() {
         return password;
     }
@@ -55,10 +60,6 @@ public class Users {
         return isAdmin;
     }
 
-
-    public Users(String name) {
-        this.name = name;
-    }
 
     public String getName() {
         return name;
