@@ -1,10 +1,7 @@
 package de.teama.bl;
 
 import com.mongodb.MongoClient;
-import de.teama.bl.data.Albums;
-import de.teama.bl.data.Artists;
-import de.teama.bl.data.Songs;
-import de.teama.bl.data.Users;
+import de.teama.bl.data.*;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,17 +97,18 @@ public class Application implements ApplicationRunner {
             @RequestParam(value = "genre") String genre, @RequestParam(value = "tag") String tag,
             @RequestParam(value = "img") String img, @RequestParam(value = "album") String album) {
 
-        List<JSONObject> links = new LinkedList<>();
-        JSONObject tmp = new JSONObject();
-        tmp.put("name", "TESTNAME");
-        tmp.put("url", link);
-        links.add(tmp);
+        List<Link> links = new LinkedList<>();
+        // JSONObject tmp = new JSONObject();
+        // tmp.put("name", "TESTNAME");
+        // tmp.put("url", link);
+        // links.add(tmp);
 
         LinkedList<String> genres = new LinkedList<>(), tags = new LinkedList<>();
         genres.add(genre);
         tags.add(tag);
 
         Songs data = new Songs(name, length, releaseDate, lyrics, links, genres, tags, img, album);
+        data.addLink("TESTNAME", link);
         logger.info("Saving Songs dataset: {}, {}, {}, {}, {}, {}, {}, {}, {}", name, length, releaseDate, lyrics, link,
                 genre, tag, img, album);
         logger.info("");
