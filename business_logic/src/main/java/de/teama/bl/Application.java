@@ -159,6 +159,7 @@ public class Application implements ApplicationRunner {
         registeredUsers.save(newUser);
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
+    // end of POST interfaces
 
     /**
      * Validates the credentials, a username and a password, of a user. If these
@@ -170,7 +171,7 @@ public class Application implements ApplicationRunner {
      * @param password the password of the user
      * @return the user object that has been logged in
      */
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ResponseEntity<Object> loginUser(@RequestParam(value = "name") String name,
             @RequestParam(value = "password") String password) {
         Users user = registeredUsers.findByName(name);
@@ -192,14 +193,13 @@ public class Application implements ApplicationRunner {
      * @param name the username of the user logging out
      * @return the user object that has been logged out
      */
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public ResponseEntity<Object> logoutUser(@RequestParam(value = "name") String name) {
         Users user = registeredUsers.findByName(name);
         logout(name);
         return new ResponseEntity<>(user.toString(), HttpStatus.OK);
     }
 
-    // end of POST interfaces
 
     /**
      * Returns a list of Objects containing the given term in any of the relevant
