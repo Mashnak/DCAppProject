@@ -115,6 +115,22 @@ public class Application implements ApplicationRunner {
         return new ResponseEntity<>(data, HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/album", method = RequestMethod.POST)
+    public ResponseEntity<Album> insertNewAlbum(){
+        LinkedList<String> genres=new LinkedList<>(), tags=new LinkedList<>();
+        genres.add("TESTgenre");
+        tags.add("TESTtag");
+        Album testAlbum = new Album(
+                "TESTname",
+                "TESTdate",
+                "TESTpublisher",
+                genres,
+                tags,
+                "TESTimg");
+        albumRepository.save(testAlbum);
+        return new ResponseEntity<>(testAlbum,HttpStatus.OK);
+    }
+
     /**
      * Returns a Response Entity for monitoring purposes, containing the current app
      * status and the number of users currently logged in, as well as IDs and a URL
@@ -187,19 +203,18 @@ public class Application implements ApplicationRunner {
      * @return      a Set of JSON Objects containing the search result
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public ResponseEntity<Set<Song>> search(@RequestParam(value = "term") String term) {
+    public ResponseEntity<String> search(@RequestParam(value = "term") String term) {
 
         logger.info("Searching for songs containing {}", term);
 
-        Set<Song> result = new HashSet<>();
-
-        result.addAll(songRepository.findByNameLike(term));
-//        result.addAll(songRepository.findByLengthLike(term));
-//        result.addAll(songRepository.findByReleaseDateLike(term));
-//        result.addAll(songRepository.findByLyricsLike(term));
-//        result.addAll(songRepository.findByGenreLike(term));
-        result.addAll(songRepository.findByTagLike(term));
-//        result.addAll(songRepository.findByAlbumLike(term));
+        Set<Song> songResults = new HashSet<>();
+        songResults.addAll(songRepository.findByNameLike(term));
+//        songResults.addAll(songRepository.findByLengthLike(term));
+//        songResults.addAll(songRepository.findByReleaseDateLike(term));
+//        songResults.addAll(songRepository.findByLyricsLike(term));
+//        songResults.addAll(songRepository.findByGenreLike(term));
+        songResults.addAll(songRepository.findByTagLike(term));
+//        songResults.addAll(songRepository.findByAlbumLike(term));
 
         Set<Album> albumResults = new HashSet<>();
         albumResults.addAll(albumRepository.findByNameLike(term));
@@ -207,14 +222,34 @@ public class Application implements ApplicationRunner {
 //        albumResults.addAll(albumRepository.findByGenreLike(term));
         albumResults.addAll(albumRepository.findByTagLike(term));
 
-//        int size = 0;
-//        String result = "";
-//        JSONObject test = new JSONObject();
-//        result += new JSONObject(songResults).toString();
-//        result += new JSONObject(albumResults).toString();
-//
-//        logger.info("Found {} different results", size);
-//        logger.info("");
+
+        int size = 0;
+        size += songResults.size();
+        size += albumResults.size();
+        //TODO Extend
+
+        String result = "[";
+        if (songResults.size() > 0){
+            Song[] songs = new Song[songResults.size()];
+            songs = songResults.toArray(songs);
+            result += songs[0];
+            for (int i = 1; i<songs.length; i++){
+                result += ("," + songs[i].toString());
+            }
+        }
+
+        if (albumResults.size() > 0){
+            result += ",";
+            Album[] albums = new Album[albumResults.size()];
+            albums = albumResults.toArray(albums);
+            result += albums[0];
+            for (int i = 1; i<albums.length; i++) {
+                result += ("," + albums[i].toString());
+            }
+        }
+        result += "]";
+        logger.info("Found {} different results", size);
+        logger.info("");
 
         // TODO Add every property of every entity
         return new ResponseEntity<>(result, HttpStatus.OK);
