@@ -18,13 +18,13 @@ public class Songs {
     private String length;
     private String releaseDate;
     private String lyrics;
-    private List<JSONObject> link;
+    private List<Link> link;
     private List<String> genre;
     private List<String> tag;
     private String img;
     private String album;
 
-    public Songs(String name, String length, String releaseDate, String lyrics, List<JSONObject> link,
+    public Songs(String name, String length, String releaseDate, String lyrics, List<Link> link,
                  List<String> genre, List<String> tag, String img, String album) {
         this.name = name;
         this.length = length;
@@ -71,15 +71,12 @@ public class Songs {
         return lyrics;
     }
 
-    public String getLink() {
-        return link.toString();
+    public List<Link> getLink() {
+        return this.link;
     }
 
-    public void addlink(String name, String url){
-        JSONObject newLink = new JSONObject();
-        newLink.put("name",name);
-        newLink.put("url",url);
-        link.add(newLink);
+    public void addLink(String name, String url){
+        link.add(new Link(name, url));
     }
 
     public List<String> getGenre() {
