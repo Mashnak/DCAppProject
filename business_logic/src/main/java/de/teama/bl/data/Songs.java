@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Document
-public class Song {
+public class Songs {
     @Id @Indexed @TextIndexed
     private String name;
 
@@ -22,8 +22,8 @@ public class Song {
     private String img;
     private String album;
 
-    public Song(String name, String length, String releaseDate, String lyrics, List<JSONObject> link,
-                List<String> genre, List<String> tag, String img, String album) {
+    public Songs(String name, String length, String releaseDate, String lyrics, List<JSONObject> link,
+                 List<String> genre, List<String> tag, String img, String album) {
         this.name = name;
         this.length = length;
         this.releaseDate = releaseDate;

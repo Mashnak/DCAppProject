@@ -1,12 +1,9 @@
 package de.teama.bl;
 
-import de.teama.bl.data.User;
+import de.teama.bl.data.Users;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-
-public interface ActiveSessionRepository extends MongoRepository<User, String> {
+public interface ActiveSessionRepository extends MongoRepository<Users, String> {
     String findByName(String username);
     void deleteByName(String username);
 }

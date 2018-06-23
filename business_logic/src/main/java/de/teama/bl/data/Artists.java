@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @Document
-public class Artist {
+public class Artists {
     @Id @Indexed @TextIndexed
     private String name;
 

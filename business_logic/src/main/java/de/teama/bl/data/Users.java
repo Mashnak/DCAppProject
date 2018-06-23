@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @Document
-public class User {
+public class Users {
     @Id @Indexed @TextIndexed
     private String name;
 
@@ -21,7 +21,7 @@ public class User {
     private List<String> playlists;
     private boolean isAdmin;
 
-    public User(String name, String password, String birthdate, boolean isAdmin) {
+    public Users(String name, String password, String birthdate, boolean isAdmin) {
         this.name = name;
         this.password = password;
         this.birthdate = birthdate;
@@ -56,7 +56,7 @@ public class User {
     }
 
 
-    public User(String name) {
+    public Users(String name) {
         this.name = name;
     }
 

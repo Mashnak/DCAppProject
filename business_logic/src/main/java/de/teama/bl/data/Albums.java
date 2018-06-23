@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Document
-public class Album {
+public class Albums {
     @Id @Indexed @TextIndexed
     private String name;
 
@@ -18,15 +18,6 @@ public class Album {
     private List<String> genre; //TODO List of Strings
     private List<String> tag; //TODO List of Strings
     private String img;
-
-    public Album(String name, String releaseDate, String publisher, List<String> genre, List<String> tag, String img) {
-        this.name = name;
-        this.releaseDate = releaseDate;
-        this.publisher = publisher;
-        this.genre = genre;
-        this.tag = tag;
-        this.img = img;
-    }
 
     public String getName() {
         return name;

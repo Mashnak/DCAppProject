@@ -1,39 +1,39 @@
 package de.teama.bl;
 
-import de.teama.bl.data.Song;
+import de.teama.bl.data.Songs;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface SongRepository extends MongoRepository<Song, String> {
+public interface SongRepository extends MongoRepository<Songs, String> {
 
-    Song findByName(@Param("name") String name);
-    List<Song> findByNameLike(@Param("name") String name);
-    List<Song> findByNameLikeOrderByNameAsc(@Param("name") String name);
+    Songs findByName(@Param("name") String name);
+    List<Songs> findByNameLike(@Param("name") String name);
+    List<Songs> findByNameLikeOrderByNameAsc(@Param("name") String name);
 
-    List<Song> findByLength(@Param("length") String length);
-    List<Song> findByLengthLike(@Param("length") String length);
-    List<Song> findByLengthLikeOrderByNameAsc(@Param("length") String length);
+    List<Songs> findByLength(@Param("length") String length);
+    List<Songs> findByLengthLike(@Param("length") String length);
+    List<Songs> findByLengthLikeOrderByNameAsc(@Param("length") String length);
 
-    List<Song> findByReleaseDate(@Param("releaseDate") String releaseDate);
-    List<Song> findByReleaseDateLike(@Param("releaseDate") String releaseDate);
-    List<Song> findByReleaseDateLikeOrderByNameAsc(@Param("releaseDate") String releaseDate);
+    List<Songs> findByReleaseDate(@Param("releaseDate") String releaseDate);
+    List<Songs> findByReleaseDateLike(@Param("releaseDate") String releaseDate);
+    List<Songs> findByReleaseDateLikeOrderByNameAsc(@Param("releaseDate") String releaseDate);
 
-    List<Song> findByLyrics(@Param("lyrics") String lyrics);
-    List<Song> findByLyricsLike(@Param("lyrics") String lyrics);
-    List<Song> findByLyricsLikeOrderByNameAsc(@Param("lyrics") String lyrics);
+    List<Songs> findByLyrics(@Param("lyrics") String lyrics);
+    List<Songs> findByLyricsLike(@Param("lyrics") String lyrics);
+    List<Songs> findByLyricsLikeOrderByNameAsc(@Param("lyrics") String lyrics);
 
-    List<Song> findByGenre(@Param("genre") String genre);
-    List<Song> findByGenreLike(@Param("genre") String genre);
-    List<Song> findByGenreLikeOrderByNameAsc(@Param("genre") String genre);
+    List<Songs> findByGenre(@Param("genre") String genre);
+    List<Songs> findByGenreLike(@Param("genre") String genre);
+    List<Songs> findByGenreLikeOrderByNameAsc(@Param("genre") String genre);
 
-    List<Song> findByTag(@Param("tag") String tag);
-    List<Song> findByTagLike(@Param("tag") String tag);
-    List<Song> findByTagLikeOrderByNameAsc(@Param("tag") String tag);
+    List<Songs> findByTag(@Param("tag") String tag);
+    List<Songs> findByTagLike(@Param("tag") String tag);
+    List<Songs> findByTagLikeOrderByNameAsc(@Param("tag") String tag);
 
-    List<Song> findByAlbum(@Param("album") String album);
-    List<Song> findByAlbumLike(@Param("album") String album);
-    List<Song> findByAlbumLikeOrderByNameAsc(@Param("album") String album);
-    List<Song> findAll();
+    List<Songs> findByAlbum(@Param("album") String album);
+    List<Songs> findByAlbumLike(@Param("album") String album);
+    List<Songs> findByAlbumLikeOrderByNameAsc(@Param("album") String album);
+    List<Songs> findAll();
 }
