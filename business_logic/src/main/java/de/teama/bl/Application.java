@@ -44,7 +44,7 @@ public class Application implements ApplicationRunner {
     private AlbumRepository albumRepository;
 
     @Autowired
-    private ArtistSongRepository artistSongRepository;
+    private ArtistSongsRepository artistSongsRepository;
 
     @Autowired
     private ArtistAlbumsRepository artistAlbumsRepository;
@@ -251,7 +251,7 @@ public class Application implements ApplicationRunner {
             songs = songResults.toArray(songs);
             JSONObject artistSong = new JSONObject(songs[0]);
             JSONArray artists = new JSONArray();
-            for (Artists artist :artistSongRepository.findBySong(songs[0].getName())){
+            for (Artists artist : artistSongsRepository.findBySong(songs[0].getName())){
                 artists.put(artist);
             }
             artistSong.put("artists", artists);
@@ -260,7 +260,7 @@ public class Application implements ApplicationRunner {
                 result += ",";
                 artistSong = new JSONObject(songs[i]);
                 artists = new JSONArray();
-                for (Artists artist :artistSongRepository.findBySong(songs[0].getName())){
+                for (Artists artist : artistSongsRepository.findBySong(songs[0].getName())){
                     artists.put(artist);
                 }
                 artistSong.put("artists", artists);
@@ -273,20 +273,61 @@ public class Application implements ApplicationRunner {
         if (albumResults.size() > 0) {
             Albums[] albums = new Albums[albumResults.size()];
             albums = albumResults.toArray(albums);
-            result += albums[0].toString();
+            JSONObject artistAlbum = new JSONObject(albums[0]);
+            JSONArray artists = new JSONArray();
+            for (Artists artist : artistAlbumsRepository.findByAlbum(albums[0].getName())){
+                artists.put(artist);
+            }
+            artistAlbum.put("artists", artists);
+            result += artistAlbum;
             for (int i = 1; i < albums.length; i++) {
-                result += ("," + albums[i].toString());
+                result += ",";
+                artistAlbum = new JSONObject(albums[i]);
+                artists = new JSONArray();
+                for (Artists artist : artistAlbumsRepository.findByAlbum(albums[i].getName())){
+                    artists.put(artist);
+                }
+                artistAlbum.put("artists", artists);
+                result += artistAlbum;
             }
         }
+
 
         result += "]}, {\"artists\": [";
 
         if (artistResults.size() > 0) {
             Artists[] artists = new Artists[artistResults.size()];
             artists = artistResults.toArray(artists);
+            JSONObject artistAlbum = new JSONObject(artists[0]);
+            JSONArray albums = new JSONArray();
+            for (Albums album : artistAlbumsRepository.findByArtist(artists[0].getName())){
+                albums.put(album);
+            }
+            artistAlbum.put("albums", albums);
+            JSONObject artistSong = new JSONObject(artists[0]);
+            JSONArray songs = new JSONArray();
+            for (Songs song : artistSongsRepository.findByArtist(artists[0].getName())){
+                songs.put(song);
+            }
+            artistSong.put("songs", songs);
+
+
+
             result += artists[0].toString();
             for (int i = 1; i < artists.length; i++) {
-                result += ("," + artists[i].toString());
+                result += ",";
+                artistAlbum = new JSONObject(artists[i]);
+                albums = new JSONArray();
+                for (Albums album : artistAlbumsRepository.findByArtist(artists[i].getName())){
+                    albums.put(album);
+                }
+                artistAlbum.put("albums", albums);
+                artistSong = new JSONObject(artists[i]);
+                songs = new JSONArray();
+                for (Songs song : artistSongsRepository.findByArtist(artists[i].getName())){
+                    songs.put(song);
+                }
+                artistSong.put("songs", songs);
             }
         }
         result += "]}]";
@@ -297,36 +338,62 @@ public class Application implements ApplicationRunner {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /**
+     * retrieves a song from the database, adds the artists and returns it to the requester.
+     *
+     * if no song is found this returns 404 not found
+     *
+     * @param name the unique name of the song to find
+     * @return a JSON Object with the requested song
+     */
     @RequestMapping(value = "/song", method = RequestMethod.GET)
-    public ResponseEntity<Object> getSong(@RequestParam(value = "name", required = false) String name) {
+    public ResponseEntity<String> getSong(@RequestParam(value = "name", required = false) String name) {
         logger.info("Searching for Songs with name {}", name);
         logger.info("");
         Songs result = songRepository.findByName(name);
         JSONObject artistSong = new JSONObject(result);
         JSONArray artists = new JSONArray();
-        for (Artists artist : artistSongRepository.findBySong(result.getName())){
+        for (Artists artist : artistSongsRepository.findBySong(result.getName())){
             artists.put(artist);
         }
         artistSong.put("artists", artists);
         if (result == null) {
             return new ResponseEntity<>("No song with this name in database", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(artistSong.toString(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/album", method = RequestMethod.GET)
-    public ResponseEntity<Albums> getAlbum(@RequestParam(value = "name") String name) {
+    public ResponseEntity<String> getAlbum(@RequestParam(value = "name") String name) {
         logger.info("Searching for album with name {}", name);
         logger.info("");
-        return new ResponseEntity<>(albumRepository.findByName(name), HttpStatus.OK);
+        Albums result = albumRepository.findByName(name);
+        JSONObject artistAlbum = new JSONObject(result);
+        JSONArray artists = new JSONArray();
+        for (Artists artist : artistAlbumsRepository.findByAlbum(result.getName())){
+            artists.put(artist);
+        }
+        artistAlbum.put("artists", artists);
+        return new ResponseEntity<>(artistAlbum.toString(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/artist", method = RequestMethod.GET)
-    public ResponseEntity<Artists> getArtist(@RequestParam(value = "name") String name) {
+    public ResponseEntity<String> getArtist(@RequestParam(value = "name") String name) {
         logger.info("Searching for artist with name {}", name);
         logger.info("");
         Artists result = artistRepository.findByName(name);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        JSONObject artistAlbumSong = new JSONObject(result);
+        JSONArray albums = new JSONArray();
+        for (Albums album : artistAlbumsRepository.findByArtist(result.getName())){
+            albums.put(album);
+        }
+        artistAlbumSong.put("albums", albums);
+        JSONArray songs = new JSONArray();
+        for (Songs song : artistSongsRepository.findByArtist(result.getName())){
+            songs.put(song);
+        }
+        artistAlbumSong.put("songs", songs);
+        return new ResponseEntity<>(artistAlbumSong.toString(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/random", method = RequestMethod.GET)

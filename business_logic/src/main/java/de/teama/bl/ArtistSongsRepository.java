@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ArtistSongRepository extends MongoRepository<ArtistSongs, String> {
+public interface ArtistSongsRepository extends MongoRepository<ArtistSongs, String> {
     List<Artists> findBySong(@Param("song") String song);
     List<Songs> findByArtist(@Param("artist") String Artist);
 }
