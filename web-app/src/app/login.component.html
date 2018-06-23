@@ -1,6 +1,6 @@
-<div><!-- *ngIf="User==null-->"<form #userName="ngForm" #password="ngForm" (ngSubmit)="onSubmit(userName.value, password.value)">
-  <input type="text" name="userName" id="userName" ngModel>
-  <input type="password" name="password" id="password" ngModel>
+<div><!-- *ngIf="User==null-->"<form #loginUser="ngForm" (ngSubmit)="onSubmit(loginUser.value)">
+  <input type="text" name="loginUserName" id="loginUserName" ngModel>
+  <input type="password" name="loginPassword" id="loginPassword" ngModel>
   <button class="btn btn-dark" type="submit">Login</button>
 </form>
 </div>

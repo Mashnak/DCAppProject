@@ -26,16 +26,15 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     const url = this.ROOT_URL + '/random?count=10';
-    console.log('10 songs');
     this.http.get(url).subscribe(res => console.log(res.json()));
   }
 
   onSubmit(searchForm) {
-    let searchValue = (JSON.stringify(searchForm.searchText));
-    searchValue = searchValue.replace(/\"/g, '');
+    let searchValue = searchForm.searchText;
+    console.log(searchValue);
     searchValue = searchValue.replace(/ /g, '_');
-    searchValue = searchValue.charAt(0).toUpperCase();
     const url = this.ROOT_URL + '/search?term=' + searchValue;
+    console.log(url);
     this.http.get(url).subscribe(res => console.log(res.json()));
   }
 

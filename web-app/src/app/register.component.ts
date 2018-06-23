@@ -1,16 +1,19 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent  {
+export class RegisterComponent {
 
-  constructor() { }
+  constructor() {
+  }
 
-onSubmit(username, password, isAdmin){
-    console.log(username, password, isAdmin);
+  onSubmit(user) {
+    console.log(user.registerUserName);
+    console.log(user.registerPassword);
+    console.log(user.isAdmin);
     // http post to database /register?name=username&password=password&isAdmin=true
-}
+  }
 }

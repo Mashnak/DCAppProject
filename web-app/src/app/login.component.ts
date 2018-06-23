@@ -9,8 +9,9 @@ export class LoginComponent {
 
   constructor() { }
 
-  onSubmit(username, password) {
-    console.log(username, password);
+  onSubmit(loginUser) {
+    console.log(loginUser.loginUserName);
+    console.log(loginUser.loginPassword);
     // http get with username and password /login?name=username&password=password
   }
 
