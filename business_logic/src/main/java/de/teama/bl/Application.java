@@ -159,6 +159,16 @@ public class Application implements ApplicationRunner {
         registeredUsers.save(newUser);
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/addTag", method = RequestMethod.POST)
+    public ResponseEntity<Songs> addTag(@RequestParam(value = "name") String name,
+                                        @RequestParam(value = "tag") String tag){
+        Songs result = songRepository.findByName(name);
+        songRepository.delete(result);
+        result.addTag(tag);
+        songRepository.save(result);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
     // end of POST interfaces
 
     /**
