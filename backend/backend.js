@@ -32,7 +32,6 @@ var server = app.listen(PORT, HOST, () => {
     console.log('server is listening on port', server.address().port)
 })
 
-//mongoose.Promise = Promise
 console.log(dbUrl)
 mongoose.connect(dbUrl, (err) => {
     if(err) {
@@ -47,9 +46,6 @@ updateDatabase()
 
 //REST-Functions
 
-function handleError(err) {
-    console.log(err);
-}
 
 //Functions for DatabaseUpdateService
 
@@ -112,7 +108,7 @@ function createAlbum(albumURL) {
         data.tracks.items ? songs = data.tracks.items : console.log("Songlist not available!")
         console.log("Album: includes " + songs.length + "songs")
         for (pos in songs) {
-            createSong(songs[pos], release_dateTmp)
+            createSong(songs[pos], release_dateTmp, albumEntry.img,albumEntry.name, genresTmp)
         }
 
         data.artists ?
@@ -136,12 +132,13 @@ function createArtistAlbumRef(artists, albumRef) {
 }
 
 //Stores Songinformation in List
-function createSong(song, release){
+function createSong(song, release, image, albumRef, genreList){
     var artists = []
-    var lyricsRes = ""
     var nameTmp = ""
     var duration_msTmp = ""
+    var lyricsRes = ""
     var uriTmp = ""
+    var genresTmp = []
 
     console.log("Song: " + song.href)
     
@@ -162,9 +159,8 @@ function createSong(song, release){
         artists = song.artists
 
         lyrics.getLyric(apikey, artists[0].name, song.name, function(response, headers) {
-
-            response.error ? 
-                console.log("ERROR FOUND:", response) : 
+            response.error ?
+                console.log("ERROR FOUND:", response) :
                 lyricsRes = response.result.track.text
 
             var songEntry = new Song({
@@ -172,10 +168,14 @@ function createSong(song, release){
                 length: duration_msTmp,
                 releaseDate: release,
                 lyrics: lyricsRes,
-                urls: [{
+                link: [{
                     name: 'Spotify',
-                    link: uriTmp
-                }]
+                    url: uriTmp
+                }],
+                img: image,
+                genre: genreList,
+                album: albumRef
+
             })
             songEntry.save(function(err, saved){
                 if (err) return handleError(err)
@@ -194,16 +194,14 @@ function createSong(song, release){
 function createArtist(artists) {
     var existing = false
     for (pos in artists) {
-        if (!existing) {
-            spotify.request(artists[pos].href).then(function(artist){
+        spotify.request(artists[pos].href).then(function(artist){
                 var artistEntry = new Artist({
                     name: artist.name,
-                    genre: artist.genres
+                    genre: artist.genres,
+                    img: artist.images[0].url
                 })
-                artistList.push(artist.name)
                 artistEntry.save(function(err, saved){
                     if (err) {
-                        console.log(artistList)
                         return handleError(err)
                     }
                     else {
@@ -211,7 +209,6 @@ function createArtist(artists) {
                     }
                 })
             })
-        }
     }
 }
 
@@ -227,4 +224,8 @@ function createArtistSongRef(artists, songRef) {
             else console.log("SongReference stored sucessfully!")
         })
     }
+}
+
+function handleError(err) {
+    console.log(err);
 }
