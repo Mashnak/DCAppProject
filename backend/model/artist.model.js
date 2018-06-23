@@ -4,13 +4,14 @@ var Schema = mongoose.Schema
 var ArtistSchema = new Schema({
     name: 
     {
-        type:String,
+        type: String,
         unique : true,
         required : true,
         dropDups: true
     },
-    genres:String,
-    tags:String
+    img: String,
+    genre: [String],
+    tag: [String]
 })
 
 module.exports = mongoose.model('artist', ArtistSchema)
