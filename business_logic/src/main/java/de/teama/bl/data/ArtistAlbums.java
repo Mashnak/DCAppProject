@@ -3,20 +3,20 @@ package de.teama.bl.data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class ArtistSong {
+public class ArtistAlbums {
     private String artist;
-    private String song;
+    private String album;
 
-    public ArtistSong(String artist, String song) {
+    public ArtistAlbums(String artist, String album) {
         this.artist = artist;
-        this.song = song;
+        this.album = album;
     }
 
     public String getArtist() {
         return artist;
     }
 
-    public String getSong() {
-        return song;
+    public String getAlbum() {
+        return album;
     }
 }

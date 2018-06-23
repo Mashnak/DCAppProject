@@ -9,8 +9,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Document
-public class Song {
-    @Id @Indexed @TextIndexed
+public class Songs {
+    @Id
+    private String _id;
+
     private String name;
 
     private String length;
@@ -22,8 +24,8 @@ public class Song {
     private String img;
     private String album;
 
-    public Song(String name, String length, String releaseDate, String lyrics, List<JSONObject> link,
-                List<String> genre, List<String> tag, String img, String album) {
+    public Songs(String name, String length, String releaseDate, String lyrics, List<JSONObject> link,
+                 List<String> genre, List<String> tag, String img, String album) {
         this.name = name;
         this.length = length;
         this.releaseDate = releaseDate;
@@ -40,12 +42,25 @@ public class Song {
         return new JSONObject(this).toString();
     }
 
+    public String get_id() {
+        return _id;
+    }
+
     public String getName() {
         return name;
     }
 
     public String getLength() {
-        return length;
+        String formattedLength = "";
+        try {
+            int lengthInt = Integer.parseInt(this.length);
+            formattedLength += (lengthInt/60000);       //milliseconds to minutes
+            formattedLength += ":";                     //colon divider
+            formattedLength += ((lengthInt%60000)/1000);//rest of milliseconds to seconds
+        }catch (NumberFormatException e){
+            return this.length;
+        }
+        return formattedLength;
     }
 
     public String getReleaseDate() {

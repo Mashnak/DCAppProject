@@ -1,5 +1,6 @@
 package de.teama.bl.data;
 
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
@@ -8,8 +9,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Document
-public class Album {
-    @Id @Indexed @TextIndexed
+public class Albums {
+    @Id
+    private String _id;
+
     private String name;
 
     private String releaseDate;
@@ -17,11 +20,19 @@ public class Album {
     private List<String> genre; //TODO List of Strings
     private List<String> tag; //TODO List of Strings
     private String img;
+    
+    @Override
+    public String toString() {
+        return new JSONObject(this).toString();
+    }
+
+    public String get_id() {
+        return _id;
+    }
 
     public String getName() {
         return name;
     }
-
 
     public String getReleaseDate() {
         return releaseDate;
@@ -43,8 +54,4 @@ public class Album {
         return img;
     }
 
-    @Override
-    public String toString() {
-        return name;
-    }
 }

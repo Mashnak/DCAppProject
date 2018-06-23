@@ -1,5 +1,6 @@
 package de.teama.bl.data;
 
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
@@ -11,8 +12,8 @@ import java.util.List;
 import java.util.Set;
 
 @Document
-public class User {
-    @Id @Indexed @TextIndexed
+public class Users {
+    @Id
     private String name;
 
     private String password;
@@ -21,13 +22,17 @@ public class User {
     private List<String> playlists;
     private boolean isAdmin;
 
-    public User(String name, String password, String birthdate, boolean isAdmin) {
+    public Users(String name, String password, String birthdate, boolean isAdmin) {
         this.name = name;
         this.password = password;
         this.birthdate = birthdate;
         this.friends = new HashSet<>();
         this.playlists = new LinkedList<>();
         this.isAdmin = isAdmin;
+    }
+
+    public String toString(){
+        return new JSONObject(this).toString();
     }
 
     public String getPassword() {
@@ -55,10 +60,6 @@ public class User {
         return isAdmin;
     }
 
-
-    public User(String name) {
-        this.name = name;
-    }
 
     public String getName() {
         return name;

@@ -7,23 +7,23 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Document
-public class Playlist {
+public class Playlists {
 
     @Id
-    private String id;
+    private String _id;
 
     private String name;
     private String creationDate;
     private List<String> songs;
 
-    public Playlist(String name, String creationDate) {
+    public Playlists(String name, String creationDate) {
         this.name = name;
         this.creationDate = creationDate;
         this.songs = new LinkedList<>();
     }
 
-    public String getId() {
-        return id;
+    public String get_id() {
+        return _id;
     }
 
     public String getName() {

@@ -1,10 +1,10 @@
 package de.teama.bl;
 
 import com.mongodb.MongoClient;
-import de.teama.bl.data.Album;
-import de.teama.bl.data.Artist;
-import de.teama.bl.data.Song;
-import de.teama.bl.data.User;
+import de.teama.bl.data.Albums;
+import de.teama.bl.data.Artists;
+import de.teama.bl.data.Songs;
+import de.teama.bl.data.Users;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +46,12 @@ public class Application implements ApplicationRunner {
     private AlbumRepository albumRepository;
 
     @Autowired
+    private ArtistSongRepository artistSongRepository;
+
+    @Autowired
+    private ArtistAlbumsRepository artistAlbumsRepository;
+
+    @Autowired
     private ActiveSessionRepository sessions;
 
     @Autowired
@@ -57,7 +63,6 @@ public class Application implements ApplicationRunner {
     private final Logger logger;
     private final ObjectMapper mapper;
     private final RestTemplate restTemplate;
-    // private MongoTemplate mongoTemplate;
     private String urlDB;
     private AliveStatus currentStatus;
 
@@ -75,13 +80,12 @@ public class Application implements ApplicationRunner {
         urlDB = String.format("%s:%s", args.getOptionValues("DB.ip").get(0),
                 args.getOptionValues("DB.port").get(0));
         logger.info("Sending db requests to {}", urlDB);
-        // mongoClient = new MongoClient(urlDB);
         logger.info("Using databases: {}", mongoClient.getUsedDatabases());
         logger.info("");
     }
 
     /**
-     * Returns a string and HTPP 200 if the service is alive.
+     * Returns a string and HTTP 200 if the service is alive.
      *
      * @return A Response Entity with a String in the body and HTTP Status 200
      */
@@ -91,11 +95,11 @@ public class Application implements ApplicationRunner {
     }
 
     @RequestMapping(value = "/song", method = RequestMethod.POST)
-    public ResponseEntity<Song> insertNewSong(@RequestParam(value = "name") String name,
-            @RequestParam(value = "length") String length, @RequestParam(value = "releaseDate") String releaseDate,
-            @RequestParam(value = "lyrics") String lyrics, @RequestParam(value = "link") String link,
-            @RequestParam(value = "genre") String genre, @RequestParam(value = "tag") String tag,
-            @RequestParam(value = "img") String img, @RequestParam(value = "album") String album) {
+    public ResponseEntity<Songs> insertNewSong(@RequestParam(value = "name") String name,
+                                               @RequestParam(value = "length") String length, @RequestParam(value = "releaseDate") String releaseDate,
+                                               @RequestParam(value = "lyrics") String lyrics, @RequestParam(value = "link") String link,
+                                               @RequestParam(value = "genre") String genre, @RequestParam(value = "tag") String tag,
+                                               @RequestParam(value = "img") String img, @RequestParam(value = "album") String album) {
 
         List<JSONObject> links = new LinkedList<>();
         JSONObject tmp = new JSONObject();
@@ -107,8 +111,8 @@ public class Application implements ApplicationRunner {
         genres.add(genre);
         tags.add(tag);
 
-        Song data = new Song(name, length, releaseDate, lyrics, links, genres, tags, img, album);
-        logger.info("Saving Song dataset: {}, {}, {}, {}, {}, {}, {}, {}, {}", name, length, releaseDate, lyrics, link,
+         Songs data = new Songs(name, length, releaseDate, lyrics, links, genres, tags, img, album);
+        logger.info("Saving Songs dataset: {}, {}, {}, {}, {}, {}, {}, {}, {}", name, length, releaseDate, lyrics, link,
                 genre, tag, img, album);
         logger.info("");
         songRepository.insert(data);
@@ -134,35 +138,46 @@ public class Application implements ApplicationRunner {
         logger.info("Received AliveSignal");
         logger.info("Event URL has been set to {}", currentStatus.getEventUrl());
         logger.info("");
-        // mongoTemplate = new MongoTemplate(mongoClient, currentStatus.getAppID());
         return new ResponseEntity<>(currentStatus, HttpStatus.OK);
     }
 
     /**
-     * Registers a User and enters it into the database. If the Username already
-     * exists the database returns 500 Bad request
+     * Registers a Users and enters it into the database.
+     * If the Username already exists the database this returns 500 Bad request
      *
-     * @param name     the desired unique Username
-     * @param password the password of the User
-     * @param admin    whether the User is an admin or not
-     * @return the created User
+     * @param name      the desired unique Username
+     * @param password  the password of the User
+     * @param admin     whether the Users is an admin or not
+     * @return          the created User
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<User> registerUser(@RequestParam(value = "name") String name,
-            @RequestParam(value = "password") String password, @RequestParam(value = "isAdmin") String admin) {
+    public ResponseEntity<Users> registerUser(@RequestParam(value = "name") String name,
+                                              @RequestParam(value = "password") String password,
+                                              @RequestParam(value = "isAdmin") String admin) {
         // TODO Message Body or Parameters???
         logger.info("Registering user with name {}", name);
         logger.info("");
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         boolean isAdmin = Boolean.valueOf(admin);
-        User newUser = new User(name, password, date, isAdmin);
+        Users newUser = new Users(name, password, date, isAdmin);
+        registeredUsers.save(newUser);
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
+    /**
+     * Validates the credentials, a username and a password, of a user. If these credentials are correct,
+     * the user is logged in and will be saved as an active session.
+     * If the user is not registered this returns 404 not found.
+     * If the password is incorrect this returns 401 unauthorized.
+     *
+     * @param name      the username of the user logging in
+     * @param password  the password of the user
+     * @return          the user object that has been logged in
+     */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<Object> loginUser(@RequestParam(value = "name") String name,
                                           @RequestParam(value = "password")String password){
-        User user = registeredUsers.findByName(name);
+        Users user = registeredUsers.findByName(name);
         try {
             if (user.getPassword().equals(password)){
                 login(name);
@@ -175,6 +190,19 @@ public class Application implements ApplicationRunner {
         }
     }
 
+    /**
+     * Logs out the user with the given name and ends its session
+     *
+     * @param name  the username of the user logging out
+     * @return      the user object that has been logged out
+     */
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public ResponseEntity<Object> logoutUser(@RequestParam(value = "name") String name){
+        Users user = registeredUsers.findByName(name);
+        logout(name);
+        return new ResponseEntity<>(user.toString(), HttpStatus.OK);
+    }
+
     // end of POST interfaces
 
     /**
@@ -184,37 +212,71 @@ public class Application implements ApplicationRunner {
      * If nothing is found the result is an empty set.
      *
      * @param term  the term to search for
-     * @return      a Set of JSON Objects containing the search result
+     * @return      a stringified Set of JSON Objects containing the search result
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public ResponseEntity<Set<Song>> search(@RequestParam(value = "term") String term) {
+    public ResponseEntity<String> search(@RequestParam(value = "term") String term) {
 
         logger.info("Searching for songs containing {}", term);
 
-        Set<Song> result = new HashSet<>();
+        Set<Songs> songResults = new HashSet<>();
+        songResults.addAll(songRepository.findByNameLike(term));
+//        songResults.addAll(songRepository.findByLengthLike(term));
+//        songResults.addAll(songRepository.findByReleaseDateLike(term));
+//        songResults.addAll(songRepository.findByLyricsLike(term));
+//        songResults.addAll(songRepository.findByGenreLike(term));
+        songResults.addAll(songRepository.findByTagLike(term));
+//        songResults.addAll(songRepository.findByAlbumLike(term));
 
-        result.addAll(songRepository.findByNameLike(term));
-//        result.addAll(songRepository.findByLengthLike(term));
-//        result.addAll(songRepository.findByReleaseDateLike(term));
-//        result.addAll(songRepository.findByLyricsLike(term));
-//        result.addAll(songRepository.findByGenreLike(term));
-        result.addAll(songRepository.findByTagLike(term));
-//        result.addAll(songRepository.findByAlbumLike(term));
-
-        Set<Album> albumResults = new HashSet<>();
+        Set<Albums> albumResults = new HashSet<>();
         albumResults.addAll(albumRepository.findByNameLike(term));
 //        albumResults.addAll(albumRepository.findByPublisherLike(term));
 //        albumResults.addAll(albumRepository.findByGenreLike(term));
         albumResults.addAll(albumRepository.findByTagLike(term));
 
-//        int size = 0;
-//        String result = "";
-//        JSONObject test = new JSONObject();
-//        result += new JSONObject(songResults).toString();
-//        result += new JSONObject(albumResults).toString();
-//
-//        logger.info("Found {} different results", size);
-//        logger.info("");
+        Set<Artists> artistResults = new HashSet<>();
+        artistResults.addAll(artistRepository.findByNameLike(term));
+        artistResults.addAll(artistRepository.findByTagLike(term));
+
+
+        int size = 0;
+        size += songResults.size();
+        size += albumResults.size();
+        size += artistResults.size();
+        //TODO Extend
+
+        String result = "[";
+        if (songResults.size() > 0){
+            Songs[] songs = new Songs[songResults.size()];
+            songs = songResults.toArray(songs);
+            result += songs[0];
+            for (int i = 1; i<songs.length; i++){
+                result += ("," + songs[i].toString());
+            }
+        }
+
+        if (albumResults.size() > 0){
+            result += ",";
+            Albums[] albums = new Albums[albumResults.size()];
+            albums = albumResults.toArray(albums);
+            result += albums[0];
+            for (int i = 1; i<albums.length; i++) {
+                result += ("," + albums[i].toString());
+            }
+        }
+
+        if (artistResults.size() > 0){
+            result += ",";
+            Artists[] artists = new Artists[artistResults.size()];
+            artists = artistResults.toArray(artists);
+            result += artists[0];
+            for (int i = 1; i<artists.length; i++) {
+                result += ("," + artists[i].toString());
+            }
+        }
+        result += "]";
+        logger.info("Found {} different results", size);
+        logger.info("");
 
         // TODO Add every property of every entity
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -222,9 +284,9 @@ public class Application implements ApplicationRunner {
 
     @RequestMapping(value = "/song", method = RequestMethod.GET)
     public ResponseEntity<Object> getSong(@RequestParam(value = "name", required = false) String name) {
-        logger.info("Searching for Song with name {}", name);
+        logger.info("Searching for Songs with name {}", name);
         logger.info("");
-        Song result = songRepository.findByName(name);
+        Songs result = songRepository.findByName(name);
         if (result == null) {
             return new ResponseEntity<>("No song with this name in database", HttpStatus.NOT_FOUND);
         }
@@ -233,24 +295,24 @@ public class Application implements ApplicationRunner {
     }
 
     @RequestMapping(value = "/album", method = RequestMethod.GET)
-    public ResponseEntity<Album> getAlbum(@RequestParam(value = "name") String name) {
+    public ResponseEntity<Albums> getAlbum(@RequestParam(value = "name") String name) {
         logger.info("Searching for album with name {}", name);
         logger.info("");
         return new ResponseEntity<>(albumRepository.findByName(name), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/artist", method = RequestMethod.GET)
-    public ResponseEntity<Artist> getArtist(@RequestParam(value = "name") String name) {
+    public ResponseEntity<Artists> getArtist(@RequestParam(value = "name") String name) {
         logger.info("Searching for artist with name {}", name);
         logger.info("");
-        Artist result = artistRepository.findByName(name);
+        Artists result = artistRepository.findByName(name);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/random", method = RequestMethod.GET)
-    public ResponseEntity<Set<Song>> getRandomSong(@RequestParam(value = "count") String count) {
+    public ResponseEntity<Set<Songs>> getRandomSong(@RequestParam(value = "count") String count) {
         int cnt = 0;
-        Set<Song> result = new HashSet<>(cnt);
+        Set<Songs> result = new HashSet<>(cnt);
         try {
             cnt = Integer.parseInt(count);
         } catch (NumberFormatException e) {
@@ -271,19 +333,21 @@ public class Application implements ApplicationRunner {
         artistRepository.deleteAll();
         artistRepository.deleteAll();
         sessions.deleteAll();
+        registeredUsers.deleteAll();
         return new ResponseEntity<>("Cleared Repositories", HttpStatus.OK);
     }
 
     // end of REST interfaces
 
     public void login(String username) {
-        logger.info("Current User with name {}: {}", username, sessions.findByName(username));
+        logger.info("Current Users with name {}: {}", username, sessions.findByName(username));
         if (sessions.findByName(username) == null) {
             logger.info("Logging in {}", username);
             logger.info("");
-            sessions.save(new User(username));
+            Users user = registeredUsers.findByName(username);
+            sessions.save(user);
         } else {
-            logger.info("User with name {} is already logged in.", username);
+            logger.info("Users with name {} is already logged in.", username);
             logger.info("");
         }
     }
@@ -294,13 +358,13 @@ public class Application implements ApplicationRunner {
             logger.info("");
             sessions.deleteByName(username);
         } else {
-            logger.info("User {} is not logged in.", username);
+            logger.info("Users {} is not logged in.", username);
             logger.info("");
         }
     }
 
-    public Set<Song> composeAlbum(String name) {
-        Set<Song> result = new HashSet<>();
+    public Set<Songs> composeAlbum(String name) {
+        Set<Songs> result = new HashSet<>();
         result.addAll(songRepository.findByAlbum(name));
         return result;
     }
