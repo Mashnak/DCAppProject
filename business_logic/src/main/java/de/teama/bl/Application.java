@@ -298,36 +298,37 @@ public class Application implements ApplicationRunner {
         if (artistResults.size() > 0) {
             Artists[] artists = new Artists[artistResults.size()];
             artists = artistResults.toArray(artists);
-            JSONObject artistAlbum = new JSONObject(artists[0]);
+            JSONObject artistAlbumSong = new JSONObject(artists[0]);
             JSONArray albums = new JSONArray();
             for (Albums album : artistAlbumsRepository.findByArtist(artists[0].getName())){
                 albums.put(album);
             }
-            artistAlbum.put("albums", albums);
-            JSONObject artistSong = new JSONObject(artists[0]);
+            artistAlbumSong.put("albums", albums);
+            artistAlbumSong = new JSONObject(artists[0]);
             JSONArray songs = new JSONArray();
             for (Songs song : artistSongsRepository.findByArtist(artists[0].getName())){
                 songs.put(song);
             }
-            artistSong.put("songs", songs);
+            artistAlbumSong.put("songs", songs);
 
 
 
             result += artists[0].toString();
             for (int i = 1; i < artists.length; i++) {
                 result += ",";
-                artistAlbum = new JSONObject(artists[i]);
+                artistAlbumSong = new JSONObject(artists[i]);
                 albums = new JSONArray();
                 for (Albums album : artistAlbumsRepository.findByArtist(artists[i].getName())){
                     albums.put(album);
                 }
-                artistAlbum.put("albums", albums);
-                artistSong = new JSONObject(artists[i]);
+                artistAlbumSong.put("albums", albums);
+                artistAlbumSong = new JSONObject(artists[i]);
                 songs = new JSONArray();
                 for (Songs song : artistSongsRepository.findByArtist(artists[i].getName())){
                     songs.put(song);
                 }
-                artistSong.put("songs", songs);
+                artistAlbumSong.put("songs", songs);
+                result += artistAlbumSong;
             }
         }
         result += "]}]";
@@ -397,17 +398,53 @@ public class Application implements ApplicationRunner {
     }
 
     @RequestMapping(value = "/random", method = RequestMethod.GET)
-    public ResponseEntity<Set<Songs>> getRandomSong(@RequestParam(value = "count") String count) {
-        int cnt = 0;
-        Set<Songs> result = new HashSet<>(cnt);
+    public ResponseEntity<Object> getRandomSong(@RequestParam(value = "count") String count) {
+        int cnt;
+        Set<Songs> songResult;
         try {
             cnt = Integer.parseInt(count);
+            songResult = new HashSet<>(cnt);
         } catch (NumberFormatException e) {
-            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Received invalid integer", HttpStatus.BAD_REQUEST);
         }
-        logger.info("Generating list of {} random Songs");
+        logger.info("Generating list of {} random Songs", cnt);
 
-        result.addAll(songRepository.findAll());
+        songResult.addAll(songRepository.findAll());
+//        for (Songs song : songRepository.findAll()){
+//            if (cnt <= 0){
+//                break;
+//            }
+//            JSONObject artistSong = new JSONObject(song);
+//            JSONArray artists = new JSONArray();
+//            for (Artists artist : artistSongsRepository.findBySong(song.getName())){
+//                artists.put(artist);
+//            }
+//            artistSong.put("artists", artists);
+//            result.add(artistSong);
+//            cnt--;
+//        }
+
+        String result = "[";
+        Songs[] songs = new Songs[cnt];
+        songs = songResult.toArray(songs);
+        JSONObject artistSong = new JSONObject(songs[0]);
+        JSONArray artists = new JSONArray();
+        for (Artists artist : artistSongsRepository.findBySong(songs[0].getName())){
+            artists.put(artist);
+        }
+        artistSong.put("artists", artists);
+        result += artistSong;
+        for (int i = 1; i<songs.length; i++){
+            result += ",";
+            artistSong = new JSONObject(songs[i]);
+            artists = new JSONArray();
+            for (Artists artist : artistSongsRepository.findBySong(songs[0].getName())){
+                artists.put(artist);
+            }
+            artistSong.put("artists", artists);
+            result += artistSong;
+        }
+        result += "]";
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
