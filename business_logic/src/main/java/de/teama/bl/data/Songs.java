@@ -45,7 +45,16 @@ public class Songs {
     }
 
     public String getLength() {
-        return length;
+        String formattedLength = "";
+        try {
+            int lengthInt = Integer.parseInt(this.length);
+            formattedLength += (lengthInt/60000);       //milliseconds to minutes
+            formattedLength += ":";                     //colon divider
+            formattedLength += ((lengthInt%60000)/1000);//rest of milliseconds to seconds
+        }catch (NumberFormatException e){
+            return this.length;
+        }
+        return formattedLength;
     }
 
     public String getReleaseDate() {
