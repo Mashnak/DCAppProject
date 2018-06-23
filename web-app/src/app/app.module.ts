@@ -5,7 +5,6 @@ import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {SongitemComponent} from './songitem';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-/*import {HttpService} from './httpservice';*/
 import {SongItemListComponent} from './songitemlist';
 
 @NgModule({
@@ -19,7 +18,6 @@ import {SongItemListComponent} from './songitemlist';
     HttpClientModule,
     FormsModule,
     NgbModule.forRoot()],
-/*  providers: [HttpService],*/
   bootstrap: [AppComponent]
 })
 export class AppModule {

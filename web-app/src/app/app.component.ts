@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 
-
-/*import {HttpService} from './httpservice';*/
+import {Song} from '../song';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-component',
@@ -15,10 +15,11 @@ import {Observable} from 'rxjs/Observable';
 export class AppComponent {
   title = 'Song Search';
 
+  constructor(private httpClient: HttpClient) {
+  }
 
   readonly ROOT_URL = 'http://192.168.99.100:8080';
-  songs: Observable<any>;
-
+  songItems: Observable<any>;
 
 
   onSubmit(searchForm) {
@@ -26,6 +27,6 @@ export class AppComponent {
     searchValue = searchValue.replace(/\"/g, '');
     searchValue = searchValue.replace(/ /g, '_');
     console.log(this.ROOT_URL + '/search?term\=' + searchValue);
-    // this.songItems = this.http.get<Song[]>(this.ROOT_URL + '/search?term\=' + searchValue);
+    this.songItems = this.httpClient.get(this.ROOT_URL + '/search?term\=' + searchValue);
   }
 }
