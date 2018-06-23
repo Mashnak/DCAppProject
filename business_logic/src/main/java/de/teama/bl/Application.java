@@ -151,7 +151,6 @@ public class Application implements ApplicationRunner {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<Users> registerUser(@RequestParam(value = "name") String name,
             @RequestParam(value = "password") String password, @RequestParam(value = "isAdmin") String admin) {
-        // TODO Message Body or Parameters???
         logger.info("Registering user with name {}", name);
         logger.info("");
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
@@ -240,7 +239,6 @@ public class Application implements ApplicationRunner {
         size += songResults.size();
         size += albumResults.size();
         size += artistResults.size();
-        // TODO Extend
 
         String result = "[";
 
@@ -334,8 +332,6 @@ public class Application implements ApplicationRunner {
         result += "]}]";
         logger.info("Found {} different results", size);
         logger.info("");
-
-        // TODO Add every property of every entity
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -468,7 +464,7 @@ public class Application implements ApplicationRunner {
         if (sessions.findByName(username) == null) {
             logger.info("Logging in {}", username);
             logger.info("");
-            Users user = registeredUsers.findByName(username);
+            Sessions user = registeredUsers.findByName(username).createSession();
             sessions.save(user);
         } else {
             logger.info("Users with name {} is already logged in.", username);
