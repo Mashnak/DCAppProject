@@ -215,6 +215,7 @@ public class Application implements ApplicationRunner {
     public ResponseEntity<String> search(@RequestParam(value = "term") String term) {
 
         logger.info("Searching for songs containing {}", term);
+        //term = term.replace(" ","_");
 
         Set<Songs> songResults = new HashSet<>();
         songResults.addAll(songRepository.findByNameLike(term));
@@ -347,6 +348,7 @@ public class Application implements ApplicationRunner {
     public ResponseEntity<String> getSong(@RequestParam(value = "name", required = false) String name) {
         logger.info("Searching for Songs with name {}", name);
         logger.info("");
+        name = name.replace(" ","_");
         Songs result = songRepository.findByName(name);
         JSONObject artistSong = new JSONObject(result);
         JSONArray artists = new JSONArray();
@@ -364,6 +366,7 @@ public class Application implements ApplicationRunner {
     public ResponseEntity<String> getAlbum(@RequestParam(value = "name") String name) {
         logger.info("Searching for album with name {}", name);
         logger.info("");
+        //name = name.replace(" ","_");
         Albums result = albumRepository.findByName(name);
         JSONObject artistAlbum = new JSONObject(result);
         JSONArray artists = new JSONArray();
@@ -378,6 +381,7 @@ public class Application implements ApplicationRunner {
     public ResponseEntity<String> getArtist(@RequestParam(value = "name") String name) {
         logger.info("Searching for artist with name {}", name);
         logger.info("");
+        //name = name.replace(" ","_");
         Artists result = artistRepository.findByName(name);
         JSONObject artistAlbumSong = new JSONObject(result);
         JSONArray albums = new JSONArray();
@@ -451,7 +455,7 @@ public class Application implements ApplicationRunner {
     public ResponseEntity<String> clearRepositories() {
         songRepository.deleteAll();
         artistRepository.deleteAll();
-        artistRepository.deleteAll();
+        albumRepository.deleteAll();
         sessions.deleteAll();
         registeredUsers.deleteAll();
         return new ResponseEntity<>("Cleared Repositories", HttpStatus.OK);
