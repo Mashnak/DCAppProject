@@ -1,5 +1,6 @@
 package de.teama.bl.data;
 
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
@@ -21,6 +22,11 @@ public class Artists {
 
     public String get_id() {
         return _id;
+    }
+
+    @Override
+    public String toString(){
+        return new JSONObject(this).toString();
     }
 
     public String getName() {
