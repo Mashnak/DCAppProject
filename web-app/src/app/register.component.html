@@ -1,4 +1,4 @@
-<form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm.value)">
+<form #userName="ngForm" #password="ngForm" #isAdmin="ngForm" (ngSubmit)="onSubmit(userName.value, password.value, isAdmin.value)">
   <input type="text" name="userName" id="userName" ngModel>
   <input type="password" name="password" id="password" ngModel>
   <input type="checkbox" name="isAdmin" id="isAdmin" ngModel>
