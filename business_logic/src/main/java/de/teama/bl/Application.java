@@ -302,10 +302,15 @@ public class Application implements ApplicationRunner {
         logger.info("Searching for Songs with name {}", name);
         logger.info("");
         Songs result = songRepository.findByName(name);
+        JSONObject artistSong = new JSONObject(result);
+        JSONArray artists = new JSONArray();
+        for (Artists artist : artistSongRepository.findBySong(result.getName())){
+            artists.put(artist);
+        }
+        artistSong.put("artists", artists);
         if (result == null) {
             return new ResponseEntity<>("No song with this name in database", HttpStatus.NOT_FOUND);
         }
-
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
