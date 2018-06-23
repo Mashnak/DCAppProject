@@ -1,0 +1,9 @@
+<div *ngIf="User==null"><form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm.value)">
+  <input type="text" name="userName" id="userName" ngModel>
+  <input type="password" name="password" id="password" ngModel>
+  <button class="btn btn-dark" type="submit">Login</button>
+</form>
+</div>
+<div *ngIf="User">
+  {{Username}} eingeloggt!
+</div>
