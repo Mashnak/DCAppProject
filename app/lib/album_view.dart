@@ -15,12 +15,10 @@ Future<AlbumData> fetchAlbumData(id) async {
 }
 
 class AlbumData {
-  AlbumData(this.id, this.name, this.totalLength, this.releaseDate, this.genres,
-      this.tags, this.songs, this.artists, this.publishers, this.imagePath);
+  AlbumData(this.name, this.releaseDate, this.genres, this.tags, this.songs,
+      this.artists, this.publishers, this.imagePath);
 
-  final String id;
   final String name;
-  final String totalLength;
   final DateTime releaseDate;
   final List genres;
   final List tags;
@@ -32,9 +30,7 @@ class AlbumData {
   final String imagePath;
 
   AlbumData.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        name = json['name'],
-        totalLength = json['totalLength'],
+      : name = json['name'],
         releaseDate = new DateTime(2016),
         genres = json['genres'],
         tags = json['tags'],
@@ -78,8 +74,8 @@ class AlbumView extends StatelessWidget {
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) =>
-                    new SongView(fetchSongData(songEntry["id"]))));
+                builder: (context) => new SongView(
+                    songEntry["id"], fetchSongData(songEntry["id"]))));
       },
     );
   }

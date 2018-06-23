@@ -24,8 +24,9 @@ class DebugView extends StatelessWidget {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) =>
-                            new SongView(fetchSongData("My Side of the Fence"))));
+                        builder: (context) => new SongView(
+                            "My Side of the Fence",
+                            fetchSongData("My Side of the Fence"))));
               },
             ),
             new RaisedButton(

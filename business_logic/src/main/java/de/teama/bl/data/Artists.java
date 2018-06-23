@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-
 @Document
 public class Artists {
     @Id
@@ -25,7 +24,7 @@ public class Artists {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return new JSONObject(this).toString();
     }
 
@@ -43,5 +42,9 @@ public class Artists {
 
     public String getImg() {
         return img;
+    }
+
+    public void addTag(String tag) {
+        this.tag.add(tag);
     }
 }

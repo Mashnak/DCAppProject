@@ -48,8 +48,9 @@ class SongData {
 
 class SongView extends StatelessWidget {
   final Future<SongData> futureSongData;
+  final String songName;
 
-  const SongView(this.futureSongData);
+  const SongView(this.songName, this.futureSongData);
 
   Widget _buildSongInfoTab(viewedSongData) {
     return new ListView(
@@ -154,15 +155,54 @@ class SongView extends StatelessWidget {
                       children: <Widget>[
                         new SimpleDialogOption(
                           onPressed: () {},
+                          child: const Text("Add to Favourites"),
+                        ),
+                        new SimpleDialogOption(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext conteext) {
+                                  return new SimpleDialog(
+                                    title: const Text("Add a tag"),
+                                    children: <Widget>[
+                                      new TextField(
+                                        style: new TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16.0),
+                                        autofocus: true,
+                                        autocorrect: false,
+                                        decoration: new InputDecoration(
+                                            border: InputBorder.none,
+                                            contentPadding:
+                                                EdgeInsets.all(10.0),
+                                            hintText: 'Please enter a tag',
+                                            labelStyle: new TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16.0),
+                                            hintStyle: new TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 16.0),
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            icon: new Icon(Icons.tag_faces)),
+                                        onSubmitted: (String val) {
+                                          http
+                                              .post(
+                                                  "http://192.168.99.100:8080/tag/song?name=" +
+                                                      songName +
+                                                      "&tag=" +
+                                                      val)
+                                              .then((response) {
+                                            print(response);
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
                           child: const Text("Add Tag"),
-                        ),
-                        new SimpleDialogOption(
-                          onPressed: () {},
-                          child: const Text("Add to Playlist"),
-                        ),
-                        new SimpleDialogOption(
-                          onPressed: () {},
-                          child: const Text("Add Comment"),
                         ),
                       ],
                     );

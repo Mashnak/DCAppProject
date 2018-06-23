@@ -17,8 +17,8 @@ public class Albums {
 
     private String releaseDate;
     private String publisher;
-    private List<String> genre; //TODO List of Strings
-    private List<String> tag; //TODO List of Strings
+    private List<String> genre; // TODO List of Strings
+    private List<String> tag; // TODO List of Strings
     private String img;
 
     @Override
@@ -54,4 +54,7 @@ public class Albums {
         return img;
     }
 
+    public void addTag(String tag) {
+        this.tag.add(tag);
+    }
 }
