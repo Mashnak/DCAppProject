@@ -10,7 +10,7 @@ import java.util.List;
 
 @Document
 public class Albums {
-    @Indexed @TextIndexed
+    @Id @Indexed @TextIndexed
     private String name;
 
     private String releaseDate;
