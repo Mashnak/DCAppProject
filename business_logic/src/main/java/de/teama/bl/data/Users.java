@@ -14,13 +14,17 @@ import java.util.Set;
 @Document
 public class Users {
     @Id
-    private String name;
+    protected String name;
 
-    private String password;
-    private String birthdate;
-    private Set<String> friends;
-    private List<String> playlists;
-    private boolean isAdmin;
+    protected String password;
+    protected String birthdate;
+    protected Set<String> friends;
+    protected List<String> playlists;
+    protected boolean isAdmin;
+
+    public Users(){
+
+    }
 
     public Users(String name, String password, String birthdate, boolean isAdmin) {
         this.name = name;
@@ -60,9 +64,12 @@ public class Users {
         return isAdmin;
     }
 
-
     public String getName() {
         return name;
+    }
+
+    public Sessions createSession(){
+        return new Sessions(this.name, this.password, this.birthdate, this.isAdmin);
     }
 
 

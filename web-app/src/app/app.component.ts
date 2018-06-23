@@ -1,10 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Http} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {Result} from '../Result';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-component',
@@ -13,25 +14,49 @@ import {Result} from '../Result';
 })
 
 @Injectable()
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Song Search';
+  closeResult: string;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private http: Http, private modalService: NgbModal) {
   }
 
-  readonly ROOT_URL = 'http://192.168.99.100:8080';
-  songItem: any;
+  readonly ROOT_URL: string = 'http://192.168.99.100:8080';
+  searchResult: Observable<Result>;
+
+  ngOnInit() {
+    const url = this.ROOT_URL + '/random?count=10';
+    this.http.get(url).subscribe(res => console.log(res.json()));
+  }
 
   onSubmit(searchForm) {
-    let searchValue = (JSON.stringify(searchForm.searchText));
-    searchValue = searchValue.replace(/\"/g, '');
-    searchValue = searchValue.replace(/ /g, '_');
-    this.songItem = this.httpClient.get(this.ROOT_URL + '/search?term=' + searchValue);
-    console.log(typeof this.songItem, this.songItem, this.ROOT_URL + '/search?term=' + searchValue );
+    const searchValue = searchForm.searchText;
+    console.log(searchValue);
+    const url = this.ROOT_URL + '/search?term=' + searchValue;
+    console.log(url);
+    this.http.get(url).subscribe(res => console.log(res.json()));
   }
 
   onAddedToFavorites(songItem) {
     console.log(songItem);
     // return this.http.post<Song>(this.ROOT_URL, songItem);
+  }
+
+  open(content) {
+    this.modalService.open(content).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 }

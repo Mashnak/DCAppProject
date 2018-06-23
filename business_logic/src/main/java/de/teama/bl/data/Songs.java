@@ -94,4 +94,8 @@ public class Songs {
     public String getAlbum() {
         return album;
     }
+
+    public void addTag(String tag){
+        this.tag.add(tag);
+    }
 }

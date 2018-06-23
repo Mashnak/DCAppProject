@@ -151,7 +151,6 @@ public class Application implements ApplicationRunner {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<Users> registerUser(@RequestParam(value = "name") String name,
             @RequestParam(value = "password") String password, @RequestParam(value = "isAdmin") String admin) {
-        // TODO Message Body or Parameters???
         logger.info("Registering user with name {}", name);
         logger.info("");
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
@@ -160,6 +159,17 @@ public class Application implements ApplicationRunner {
         registeredUsers.save(newUser);
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/addTag", method = RequestMethod.POST)
+    public ResponseEntity<Songs> addTag(@RequestParam(value = "name") String name,
+                                        @RequestParam(value = "tag") String tag){
+        Songs result = songRepository.findByName(name);
+        songRepository.delete(result);
+        result.addTag(tag);
+        songRepository.save(result);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+    // end of POST interfaces
 
     /**
      * Validates the credentials, a username and a password, of a user. If these
@@ -171,7 +181,7 @@ public class Application implements ApplicationRunner {
      * @param password the password of the user
      * @return the user object that has been logged in
      */
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ResponseEntity<Object> loginUser(@RequestParam(value = "name") String name,
             @RequestParam(value = "password") String password) {
         Users user = registeredUsers.findByName(name);
@@ -193,14 +203,13 @@ public class Application implements ApplicationRunner {
      * @param name the username of the user logging out
      * @return the user object that has been logged out
      */
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public ResponseEntity<Object> logoutUser(@RequestParam(value = "name") String name) {
         Users user = registeredUsers.findByName(name);
         logout(name);
         return new ResponseEntity<>(user.toString(), HttpStatus.OK);
     }
 
-    // end of POST interfaces
 
     /**
      * Returns a list of Objects containing the given term in any of the relevant
@@ -216,6 +225,7 @@ public class Application implements ApplicationRunner {
     public ResponseEntity<String> search(@RequestParam(value = "term") String term) {
 
         logger.info("Searching for songs containing {}", term);
+        //term = term.replace(" ","_");
 
         Set<Songs> songResults = new HashSet<>();
         songResults.addAll(songRepository.findByNameLike(term));
@@ -240,7 +250,6 @@ public class Application implements ApplicationRunner {
         size += songResults.size();
         size += albumResults.size();
         size += artistResults.size();
-        // TODO Extend
 
         String result = "[";
 
@@ -334,8 +343,6 @@ public class Application implements ApplicationRunner {
         result += "]}]";
         logger.info("Found {} different results", size);
         logger.info("");
-
-        // TODO Add every property of every entity
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -351,6 +358,7 @@ public class Application implements ApplicationRunner {
     public ResponseEntity<String> getSong(@RequestParam(value = "name", required = false) String name) {
         logger.info("Searching for Songs with name {}", name);
         logger.info("");
+        name = name.replace(" ","_");
         Songs result = songRepository.findByName(name);
         JSONObject artistSong = new JSONObject(result);
         JSONArray artists = new JSONArray();
@@ -368,6 +376,7 @@ public class Application implements ApplicationRunner {
     public ResponseEntity<String> getAlbum(@RequestParam(value = "name") String name) {
         logger.info("Searching for album with name {}", name);
         logger.info("");
+        //name = name.replace(" ","_");
         Albums result = albumRepository.findByName(name);
         JSONObject artistAlbum = new JSONObject(result);
         JSONArray artists = new JSONArray();
@@ -382,6 +391,7 @@ public class Application implements ApplicationRunner {
     public ResponseEntity<String> getArtist(@RequestParam(value = "name") String name) {
         logger.info("Searching for artist with name {}", name);
         logger.info("");
+        //name = name.replace(" ","_");
         Artists result = artistRepository.findByName(name);
         JSONObject artistAlbumSong = new JSONObject(result);
         JSONArray albums = new JSONArray();
@@ -455,7 +465,7 @@ public class Application implements ApplicationRunner {
     public ResponseEntity<String> clearRepositories() {
         songRepository.deleteAll();
         artistRepository.deleteAll();
-        artistRepository.deleteAll();
+        albumRepository.deleteAll();
         sessions.deleteAll();
         registeredUsers.deleteAll();
         return new ResponseEntity<>("Cleared Repositories", HttpStatus.OK);
@@ -468,7 +478,7 @@ public class Application implements ApplicationRunner {
         if (sessions.findByName(username) == null) {
             logger.info("Logging in {}", username);
             logger.info("");
-            Users user = registeredUsers.findByName(username);
+            Sessions user = registeredUsers.findByName(username).createSession();
             sessions.save(user);
         } else {
             logger.info("Users with name {} is already logged in.", username);

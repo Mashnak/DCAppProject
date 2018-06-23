@@ -1,0 +1,6 @@
+<form #registerUser="ngForm"(ngSubmit)="onSubmit(registerUser.value)">
+  <input type="text" name="registerUserName" id="registerUserName" ngModel>
+  <input type="password" name="registerPassword" id="registerpassword" ngModel>
+  <input type="checkbox" name="isAdmin" id="isAdmin" ngModel>
+  <button class="btn btn-dark" type="submit">Register</button>
+</form>

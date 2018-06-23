@@ -3,14 +3,27 @@
     <h1 class="jumbotron-heading jumbotron-fluid display-3">{{title}}</h1>
     <div class="row">
       <form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm.value)">
-        <input type="text" name="searchText" id="searchText" ngModel>
-        <button class="btn btn-dark" type="submit">Search</button>
-      </form>
+      <input type="text" name="searchText" id="searchText" ngModel>
+      <button class="btn btn-dark" type="submit">Search</button>
+    </form>
+      <app-login></app-login>
     </div>
   </div>
+  <button class="details" (click)="open(content)">register user</button>
 </section>
 <div class="row">
- <!--<app-songitem *ngFor="let songItem of songItem | async" [songItem]="songItems"
+<app-songitem *ngFor="let searchResult of searchResult | async" [searchResult]="searchResult"
 (addedToFavorites)="onAddedToFavorites($event)"></app-songitem>
 </div>
--->
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Register user</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-register></app-register>
+    <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Close</button>
+  </div>
+</ng-template>
