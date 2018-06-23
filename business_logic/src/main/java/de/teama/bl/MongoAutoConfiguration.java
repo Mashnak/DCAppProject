@@ -28,11 +28,7 @@ public class MongoAutoConfiguration {
     private String db_port;
 
     @Autowired
-    private MongoProperties properties() {
-        MongoProperties prop = new MongoProperties();
-        prop.setDatabase("test");
-        return prop;
-    }
+    private MongoProperties properties;
 
     @Autowired(required = false)
     private MongoClientOptions options;
