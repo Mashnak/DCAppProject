@@ -74,8 +74,7 @@ public class Application implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        urlDB = String.format("%s:%s", args.getOptionValues("DB.ip").get(0),
-                args.getOptionValues("DB.port").get(0));
+        urlDB = String.format("%s:%s", args.getOptionValues("DB.ip").get(0), args.getOptionValues("DB.port").get(0));
         logger.info("Sending db requests to {}", urlDB);
         logger.info("Using databases: {}", mongoClient.getUsedDatabases());
         logger.info("");
@@ -93,18 +92,18 @@ public class Application implements ApplicationRunner {
 
     @RequestMapping(value = "/song", method = RequestMethod.POST)
     public ResponseEntity<Songs> insertNewSong(@RequestParam(value = "name") String name,
-                                               @RequestParam(value = "length") String length, @RequestParam(value = "releaseDate") String releaseDate,
-                                               @RequestParam(value = "lyrics") String lyrics, @RequestParam(value = "link") String link,
-                                               @RequestParam(value = "genre") String genre, @RequestParam(value = "tag") String tag,
-                                               @RequestParam(value = "img") String img, @RequestParam(value = "album") String album) {
+            @RequestParam(value = "length") String length, @RequestParam(value = "releaseDate") String releaseDate,
+            @RequestParam(value = "lyrics") String lyrics, @RequestParam(value = "link") String link,
+            @RequestParam(value = "genre") String genre, @RequestParam(value = "tag") String tag,
+            @RequestParam(value = "img") String img, @RequestParam(value = "album") String album) {
 
         List<Link> links = new LinkedList<>();
-//        JSONObject tmp = new JSONObject();
-//        tmp.put("name", "TESTNAME");
-//        tmp.put("url", link);
-//        links.add(tmp);
+        // JSONObject tmp = new JSONObject();
+        // tmp.put("name", "TESTNAME");
+        // tmp.put("url", link);
+        // links.add(tmp);
 
-        LinkedList<String> genres=new LinkedList<>(), tags=new LinkedList<>();
+        LinkedList<String> genres = new LinkedList<>(), tags = new LinkedList<>();
         genres.add(genre);
         tags.add(tag);
 
@@ -140,18 +139,17 @@ public class Application implements ApplicationRunner {
     }
 
     /**
-     * Registers a Users and enters it into the database.
-     * If the Username already exists the database this returns 500 Bad request
+     * Registers a Users and enters it into the database. If the Username already
+     * exists the database this returns 500 Bad request
      *
-     * @param name      the desired unique Username
-     * @param password  the password of the User
-     * @param admin     whether the Users is an admin or not
-     * @return          the created User
+     * @param name     the desired unique Username
+     * @param password the password of the User
+     * @param admin    whether the Users is an admin or not
+     * @return the created User
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<Users> registerUser(@RequestParam(value = "name") String name,
-                                              @RequestParam(value = "password") String password,
-                                              @RequestParam(value = "isAdmin") String admin) {
+            @RequestParam(value = "password") String password, @RequestParam(value = "isAdmin") String admin) {
         // TODO Message Body or Parameters???
         logger.info("Registering user with name {}", name);
         logger.info("");
@@ -163,27 +161,27 @@ public class Application implements ApplicationRunner {
     }
 
     /**
-     * Validates the credentials, a username and a password, of a user. If these credentials are correct,
-     * the user is logged in and will be saved as an active session.
-     * If the user is not registered this returns 404 not found.
-     * If the password is incorrect this returns 401 unauthorized.
+     * Validates the credentials, a username and a password, of a user. If these
+     * credentials are correct, the user is logged in and will be saved as an active
+     * session. If the user is not registered this returns 404 not found. If the
+     * password is incorrect this returns 401 unauthorized.
      *
-     * @param name      the username of the user logging in
-     * @param password  the password of the user
-     * @return          the user object that has been logged in
+     * @param name     the username of the user logging in
+     * @param password the password of the user
+     * @return the user object that has been logged in
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<Object> loginUser(@RequestParam(value = "name") String name,
-                                          @RequestParam(value = "password")String password){
+            @RequestParam(value = "password") String password) {
         Users user = registeredUsers.findByName(name);
         try {
-            if (user.getPassword().equals(password)){
+            if (user.getPassword().equals(password)) {
                 login(name);
                 return new ResponseEntity<>(user, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return new ResponseEntity<>("Invalid username", HttpStatus.NOT_FOUND);
         }
     }
@@ -191,11 +189,11 @@ public class Application implements ApplicationRunner {
     /**
      * Logs out the user with the given name and ends its session
      *
-     * @param name  the username of the user logging out
-     * @return      the user object that has been logged out
+     * @param name the username of the user logging out
+     * @return the user object that has been logged out
      */
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
-    public ResponseEntity<Object> logoutUser(@RequestParam(value = "name") String name){
+    public ResponseEntity<Object> logoutUser(@RequestParam(value = "name") String name) {
         Users user = registeredUsers.findByName(name);
         logout(name);
         return new ResponseEntity<>(user.toString(), HttpStatus.OK);
@@ -204,13 +202,14 @@ public class Application implements ApplicationRunner {
     // end of POST interfaces
 
     /**
-     * Returns a list of Objects containing the given term in any of the relevant text bast properties:
-     * name, length, release date, lyrics, genre, tag and album.
+     * Returns a list of Objects containing the given term in any of the relevant
+     * text bast properties: name, length, release date, lyrics, genre, tag and
+     * album.
      *
      * If nothing is found the result is an empty set.
      *
-     * @param term  the term to search for
-     * @return      a stringified Set of JSON Objects containing the search result
+     * @param term the term to search for
+     * @return a stringified Set of JSON Objects containing the search result
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity<String> search(@RequestParam(value = "term") String term) {
@@ -219,60 +218,64 @@ public class Application implements ApplicationRunner {
 
         Set<Songs> songResults = new HashSet<>();
         songResults.addAll(songRepository.findByNameLike(term));
-//        songResults.addAll(songRepository.findByLengthLike(term));
-//        songResults.addAll(songRepository.findByReleaseDateLike(term));
-//        songResults.addAll(songRepository.findByLyricsLike(term));
-//        songResults.addAll(songRepository.findByGenreLike(term));
+        // songResults.addAll(songRepository.findByLengthLike(term));
+        // songResults.addAll(songRepository.findByReleaseDateLike(term));
+        // songResults.addAll(songRepository.findByLyricsLike(term));
+        // songResults.addAll(songRepository.findByGenreLike(term));
         songResults.addAll(songRepository.findByTagLike(term));
-//        songResults.addAll(songRepository.findByAlbumLike(term));
+        // songResults.addAll(songRepository.findByAlbumLike(term));
 
         Set<Albums> albumResults = new HashSet<>();
         albumResults.addAll(albumRepository.findByNameLike(term));
-//        albumResults.addAll(albumRepository.findByPublisherLike(term));
-//        albumResults.addAll(albumRepository.findByGenreLike(term));
+        // albumResults.addAll(albumRepository.findByPublisherLike(term));
+        // albumResults.addAll(albumRepository.findByGenreLike(term));
         albumResults.addAll(albumRepository.findByTagLike(term));
 
         Set<Artists> artistResults = new HashSet<>();
         artistResults.addAll(artistRepository.findByNameLike(term));
         artistResults.addAll(artistRepository.findByTagLike(term));
 
-
         int size = 0;
         size += songResults.size();
         size += albumResults.size();
         size += artistResults.size();
-        //TODO Extend
+        // TODO Extend
 
         String result = "[";
-        if (songResults.size() > 0){
+
+        result += "{\"songs\": [";
+
+        if (songResults.size() > 0) {
             Songs[] songs = new Songs[songResults.size()];
             songs = songResults.toArray(songs);
             result += songs[0].toString();
-            for (int i = 1; i<songs.length; i++){
+            for (int i = 1; i < songs.length; i++) {
                 result += ("," + songs[i].toString());
             }
         }
 
-        if (albumResults.size() > 0){
-            result += ",";
+        result += "]}, {\"albums\": [";
+
+        if (albumResults.size() > 0) {
             Albums[] albums = new Albums[albumResults.size()];
             albums = albumResults.toArray(albums);
             result += albums[0].toString();
-            for (int i = 1; i<albums.length; i++) {
+            for (int i = 1; i < albums.length; i++) {
                 result += ("," + albums[i].toString());
             }
         }
 
-        if (artistResults.size() > 0){
-            result += ",";
+        result += "]}, {\"artists\": [";
+
+        if (artistResults.size() > 0) {
             Artists[] artists = new Artists[artistResults.size()];
             artists = artistResults.toArray(artists);
             result += artists[0].toString();
-            for (int i = 1; i<artists.length; i++) {
+            for (int i = 1; i < artists.length; i++) {
                 result += ("," + artists[i].toString());
             }
         }
-        result += "]";
+        result += "]}]";
         logger.info("Found {} different results", size);
         logger.info("");
 
