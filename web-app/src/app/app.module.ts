@@ -5,13 +5,11 @@ import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {SongitemComponent} from './songitem';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {SongItemListComponent} from './songitemlist';
 
 @NgModule({
   declarations: [
     AppComponent,
     SongitemComponent,
-    SongItemListComponent
   ],
   imports: [
     BrowserModule,

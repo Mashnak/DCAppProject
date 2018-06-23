@@ -9,4 +9,7 @@
     </div>
   </div>
 </section>
-  <app-songitemlist></app-songitemlist>
+<div class="row">
+ <app-songitem *ngFor="let songItems of songItems | async" [songItem]="songItems"
+(addedToFavorites)="onAddedToFavorites($event)"></app-songitem>
+</div>
