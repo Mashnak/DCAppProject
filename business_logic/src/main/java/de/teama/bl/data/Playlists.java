@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Document
-public class Playlist {
+public class Playlists {
 
     @Id
     private String id;
@@ -16,7 +16,7 @@ public class Playlist {
     private String creationDate;
     private List<String> songs;
 
-    public Playlist(String name, String creationDate) {
+    public Playlists(String name, String creationDate) {
         this.name = name;
         this.creationDate = creationDate;
         this.songs = new LinkedList<>();

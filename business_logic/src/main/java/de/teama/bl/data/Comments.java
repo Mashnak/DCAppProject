@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class Comment {
+public class Comments {
 
     @Id
     private String id;
@@ -15,7 +15,7 @@ public class Comment {
     private String related;
     private String answerRef;
 
-    public Comment(String text, String user, String timestamp, String related, String answerRef) {
+    public Comments(String text, String user, String timestamp, String related, String answerRef) {
         this.text = text;
         this.user = user;
         this.timestamp = timestamp;
