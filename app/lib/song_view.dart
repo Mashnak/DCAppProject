@@ -13,8 +13,6 @@ Future<SongData> fetchSongData(name) async {
       await http.get('http://192.168.99.100:8080/song?name=' + name);
   final responseJson = json.decode(response.body);
 
-  print(responseJson);
-
   return new SongData.fromJson(responseJson);
 }
 
@@ -91,7 +89,8 @@ class SongView extends StatelessWidget {
                 if (await canLaunch(url)) {
                   await launch(url);
                 } else {
-                  throw 'Could not launch $url';
+                  // throw 'Could not launch $url';
+                  print('Could not launch $url');
                 }
               },
             );

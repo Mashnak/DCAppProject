@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:app/album_view.dart';
+import 'package:app/artist_view.dart';
+import 'package:app/song_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,9 +13,9 @@ class SearchData {
   final List artists;
 
   SearchData.fromJson(responseJson)
-      : songs = responseJson["songs"],
-        albums = responseJson["albums"],
-        artists = responseJson["artists"];
+      : songs = responseJson[0]['songs'],
+        albums = responseJson[1]['albums'],
+        artists = responseJson[2]['artists'];
 }
 
 class SearchView extends StatefulWidget {
@@ -24,6 +27,60 @@ class SearchView extends StatefulWidget {
 
 class _SearchViewState extends State<SearchView> {
   Future<SearchData> futureSearchData;
+
+  Widget _buildSongList(List searchSongs) {
+    return new Column(
+      children: searchSongs.map((entry) {
+        return new ListTile(
+          title: new Text(entry["name"]),
+          trailing: new Icon(Icons.music_note),
+          onTap: () {
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) =>
+                        new SongView(fetchSongData(entry["name"]))));
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildAlbumList(List searchAlbums) {
+    return new Column(
+      children: searchAlbums.map((entry) {
+        return new ListTile(
+          title: new Text(entry["name"]),
+          trailing: new Icon(Icons.view_list),
+          onTap: () {
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) =>
+                        new AlbumView(fetchAlbumData(entry["name"]))));
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildArtistList(List searchArtists) {
+    return new Column(
+      children: searchArtists.map((entry) {
+        return new ListTile(
+          title: new Text(entry["name"]),
+          trailing: new Icon(Icons.accessibility),
+          onTap: () {
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) =>
+                        new ArtistView(fetchArtistData(entry["name"]))));
+          },
+        );
+      }).toList(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,15 +116,29 @@ class _SearchViewState extends State<SearchView> {
           )),
       body: new FutureBuilder<SearchData>(
         future: futureSearchData,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
+        builder: (context, snapshot) {
+          final TextStyle headingStyle =
+              new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold);
           if (snapshot.hasData) {
             return new ListView(
               children: <Widget>[
-                new Text("Songs"),
+                new Text(
+                  "Songs",
+                  style: headingStyle,
+                ),
+                _buildSongList(snapshot.data.songs),
                 new Divider(),
-                new Text("Albums"),
+                new Text(
+                  "Albums",
+                  style: headingStyle,
+                ),
+                _buildAlbumList(snapshot.data.albums),
                 new Divider(),
-                new Text("Artists"),
+                new Text(
+                  "Artists",
+                  style: headingStyle,
+                ),
+                _buildArtistList(snapshot.data.artists),
               ],
             );
           } else if (snapshot.hasError) {
@@ -94,8 +165,6 @@ class _SearchViewState extends State<SearchView> {
     final response =
         await http.get('http://192.168.99.100:8080/search?term=' + val);
     final responseJson = json.decode(response.body);
-
-    print(responseJson);
 
     return new SearchData.fromJson(responseJson);
   }
