@@ -3,69 +3,49 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:android_intent/android_intent.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'common.dart';
 
-Future<SongData> fetchSongData(id) async {
-  final response = await http.get('http://192.168.99.100:8080/song?id=' + id);
+Future<SongData> fetchSongData(name) async {
+  final response =
+      await http.get('http://192.168.99.100:8080/song?name=' + name);
   final responseJson = json.decode(response.body);
 
-  return new SongData.fromJson(responseJson[0]);
+  print(responseJson);
+
+  return new SongData.fromJson(responseJson);
 }
 
 class SongData {
-  SongData(
-      this.id,
-      this.name,
-      this.length,
-      this.releaseDate,
-      this.lyrics,
-      this.urls,
-      this.genres,
-      this.tags,
-      this.artists,
-      this.album,
-      this.publisher,
-      this.imagePath);
+  SongData(this.name, this.length, this.releaseDate, this.lyrics, this.artists,
+      this.genres, this.tags, this.links, this.album, this.imagePath);
 
-  final String id;
   final String name;
   final String length;
   final DateTime releaseDate;
   final String lyrics;
+  final List artists;
 
-  final List urls;
   final List genres;
   final List tags;
-
-  final List artists;
-  final Map album;
-  final Map publisher;
+  final List links;
 
   final String imagePath;
+  final String album;
 
   SongData.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        name = json['name'],
+      : name = json['name'],
         length = json['length'],
-        releaseDate = new DateTime(2016),
+        releaseDate = DateTime.parse(json['releaseDate']),
         lyrics = json['lyrics'],
-        urls = json['urls'],
-        genres = json['genres'],
-        tags = json['tags'],
-        artists = json['artists'],
+        links = json['link'],
+        genres = json['genre'],
+        tags = json['tag'],
+        artists = json['artist'],
         album = json['album'],
-        publisher = json['publisher'],
-        imagePath =
-            "https://images-eu.ssl-images-amazon.com/images/I/41WIm4pDLBL._SS500.jpg";
-
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'album': album,
-        'publisher': publisher,
-        'releaseData': releaseDate,
-        'imagePath': imagePath,
-      };
+        imagePath = json['img'];
 }
 
 class SongView extends StatelessWidget {
@@ -83,10 +63,10 @@ class SongView extends StatelessWidget {
         ),
         new InfoSection('Song Title', viewedSongData.name),
         new InfoSection('Title Length', viewedSongData.length),
-        new InfoSection('Release Date', viewedSongData.releaseDate.toString()),
-        new InfoSection('Album Name', viewedSongData.album['name']),
-        new MultiInfoSection('Artists', viewedSongData.artists),
-        new InfoSection('Label', viewedSongData.publisher['name']),
+        new InfoSection('Release Date',
+            "${viewedSongData.releaseDate.year.toString()}-${viewedSongData.releaseDate.month.toString().padLeft(2,'0')}-${viewedSongData.releaseDate.day.toString().padLeft(2,'0')}"),
+        new InfoSection('Album Name', viewedSongData.album),
+        // new MultiInfoSection('Artists', viewedSongData.artists),
         new MultiInfoSection('Genres', viewedSongData.genres),
         new MultiInfoSection("Tags", viewedSongData.tags)
       ],
@@ -98,43 +78,25 @@ class SongView extends StatelessWidget {
         new TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold);
 
     return new Container(
-      padding: EdgeInsets.all(16.0),
-      child: GridView.count(
-        mainAxisSpacing: 12.0,
-        crossAxisSpacing: 12.0,
-        crossAxisCount: 2,
-        children: <Widget>[
-          new RaisedButton(
-            child: Text(
-              'SoundCloud',
-              style: _biggerFont,
-            ),
-            onPressed: () {},
-          ),
-          new RaisedButton(
-            child: Text(
-              'Spotify',
-              style: _biggerFont,
-            ),
-            onPressed: () {},
-          ),
-          new RaisedButton(
-            child: Text(
-              'Youtube',
-              style: _biggerFont,
-            ),
-            onPressed: () {},
-          ),
-          new RaisedButton(
-            child: Text(
-              'Napster',
-              style: _biggerFont,
-            ),
-            onPressed: () {},
-          ),
-        ],
-      ),
-    );
+        padding: EdgeInsets.all(16.0),
+        child: GridView.builder(
+          itemCount: viewedSongData.links.length,
+          gridDelegate:
+              new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          itemBuilder: (BuildContext context, int index) {
+            return new RaisedButton(
+              child: new Text(viewedSongData.links[index]['name']),
+              onPressed: () async {
+                String url = viewedSongData.links[index]['name'];
+                if (await canLaunch(url)) {
+                  await launch(url);
+                } else {
+                  throw 'Could not launch $url';
+                }
+              },
+            );
+          },
+        ));
   }
 
   Widget _buildSongCommentsTab() {

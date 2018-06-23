@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class SearchData {
-  List songs;
-  List albums;
-  List artists;
+  final List songs;
+  final List albums;
+  final List artists;
 
   SearchData.fromJson(responseJson)
       : songs = responseJson["songs"],
@@ -64,55 +64,10 @@ class _SearchViewState extends State<SearchView> {
             return new ListView(
               children: <Widget>[
                 new Text("Songs"),
-                new ListTile(
-                  title: new Text("Search Result"),
-                  leading: new Icon(Icons.note),
-                  trailing: new Icon(Icons.play_arrow),
-                ),
-                new ListTile(
-                  title: new Text("Search Result"),
-                  leading: new Icon(Icons.note),
-                  trailing: new Icon(Icons.play_arrow),
-                ),
-                new ListTile(
-                  title: new Text("Search Result"),
-                  leading: new Icon(Icons.note),
-                  trailing: new Icon(Icons.play_arrow),
-                ),
                 new Divider(),
                 new Text("Albums"),
-                new ListTile(
-                  title: new Text("Search Result"),
-                  leading: new Icon(Icons.note),
-                  trailing: new Icon(Icons.play_arrow),
-                ),
-                new ListTile(
-                  title: new Text("Search Result"),
-                  leading: new Icon(Icons.note),
-                  trailing: new Icon(Icons.play_arrow),
-                ),
-                new ListTile(
-                  title: new Text("Search Result"),
-                  leading: new Icon(Icons.note),
-                  trailing: new Icon(Icons.play_arrow),
-                ),
                 new Divider(),
                 new Text("Artists"),
-                new ListTile(
-                  title: new Text("Search Result"),
-                  leading: new Icon(Icons.note),
-                  trailing: new Icon(Icons.play_arrow),
-                ),
-                new ListTile(
-                  title: new Text("Search Result"),
-                  leading: new Icon(Icons.note),
-                  trailing: new Icon(Icons.play_arrow),
-                ),
-                new ListTile(
-                  title: new Text("Search Result"),
-                  leading: new Icon(Icons.note),
-                  trailing: new Icon(Icons.play_arrow),
-                ),
               ],
             );
           } else if (snapshot.hasError) {
@@ -139,6 +94,8 @@ class _SearchViewState extends State<SearchView> {
     final response =
         await http.get('http://192.168.99.100:8080/search?term=' + val);
     final responseJson = json.decode(response.body);
+
+    print(responseJson);
 
     return new SearchData.fromJson(responseJson);
   }
