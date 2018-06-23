@@ -10,7 +10,9 @@ import java.util.List;
 
 @Document
 public class Albums {
-    @Id @Indexed @TextIndexed
+    @Id
+    private String _id;
+
     private String name;
 
     private String releaseDate;
@@ -18,6 +20,10 @@ public class Albums {
     private List<String> genre; //TODO List of Strings
     private List<String> tag; //TODO List of Strings
     private String img;
+
+    public String get_id() {
+        return _id;
+    }
 
     public String getName() {
         return name;

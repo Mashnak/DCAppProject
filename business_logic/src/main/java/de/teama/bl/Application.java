@@ -333,6 +333,7 @@ public class Application implements ApplicationRunner {
         artistRepository.deleteAll();
         artistRepository.deleteAll();
         sessions.deleteAll();
+        registeredUsers.deleteAll();
         return new ResponseEntity<>("Cleared Repositories", HttpStatus.OK);
     }
 

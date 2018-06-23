@@ -10,7 +10,7 @@ import java.util.List;
 public class Playlists {
 
     @Id
-    private String id;
+    private String _id;
 
     private String name;
     private String creationDate;
@@ -22,8 +22,8 @@ public class Playlists {
         this.songs = new LinkedList<>();
     }
 
-    public String getId() {
-        return id;
+    public String get_id() {
+        return _id;
     }
 
     public String getName() {

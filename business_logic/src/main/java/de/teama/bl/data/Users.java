@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Document
 public class Users {
-    @Id @Indexed @TextIndexed
+    @Id
     private String name;
 
     private String password;

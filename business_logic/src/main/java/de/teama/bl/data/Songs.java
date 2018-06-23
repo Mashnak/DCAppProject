@@ -10,7 +10,9 @@ import java.util.List;
 
 @Document
 public class Songs {
-    @Id @Indexed @TextIndexed
+    @Id
+    private String _id;
+
     private String name;
 
     private String length;
@@ -38,6 +40,10 @@ public class Songs {
     @Override
     public String toString() {
         return new JSONObject(this).toString();
+    }
+
+    public String get_id() {
+        return _id;
     }
 
     public String getName() {

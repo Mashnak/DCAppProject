@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Comments {
 
     @Id
-    private String id;
+    private String _id;
 
     private String text;
     private String user;
@@ -23,8 +23,8 @@ public class Comments {
         this.answerRef = answerRef;
     }
 
-    public String getId() {
-        return id;
+    public String get_id() {
+        return _id;
     }
 
     public String getText() {
