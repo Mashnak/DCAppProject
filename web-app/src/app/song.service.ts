@@ -27,9 +27,8 @@ export class SongService {
       .map((res: Response) => (res.json()));
   }
 
-  postSongToFavorites(user, song) {
+  postSongToFavorites(song) {
     let search = new URLSearchParams();
-    search.set('user', user.name);
     search.set('song', song.name);
     const url = this.ROOT_URL + '/favorite';
     this.http.post(url, {}, {search}).subscribe(res => console.log(res.json()));

@@ -6,7 +6,7 @@ import {Http} from '@angular/http';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {Observable} from 'rxjs/Observable';
 import {SongService} from './song.service';
-import {Result} from '../Result';
+import {Result} from '../result';
 
 @Component({
   selector: 'app-component',
@@ -20,14 +20,13 @@ export class AppComponent implements OnInit {
   closeResult: string;
   searchResult: Observable<Result>;
 
-
   constructor(private http: Http, private modalService: NgbModal, private songservice: SongService) {
   }
 
   ngOnInit() {
     this.songservice.getRandom().subscribe(data => {
       this.searchResult = data;
-      });
+    });
   }
 
   onSubmit(searchForm) {
@@ -36,9 +35,9 @@ export class AppComponent implements OnInit {
     });
   }
 
-  onAddedToFavorites(userItem, songItem) {
+  onAddedToFavorites(songItem) {
+    this.songservice.postSongToFavorites(songItem);
     console.log(songItem);
-    this.songservice.postSongToFavorites(userItem, songItem);
   }
 
   open(content) {
