@@ -8,32 +8,31 @@ import 'package:http/http.dart' as http;
 Future<ProfileData> fetchProfileData(String id) async {
   final response =
       await http.get('http://192.168.99.100:8080/profile?id=' + id);
+  final int statusCode = response.statusCode;
+  if (statusCode < 200 || statusCode > 400 || json == null) {
+    throw new Exception("Error while fetching data");
+  }
+
   final responseJson = json.decode(response.body);
 
   return new ProfileData.fromJson(responseJson);
 }
 
 class ProfileData {
-  final String id;
-  final String username;
-  final String firstName;
-  final String lastName;
-  final DateTime birthdate;
-  final String gender;
-  final String country;
-  final String isAdmin;
-  final String imagePath;
+  final String name;
+  final String password;
+  final String birthdate;
+  final List friends;
+  final List playlists;
+  final bool isAdmin;
 
   ProfileData.fromJson(responseJson)
-      : id = responseJson["id"],
-        username = responseJson["username"],
-        firstName = responseJson["firstName"],
-        lastName = responseJson["lastName"],
-        birthdate = new DateTime(2016),
-        gender = responseJson["gender"],
-        country = responseJson["country"],
-        isAdmin = responseJson["isAdmin"],
-        imagePath = "http://i.imgur.com/YdhUZdZ.png";
+      : name = responseJson["name"],
+        password = responseJson["password"],
+        birthdate = responseJson["birthdate"],
+        friends = responseJson["friends"],
+        playlists = responseJson["playlists"],
+        isAdmin = responseJson["isAdmin"];
 }
 
 class ProfileView extends StatelessWidget {
@@ -44,13 +43,16 @@ class ProfileView extends StatelessWidget {
   Widget _buildProfile(ProfileData data) {
     return new Column(
       children: <Widget>[
-        Image.network(data.imagePath, height: 240.0, fit: BoxFit.cover),
-        new InfoSection("Username", data.username),
-        new InfoSection("First name", data.firstName),
-        new InfoSection("Last name", data.lastName),
-        new InfoSection("Gender", data.gender),
-        new InfoSection("Country", data.country),
-        new InfoSection("Date of Birth", data.birthdate.toString())
+        new InfoSection("Username", data.name),
+        new InfoSection("Date of Birth", data.birthdate.toString()),
+        new MultiInfoSection("Friends", data.friends),
+        new MultiInfoSection("Playlists", data.playlists),
+        data.isAdmin
+            ? new Text("This user is an Admin")
+            : new Container(
+                width: 0.0,
+                height: 0.0,
+              )
       ],
     );
   }
