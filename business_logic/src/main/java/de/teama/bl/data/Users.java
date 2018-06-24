@@ -2,8 +2,6 @@ package de.teama.bl.data;
 
 import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashSet;
@@ -19,7 +17,7 @@ public class Users {
     protected String password;
     protected String birthdate;
     protected Set<String> friends;
-    protected List<String> playlists;
+    protected List<String> playlist;
     protected boolean isAdmin;
 
     public Users(){
@@ -31,7 +29,7 @@ public class Users {
         this.password = password;
         this.birthdate = birthdate;
         this.friends = new HashSet<>();
-        this.playlists = new LinkedList<>();
+        this.playlist = new LinkedList<>();
         this.isAdmin = isAdmin;
     }
 
@@ -56,8 +54,12 @@ public class Users {
         this.friends.add(friend);
     }
 
-    public List<String> getPlaylists() {
-        return playlists;
+    public List<String> getPlaylist() {
+        return playlist;
+    }
+
+    public void addFavorite(String song){
+        this.playlist.add(song);
     }
 
     public boolean isAdmin() {
