@@ -6,17 +6,20 @@ import 'package:http/http.dart' as http;
 
 import 'song_view.dart';
 
-Future<SongData> fetchHomeData() async {
+Future<HomeData> fetchHomeData() async {
   final response = await http.get('http://192.168.99.100:8080/random?count=10');
   final responseJson = json.decode(response.body);
 
-  return new SongData.fromJson(responseJson[0]);
+  return new HomeData.fromJson(responseJson);
 }
 
 class HomeData {
-  List<SongData> songs;
+  final List<SongData> songs;
 
-  HomeData.fromJson(Map<String, dynamic> json) : songs = json['songs'];
+  HomeData.fromJson(List json)
+      : songs = json.map((entry) {
+          return SongData.fromJson(entry);
+        }).toList();
 }
 
 class HomeView extends StatelessWidget {
@@ -24,8 +27,30 @@ class HomeView extends StatelessWidget {
 
   const HomeView(this.futureHomeData);
 
-  Widget _buildHomeView() {
-    return Text("Hello");
+  Widget _buildHomeView(HomeData homeData) {
+    Paint namePaint = new Paint();
+    namePaint.color = Colors.white;
+    final TextStyle nameStyle = new TextStyle(
+        fontSize: 16.0, fontWeight: FontWeight.bold, background: namePaint);
+    return new GridView.count(
+      crossAxisCount: 2,
+      childAspectRatio: 1.0,
+      mainAxisSpacing: 4.0,
+      crossAxisSpacing: 4.0,
+      padding: const EdgeInsets.all(5.0),
+      children: homeData.songs.map((song) {
+        return new GridTile(
+          child: new Image.network(
+            song.imagePath,
+            fit: BoxFit.cover,
+          ),
+          footer: new Text(
+            song.name,
+            style: nameStyle,
+          ),
+        );
+      }).toList(),
+    );
   }
 
   @override
@@ -38,7 +63,7 @@ class HomeView extends StatelessWidget {
         future: futureHomeData,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return _buildHomeView();
+            return _buildHomeView(snapshot.data);
           } else if (snapshot.hasError) {
             return new Text("${snapshot.error}");
           }

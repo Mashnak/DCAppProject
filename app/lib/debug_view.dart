@@ -1,3 +1,4 @@
+import 'package:app/home_view.dart';
 import 'package:flutter/material.dart';
 
 import 'playlist_view.dart';
@@ -87,6 +88,15 @@ class DebugView extends StatelessWidget {
                     new MaterialPageRoute(
                         builder: (context) =>
                             new PlaylistView(fetchPlaylistData(""))));
+              },
+            ),
+            new RaisedButton(
+              child: new Text('Home View'),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new HomeView(fetchHomeData())));
               },
             ),
           ],
