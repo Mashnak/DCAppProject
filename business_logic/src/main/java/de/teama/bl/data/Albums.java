@@ -35,9 +35,9 @@ public class Albums {
         return name;
     }
 
-    public String getArtist() {
-        return artist;
-    }
+//    public String getArtist() {
+//        return artist;
+//    }
 
     public String getReleaseDate() {
         return releaseDate;
