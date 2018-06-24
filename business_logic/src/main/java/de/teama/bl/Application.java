@@ -388,11 +388,13 @@ public class Application implements ApplicationRunner {
         // name = name.replace(" ", "_");
         Songs result = songRepository.findByName(name);
         JSONObject artistSong = new JSONObject(result);
+
         JSONArray artists = new JSONArray();
         for (Artists artist : artistSongsRepository.findBySong(result.getName())) {
             artists.put(artist);
         }
         artistSong.put("artists", artists);
+
         if (result == null) {
             return new ResponseEntity<>("No song with this name in database", HttpStatus.NOT_FOUND);
         }
@@ -430,17 +432,23 @@ public class Application implements ApplicationRunner {
         Artists result = artistRepository.findByName(name);
         JSONObject artistAlbumSong = new JSONObject(result);
 
+        // JSONArray albums = new JSONArray();
+        // for (Albums album : artistAlbumsRepository.findByArtist(result.getName())) {
+        // albums.put(album);
+        // }
+        // artistAlbumSong.put("albums", albums);
+
+        // JSONArray songs = new JSONArray();
+        // for (Songs song : artistSongsRepository.findByArtist(result.getName())) {
+        // songs.put(song);
+        // }
+        // artistAlbumSong.put("songs", songs);
+
         JSONArray albums = new JSONArray();
-        for (Albums album : artistAlbumsRepository.findByArtist(result.getName())) {
-            albums.put(album);
+        for (Albums album : composeArtist(name)) {
+            albums.put(album.getName());
         }
         artistAlbumSong.put("albums", albums);
-
-        JSONArray songs = new JSONArray();
-        for (Songs song : artistSongsRepository.findByArtist(result.getName())) {
-            songs.put(song);
-        }
-        artistAlbumSong.put("songs", songs);
 
         return new ResponseEntity<>(artistAlbumSong.toString(), HttpStatus.OK);
     }
@@ -543,7 +551,7 @@ public class Application implements ApplicationRunner {
 
     public Set<Albums> composeArtist(String name) {
         Set<Albums> result = new HashSet<>();
-        result.addAll(albumRepository.findByArtist(name));
+        result.addAll(artistAlbumsRepository.findByArtist(name));
         return result;
     }
 

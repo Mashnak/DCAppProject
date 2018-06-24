@@ -15,6 +15,7 @@ public class Albums {
 
     private String name;
 
+    private String artist;
     private String releaseDate;
     private String publisher;
     private List<String> genre; // TODO List of Strings
@@ -32,6 +33,10 @@ public class Albums {
 
     public String getName() {
         return name;
+    }
+
+    public String getArtist() {
+        return artist;
     }
 
     public String getReleaseDate() {

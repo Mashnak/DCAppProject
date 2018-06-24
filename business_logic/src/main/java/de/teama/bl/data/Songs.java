@@ -15,6 +15,7 @@ public class Songs {
 
     private String name;
 
+    private String artist;
     private String length;
     private String releaseDate;
     private String lyrics;
@@ -24,8 +25,8 @@ public class Songs {
     private String img;
     private String album;
 
-    public Songs(String name, String length, String releaseDate, String lyrics, List<Link> link,
-                 List<String> genre, List<String> tag, String img, String album) {
+    public Songs(String name, String length, String releaseDate, String lyrics, List<Link> link, List<String> genre,
+            List<String> tag, String img, String album) {
         this.name = name;
         this.length = length;
         this.releaseDate = releaseDate;
@@ -50,14 +51,18 @@ public class Songs {
         return name;
     }
 
+    public String getArtist() {
+        return artist;
+    }
+
     public String getLength() {
         String formattedLength = "";
         try {
             int lengthInt = Integer.parseInt(this.length);
-            formattedLength += (lengthInt/60000);       //milliseconds to minutes
-            formattedLength += ":";                     //colon divider
-            formattedLength += ((lengthInt%60000)/1000);//rest of milliseconds to seconds
-        }catch (NumberFormatException e){
+            formattedLength += (lengthInt / 60000); // milliseconds to minutes
+            formattedLength += ":"; // colon divider
+            formattedLength += ((lengthInt % 60000) / 1000);// rest of milliseconds to seconds
+        } catch (NumberFormatException e) {
             return this.length;
         }
         return formattedLength;
@@ -75,7 +80,7 @@ public class Songs {
         return this.link;
     }
 
-    public void addLink(String name, String url){
+    public void addLink(String name, String url) {
         link.add(new Link(name, url));
     }
 
@@ -95,7 +100,7 @@ public class Songs {
         return album;
     }
 
-    public void addTag(String tag){
+    public void addTag(String tag) {
         this.tag.add(tag);
     }
 }
