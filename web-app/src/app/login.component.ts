@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {Http, Response, RequestOptions, Headers, HttpModule, URLSearchParams} from '@angular/http';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-login',
@@ -6,13 +8,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  readonly ROOT_URL: string = 'http://192.168.99.100:8080';
 
-  constructor() { }
+  constructor(private http: Http) {
+  }
 
   onSubmit(loginUser) {
-    console.log(loginUser.loginUserName);
-    console.log(loginUser.loginPassword);
-    // http get with username and password /login?name=username&password=password
+    const url = this.ROOT_URL + '/login';
+    let search = new URLSearchParams();
+    search.set('name', loginUser.name);
+    search.set('name', loginUser.password);
+    this.http.get(url, {search}).subscribe(res => console.log(res.json()));
   }
 
 }

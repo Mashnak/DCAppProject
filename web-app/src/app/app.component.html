@@ -2,18 +2,22 @@
   <div class="container">
     <h1 class="jumbotron-heading jumbotron-fluid display-3">{{title}}</h1>
     <div class="row">
-      <form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm.value)">
-      <input type="text" name="searchText" id="searchText" ngModel>
-      <button class="btn btn-dark" type="submit">Search</button>
-    </form>
-      <app-login></app-login>
+      <div>
+        <form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm.value)">
+          <input type="text" name="searchText" id="searchText" ngModel>
+          <button class="btn btn-dark" type="submit">Search</button>
+        </form>
+      </div>
+      <div style="padding-left: 40px">
+        <app-login></app-login>
+        <button class="btn btn-group-toggle" (click)="open(content)">Register user</button>
+      </div>
     </div>
   </div>
-  <button class="details" (click)="open(content)">register user</button>
 </section>
 <div class="row">
-<app-songitem *ngFor="let searchResult of searchResult | async" [searchResult]="searchResult"
-(addedToFavorites)="onAddedToFavorites($event)"></app-songitem>
+  <app-songitem *ngFor="let searchResult of searchResult | async" [searchResult]="searchResult"
+                (addedToFavorites)="onAddedToFavorites($event)"></app-songitem>
 </div>
 <ng-template #content let-c="close" let-d="dismiss">
   <div class="modal-header">

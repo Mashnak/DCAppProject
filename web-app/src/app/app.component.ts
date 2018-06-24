@@ -2,9 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import {Http} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-import {Result} from '../Result';
+import {Http, Response, RequestOptions, Headers, HttpModule, URLSearchParams} from '@angular/http';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -22,19 +20,19 @@ export class AppComponent implements OnInit {
   }
 
   readonly ROOT_URL: string = 'http://192.168.99.100:8080';
-  searchResult: Observable<Result>;
 
   ngOnInit() {
-    const url = this.ROOT_URL + '/random?count=10';
-    this.http.get(url).subscribe(res => console.log(res.json()));
+    const url = this.ROOT_URL + '/random';
+    let search = new URLSearchParams();
+    search.set('count', '10');
+    this.http.get(url, {search}).subscribe(res => console.log(res.json()));
   }
 
   onSubmit(searchForm) {
-    const searchValue = searchForm.searchText;
-    console.log(searchValue);
-    const url = this.ROOT_URL + '/search?term=' + searchValue;
-    console.log(url);
-    this.http.get(url).subscribe(res => console.log(res.json()));
+    const url = this.ROOT_URL + '/search';
+    let search = new URLSearchParams();
+    search.set('term', searchForm.searchText);
+    this.http.get(url, {search}).subscribe(res => console.log(res.json()));
   }
 
   onAddedToFavorites(songItem) {
