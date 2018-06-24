@@ -44,6 +44,13 @@ class MultiInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (sectionValues.length == 0) {
+      return new Container(
+        width: 0.0,
+        height: 0.0,
+      );
+    }
+
     return new Container(
       padding: const EdgeInsets.all(12.0),
       child: new Column(

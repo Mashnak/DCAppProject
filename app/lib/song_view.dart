@@ -40,7 +40,7 @@ class SongData {
         links = json['link'],
         genres = json['genre'],
         tags = json['tag'],
-        artists = json['artist'],
+        artists = json['artists'],
         album = json['album'],
         imagePath = json['img'];
 }
@@ -64,11 +64,20 @@ class SongView extends StatelessWidget {
         new InfoSection('Release Date',
             "${viewedSongData.releaseDate.year.toString()}-${viewedSongData.releaseDate.month.toString().padLeft(2,'0')}-${viewedSongData.releaseDate.day.toString().padLeft(2,'0')}"),
         new InfoSection('Album Name', viewedSongData.album),
-        // new MultiInfoSection('Artists', viewedSongData.artists),
+        new MultiInfoSection('Artists', viewedSongData.artists),
         new MultiInfoSection('Genres', viewedSongData.genres),
         new MultiInfoSection("Tags", viewedSongData.tags)
       ],
     );
+  }
+
+  Color _defineButtonColor(String linkName) {
+    switch (linkName) {
+      case "Spotify":
+        return Colors.lightGreen;
+      case "YouTube":
+        return Colors.redAccent;
+    }
   }
 
   Widget _buildSongLinksTab(viewedSongData) {
@@ -79,16 +88,20 @@ class SongView extends StatelessWidget {
         padding: EdgeInsets.all(16.0),
         child: GridView.builder(
           itemCount: viewedSongData.links.length,
-          gridDelegate:
-              new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, mainAxisSpacing: 20.0, crossAxisSpacing: 20.0),
           itemBuilder: (BuildContext context, int index) {
             return new RaisedButton(
+              shape: new StadiumBorder(),
+              elevation: 10.0,
+              color: _defineButtonColor(viewedSongData.links[index]['name']),
               child: new Text(
                 viewedSongData.links[index]['name'],
                 style: _biggerFont,
               ),
               onPressed: () async {
-                String url = viewedSongData.links[index]['name'];
+                String url = viewedSongData.links[index]['url'];
+                print(url);
                 if (await canLaunch(url)) {
                   await launch(url);
                 } else {
@@ -101,8 +114,26 @@ class SongView extends StatelessWidget {
         ));
   }
 
-  Widget _buildSongCommentsTab() {
-    return new NestedComment();
+  Widget _buildSongCommentsTab(viewedSongData) {
+    TextStyle textStyle = new TextStyle(fontSize: 22.0);
+
+    if (viewedSongData.lyrics.length == 0) {
+      return new Center(
+        child: new Text(
+            "No lyrics available for this song.\n                       Sorry :("),
+      );
+    }
+
+    return new ListView(
+      children: <Widget>[
+        Container(
+            padding: EdgeInsets.all(16.0),
+            child: new Text(
+              viewedSongData.lyrics,
+              style: textStyle,
+            ))
+      ],
+    );
   }
 
   @override
@@ -120,7 +151,7 @@ class SongView extends StatelessWidget {
                 icon: new Icon(Icons.music_note),
               ),
               new Tab(
-                icon: new Icon(Icons.comment),
+                icon: new Icon(Icons.text_fields),
               )
             ],
           ),
@@ -134,7 +165,7 @@ class SongView extends StatelessWidget {
                 children: [
                   _buildSongInfoTab(snapshot.data),
                   _buildSongLinksTab(snapshot.data),
-                  _buildSongCommentsTab(),
+                  _buildSongCommentsTab(snapshot.data),
                 ],
               );
             } else if (snapshot.hasError) {
