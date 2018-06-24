@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:app/playlist_view.dart';
 import 'package:app/profile_view.dart';
+import 'package:app/register_view.dart';
 import 'package:app/search_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -91,12 +92,15 @@ class HomeView extends StatelessWidget {
       drawer: new Drawer(
         child: new ListView(
           children: <Widget>[
-            globals.isLoggedIn
+            globals.loggedInUser != null
                 ? new UserAccountsDrawerHeader(
-                    accountEmail: new Text(""),
-                    accountName: new Text("UserName"),
-                    currentAccountPicture:
-                        new Image.network("http://i.imgur.com/YdhUZdZ.png"),
+                    accountEmail: new Container(
+                      width: 0.0,
+                      height: 0.0,
+                    ),
+                    accountName: new Text(globals.loggedInUser.name),
+                    // currentAccountPicture:
+                    //     new Image.network("http://i.imgur.com/YdhUZdZ.png"),
                   )
                 : new DrawerHeader(
                     child: new Text("Options"),
@@ -123,11 +127,15 @@ class HomeView extends StatelessWidget {
             new ListTile(
               title: new Text("Profile"),
               onTap: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) =>
-                            new ProfileView(fetchProfileData(""))));
+                Navigator.push(context,
+                    new MaterialPageRoute(builder: (context) {
+                  if (globals.loggedInUser != null) {
+                    return new ProfileView(
+                        fetchProfileData(globals.loggedInUser.name));
+                  } else {
+                    return new RegisterView();
+                  }
+                }));
               },
             ),
             new AboutListTile(
