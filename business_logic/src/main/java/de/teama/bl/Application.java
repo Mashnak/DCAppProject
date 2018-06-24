@@ -406,11 +406,19 @@ public class Application implements ApplicationRunner {
         // name = name.replace(" ","_");
         Albums result = albumRepository.findByName(name);
         JSONObject artistAlbum = new JSONObject(result);
+
         JSONArray artists = new JSONArray();
         for (Artists artist : artistAlbumsRepository.findByAlbum(result.getName())) {
             artists.put(artist);
         }
         artistAlbum.put("artists", artists);
+
+        JSONArray songs = new JSONArray();
+        for (Songs song : composeAlbum(name)) {
+            songs.put(song.getName());
+        }
+        artistAlbum.put("songs", songs);
+
         return new ResponseEntity<>(artistAlbum.toString(), HttpStatus.OK);
     }
 
@@ -421,16 +429,19 @@ public class Application implements ApplicationRunner {
         // name = name.replace(" ","_");
         Artists result = artistRepository.findByName(name);
         JSONObject artistAlbumSong = new JSONObject(result);
+
         JSONArray albums = new JSONArray();
         for (Albums album : artistAlbumsRepository.findByArtist(result.getName())) {
             albums.put(album);
         }
         artistAlbumSong.put("albums", albums);
+
         JSONArray songs = new JSONArray();
         for (Songs song : artistSongsRepository.findByArtist(result.getName())) {
             songs.put(song);
         }
         artistAlbumSong.put("songs", songs);
+
         return new ResponseEntity<>(artistAlbumSong.toString(), HttpStatus.OK);
     }
 
@@ -527,6 +538,12 @@ public class Application implements ApplicationRunner {
     public Set<Songs> composeAlbum(String name) {
         Set<Songs> result = new HashSet<>();
         result.addAll(songRepository.findByAlbum(name));
+        return result;
+    }
+
+    public Set<Albums> composeArtist(String name) {
+        Set<Albums> result = new HashSet<>();
+        result.addAll(albumRepository.findByArtist(name));
         return result;
     }
 

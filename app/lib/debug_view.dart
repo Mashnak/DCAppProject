@@ -35,8 +35,9 @@ class DebugView extends StatelessWidget {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) =>
-                            new AlbumView(fetchAlbumData(""))));
+                        builder: (context) => new AlbumView(
+                            "Pray For The Wicked",
+                            fetchAlbumData("Pray For The Wicked"))));
               },
             ),
             new RaisedButton(

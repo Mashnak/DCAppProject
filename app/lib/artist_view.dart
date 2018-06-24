@@ -72,7 +72,7 @@ class ArtistView extends StatelessWidget {
             context,
             new MaterialPageRoute(
                 builder: (context) =>
-                    new AlbumView(fetchAlbumData(entry["id"]))));
+                    new AlbumView(entry["id"], fetchAlbumData(entry["id"]))));
       },
     );
   }

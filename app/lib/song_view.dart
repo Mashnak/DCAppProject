@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:android_intent/android_intent.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'common.dart';
@@ -84,7 +83,10 @@ class SongView extends StatelessWidget {
               new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
           itemBuilder: (BuildContext context, int index) {
             return new RaisedButton(
-              child: new Text(viewedSongData.links[index]['name']),
+              child: new Text(
+                viewedSongData.links[index]['name'],
+                style: _biggerFont,
+              ),
               onPressed: () async {
                 String url = viewedSongData.links[index]['name'];
                 if (await canLaunch(url)) {

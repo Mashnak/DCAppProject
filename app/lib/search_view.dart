@@ -56,8 +56,8 @@ class _SearchViewState extends State<SearchView> {
             Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (context) =>
-                        new AlbumView(fetchAlbumData(entry["name"]))));
+                    builder: (context) => new AlbumView(
+                        entry["name"], fetchAlbumData(entry["name"]))));
           },
         );
       }).toList(),
