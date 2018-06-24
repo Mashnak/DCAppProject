@@ -9,6 +9,8 @@ import 'package:http/http.dart' as http;
 
 import 'song_view.dart';
 
+import 'globals.dart' as globals;
+
 Future<HomeData> fetchHomeData() async {
   final response = await http.get('http://192.168.99.100:8080/random?count=10');
   final responseJson = json.decode(response.body);
@@ -89,9 +91,16 @@ class HomeView extends StatelessWidget {
       drawer: new Drawer(
         child: new ListView(
           children: <Widget>[
-            new DrawerHeader(
-              child: new Text("Options"),
-            ),
+            globals.isLoggedIn
+                ? new UserAccountsDrawerHeader(
+                    accountEmail: new Text(""),
+                    accountName: new Text("UserName"),
+                    currentAccountPicture:
+                        new Image.network("http://i.imgur.com/YdhUZdZ.png"),
+                  )
+                : new DrawerHeader(
+                    child: new Text("Options"),
+                  ),
             new ListTile(
               title: new Text("Search"),
               onTap: () {
