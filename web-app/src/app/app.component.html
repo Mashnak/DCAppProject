@@ -16,7 +16,7 @@
   </div>
 </section>
 <div class="row">
-  <app-songitem *ngFor="let searchResult of searchResult | async" [searchResult]="searchResult"
+  <app-songitem [searchResult]="searchResult"
                 (addedToFavorites)="onAddedToFavorites($event)"></app-songitem>
 </div>
 <ng-template #content let-c="close" let-d="dismiss">

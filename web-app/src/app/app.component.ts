@@ -4,6 +4,9 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import {Http, Response, RequestOptions, Headers, HttpModule, URLSearchParams} from '@angular/http';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {Observable} from 'rxjs/Observable';
+import {Result} from '../Result';
+import {SongService} from './song.service';
 
 @Component({
   selector: 'app-component',
@@ -15,17 +18,19 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 export class AppComponent implements OnInit {
   title = 'Song Search';
   closeResult: string;
+  searchResult: Observable<Result>;
 
-  constructor(private http: Http, private modalService: NgbModal) {
+
+  constructor(private http: Http, private modalService: NgbModal, private songservice: SongService) {
   }
 
   readonly ROOT_URL: string = 'http://192.168.99.100:8080';
 
   ngOnInit() {
-    const url = this.ROOT_URL + '/random';
-    let search = new URLSearchParams();
-    search.set('count', '10');
-    this.http.get(url, {search}).subscribe(res => console.log(res.json()));
+    this.songservice.getRandom().subscribe(data => {
+      this.searchResult = data;
+      console.log(data);
+    });
   }
 
   onSubmit(searchForm) {
@@ -33,6 +38,7 @@ export class AppComponent implements OnInit {
     let search = new URLSearchParams();
     search.set('term', searchForm.searchText);
     this.http.get(url, {search}).subscribe(res => console.log(res.json()));
+    console.log(this.searchResult);
   }
 
   onAddedToFavorites(songItem) {
