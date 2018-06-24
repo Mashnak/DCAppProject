@@ -16,4 +16,12 @@ export class UserService {
     return this.http.get(url, {search})
       .map((res: Response) => (res.json()));
   }
+
+  userLogout(user) {
+    let search = new URLSearchParams();
+    search.set('name', user.name);
+    const url = this.ROOT_URL + '/logout';
+    return this.http.get(url, {search})
+      .map((res: Response) => (res.json()));
+  }
 }

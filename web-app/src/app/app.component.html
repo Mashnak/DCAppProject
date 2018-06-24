@@ -16,7 +16,7 @@
   </div>
 </section>
 <div class="row">
-  <app-songitem [searchResult]="searchResult"
+  <app-songitem
                 (addedToFavorites)="onAddedToFavorites($event)"></app-songitem>
 </div>
 <ng-template #content let-c="close" let-d="dismiss">

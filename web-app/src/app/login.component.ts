@@ -12,16 +12,22 @@ import {UserService} from './user.service';
 })
 export class LoginComponent {
   userResult: Observable<User>;
+
   constructor(private http: Http, private userservice: UserService) {
     this.userResult = null;
   }
 
   onSubmit(loginUser) {
 
-    this.userservice.getUser(loginUser).
-    subscribe(data => {this.userResult = data;
-    console.log(data);
+    this.userservice.getUser(loginUser).subscribe(data => {
+      this.userResult = data;
     });
+  }
+
+  userLogout() {
+    console.log(this.userResult);
+    this.userservice.userLogout(this.userResult).subscribe((res: Response) => console.log());
+    this.userResult = null;
   }
 
 }

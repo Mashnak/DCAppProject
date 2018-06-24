@@ -27,10 +27,10 @@ export class AppComponent implements OnInit {
   readonly ROOT_URL: string = 'http://192.168.99.100:8080';
 
   ngOnInit() {
-    this.songservice.getRandom().subscribe(data => {
-      this.searchResult = data;
-      console.log(data);
-    });
+      this.songservice.getRandom().subscribe(data => {
+        this.searchResult = data;
+        console.log(data);
+      });
   }
 
   onSubmit(searchForm) {
