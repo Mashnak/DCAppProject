@@ -196,8 +196,8 @@ public class Application implements ApplicationRunner {
      * credentials are correct, the user is logged in and will be saved as an active
      * session.
      *
-     * If the user is not registered this returns 404 not found.
-     * If the password is incorrect this returns 401 unauthorized.
+     * If the user is not registered this returns 404 not found. If the password is
+     * incorrect this returns 401 unauthorized.
      *
      * @param name     the username of the user logging in
      * @param password the password of the user
@@ -394,6 +394,18 @@ public class Application implements ApplicationRunner {
         return new ResponseEntity<>(artistSong.toString(), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public ResponseEntity<String> getUser(@RequestParam(value = "name", required = false) String name) {
+        logger.info("Searching for User with name {}", name);
+        logger.info("");
+        Users result = registeredUsers.findByName(name);
+
+        if (result == null) {
+            return new ResponseEntity<>("No user with this name in database", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/album", method = RequestMethod.GET)
     public ResponseEntity<String> getAlbum(@RequestParam(value = "name") String name) {
         logger.info("Searching for album with name {}", name);
@@ -499,16 +511,16 @@ public class Application implements ApplicationRunner {
     }
 
     @RequestMapping(value = "/artistAlbum", method = RequestMethod.GET)
-    public ResponseEntity<List<Artistalbums>> getArtistAlbums(){
+    public ResponseEntity<List<Artistalbums>> getArtistAlbums() {
         return new ResponseEntity<>(artistAlbumsRepository.findAll(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/addArtistAlbum", method = RequestMethod.POST)
-    public ResponseEntity<Artistalbums> addArtistAlbum(@RequestParam(value = "artist")String artist,
-                                                       @RequestParam(value = "album")String album){
-        Artistalbums result = new Artistalbums(artist,album);
+    public ResponseEntity<Artistalbums> addArtistAlbum(@RequestParam(value = "artist") String artist,
+            @RequestParam(value = "album") String album) {
+        Artistalbums result = new Artistalbums(artist, album);
         artistAlbumsRepository.save(result);
-        return new ResponseEntity<>(result,HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     // end of REST interfaces
@@ -545,7 +557,7 @@ public class Application implements ApplicationRunner {
 
     public Set<String> composeAlbumsOfArtist(String name) {
         Set<String> result = new HashSet<>();
-        for (Artistalbums album : artistAlbumsRepository.findByArtist(name)){
+        for (Artistalbums album : artistAlbumsRepository.findByArtist(name)) {
             result.add(album.getAlbum());
         }
         return result;
@@ -553,7 +565,7 @@ public class Application implements ApplicationRunner {
 
     public Set<String> composeSongsOfArtist(String name) {
         Set<String> result = new HashSet<>();
-        for (Artistsongs song : artistSongsRepository.findByArtist(name)){
+        for (Artistsongs song : artistSongsRepository.findByArtist(name)) {
             result.add(song.getSong());
         }
         return result;
