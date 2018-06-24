@@ -10,6 +10,12 @@ import 'common.dart';
 Future<SongData> fetchSongData(name) async {
   final response =
       await http.get('http://192.168.99.100:8080/song?name=' + name);
+  final int statusCode = response.statusCode;
+
+  if (statusCode < 200 || statusCode > 400 || json == null) {
+    throw new Exception("Error while fetching data");
+  }
+
   final responseJson = json.decode(response.body);
 
   return new SongData.fromJson(responseJson);
@@ -63,8 +69,9 @@ class SongView extends StatelessWidget {
         new InfoSection('Title Length', viewedSongData.length),
         new InfoSection('Release Date',
             "${viewedSongData.releaseDate.year.toString()}-${viewedSongData.releaseDate.month.toString().padLeft(2,'0')}-${viewedSongData.releaseDate.day.toString().padLeft(2,'0')}"),
-        new InfoSection('Album Name', viewedSongData.album),
-        new MultiInfoSection('Artists', viewedSongData.artists),
+        new InfoSection.restful('Album Name', viewedSongData.album, "album"),
+        new MultiInfoSection.restful(
+            'Artists', viewedSongData.artists, "artist"),
         new MultiInfoSection('Genres', viewedSongData.genres),
         new MultiInfoSection("Tags", viewedSongData.tags)
       ],
@@ -78,6 +85,7 @@ class SongView extends StatelessWidget {
       case "YouTube":
         return Colors.redAccent;
     }
+    return Colors.white;
   }
 
   Widget _buildSongLinksTab(viewedSongData) {

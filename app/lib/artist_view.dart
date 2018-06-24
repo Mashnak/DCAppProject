@@ -10,6 +10,12 @@ import 'common.dart';
 Future<ArtistData> fetchArtistData(String name) async {
   final response =
       await http.get('http://192.168.99.100:8080/artist?name=' + name);
+  final int statusCode = response.statusCode;
+
+  if (statusCode < 200 || statusCode > 400 || json == null) {
+    throw new Exception("Error while fetching data");
+  }
+
   final responseJson = json.decode(response.body);
 
   return new ArtistData.fromJson(responseJson);
@@ -34,7 +40,6 @@ class ArtistData {
       : name = json['name'],
         genres = json['genre'],
         tags = json['tag'],
-        //songs = json['songs'],
         albums = json['albums'],
         imagePath = json['img'];
 }
@@ -49,7 +54,9 @@ class ArtistView extends StatelessWidget {
     return new ListView(
       children: <Widget>[
         new Image.network(
-          viewedArtistData.imagePath,
+          viewedArtistData.imagePath == null
+              ? "https://i.imgur.com/dmnwaaf.jpg?1"
+              : viewedArtistData.imagePath,
           height: 240.0,
           fit: BoxFit.cover,
         ),
@@ -89,10 +96,6 @@ class ArtistView extends StatelessWidget {
     );
   }
 
-  Widget _buildArtistCommentsTab() {
-    return new Icon(Icons.comment);
-  }
-
   @override
   Widget build(BuildContext context) {
     return new DefaultTabController(
@@ -106,9 +109,6 @@ class ArtistView extends StatelessWidget {
                 ),
                 new Tab(
                   icon: new Icon(Icons.music_note),
-                ),
-                new Tab(
-                  icon: new Icon(Icons.comment),
                 )
               ],
             ),
@@ -122,7 +122,6 @@ class ArtistView extends StatelessWidget {
                   children: [
                     _buildArtistInfoTab(snapshot.data),
                     _buildArtistAlbumsTab(context, snapshot.data),
-                    _buildArtistCommentsTab(),
                   ],
                 );
               } else if (snapshot.hasError) {

@@ -10,9 +10,14 @@ import 'common.dart';
 Future<AlbumData> fetchAlbumData(String name) async {
   final response =
       await http.get('http://192.168.99.100:8080/album?name=' + name);
-  final responseJson = json.decode(response.body);
 
-  print(responseJson);
+  final int statusCode = response.statusCode;
+
+  if (statusCode < 200 || statusCode > 400 || json == null) {
+    throw new Exception("Error while fetching data");
+  }
+
+  final responseJson = json.decode(response.body);
 
   return new AlbumData.fromJson(responseJson);
 }
@@ -49,14 +54,17 @@ class AlbumView extends StatelessWidget {
     return new ListView(
       children: <Widget>[
         new Image.network(
-          viewedAlbumData.imagePath,
+          viewedAlbumData.imagePath == null
+              ? "https://i.imgur.com/dmnwaaf.jpg?1"
+              : viewedAlbumData.imagePath,
           height: 240.0,
           fit: BoxFit.cover,
         ),
         new InfoSection('Album Title', viewedAlbumData.name),
         new InfoSection('Release Date',
             "${viewedAlbumData.releaseDate.year.toString()}-${viewedAlbumData.releaseDate.month.toString().padLeft(2,'0')}-${viewedAlbumData.releaseDate.day.toString().padLeft(2,'0')}"),
-        // new MultiInfoSection('Artists', viewedAlbumData.artists),
+        new MultiInfoSection.restful(
+            'Artists', viewedAlbumData.artists, "artist"),
         new MultiInfoSection('Genres', viewedAlbumData.genres),
         new MultiInfoSection('Tags', viewedAlbumData.tags)
       ],
@@ -92,10 +100,6 @@ class AlbumView extends StatelessWidget {
     );
   }
 
-  Widget _buildAlbumCommentsTab() {
-    return new Icon(Icons.comment);
-  }
-
   @override
   Widget build(BuildContext context) {
     return new DefaultTabController(
@@ -110,9 +114,6 @@ class AlbumView extends StatelessWidget {
                 ),
                 new Tab(
                   icon: new Icon(Icons.view_list),
-                ),
-                new Tab(
-                  icon: new Icon(Icons.comment),
                 )
               ],
             ),
@@ -125,7 +126,6 @@ class AlbumView extends StatelessWidget {
                   children: [
                     _buildAlbumInfoTab(snapshot.data),
                     _buildAlbumContentTab(context, snapshot.data),
-                    _buildAlbumCommentsTab(),
                   ],
                 );
               } else if (snapshot.hasError) {
