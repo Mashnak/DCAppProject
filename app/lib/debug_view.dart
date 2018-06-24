@@ -46,8 +46,8 @@ class DebugView extends StatelessWidget {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) =>
-                            new ArtistView(fetchArtistData(""))));
+                        builder: (context) => new ArtistView("Paul McCartney",
+                            fetchArtistData("Paul McCartney"))));
               },
             ),
             new RaisedButton(

@@ -7,43 +7,43 @@ import 'package:http/http.dart' as http;
 import 'package:app/album_view.dart';
 import 'common.dart';
 
-Future<ArtistData> fetchArtistData(id) async {
-  final response = await http.get('http://192.168.99.100:8080/artist?id=' + id);
+Future<ArtistData> fetchArtistData(String name) async {
+  final response =
+      await http.get('http://192.168.99.100:8080/artist?name=' + name);
   final responseJson = json.decode(response.body);
 
   return new ArtistData.fromJson(responseJson);
 }
 
 class ArtistData {
-  ArtistData(this.id, this.name, this.genres, this.tags, this.songs,
-      this.albums, this.publishers, this.imagePath);
+  ArtistData(
+      this.name,
+      this.genres,
+      this.tags, // this.songs,
+      this.albums,
+      this.imagePath);
 
-  final String id;
   final String name;
   final List genres;
   final List tags;
-  final List songs;
+  // final List songs;
   final List albums;
-  final List publishers;
-
   final String imagePath;
 
   ArtistData.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        name = json['name'],
-        genres = json['genres'],
-        tags = json['tags'],
-        songs = json['songs'],
+      : name = json['name'],
+        genres = json['genre'],
+        tags = json['tag'],
+        //songs = json['songs'],
         albums = json['albums'],
-        publishers = json['publishers'],
-        imagePath =
-            "https://images-eu.ssl-images-amazon.com/images/I/41WIm4pDLBL._SS500.jpg";
+        imagePath = json['img'];
 }
 
 class ArtistView extends StatelessWidget {
   final Future<ArtistData> futureArtistData;
+  final String artistName;
 
-  const ArtistView(this.futureArtistData);
+  const ArtistView(this.artistName, this.futureArtistData);
 
   Widget _buildArtistInfoTab(ArtistData viewedArtistData) {
     return new ListView(
@@ -54,25 +54,23 @@ class ArtistView extends StatelessWidget {
           fit: BoxFit.cover,
         ),
         new InfoSection('Artist Name', viewedArtistData.name),
-        new MultiInfoSection('Albums', viewedArtistData.albums),
-        new MultiInfoSection('Songs', viewedArtistData.songs),
-        new MultiInfoSection('Publishers', viewedArtistData.publishers),
+        //new MultiInfoSection('Songs', viewedArtistData.songs),
         new MultiInfoSection('Genres', viewedArtistData.genres),
         new MultiInfoSection('Tags', viewedArtistData.tags),
       ],
     );
   }
 
-  Widget _buildAlbumItem(BuildContext context, Map entry) {
+  Widget _buildAlbumItem(BuildContext context, String entry) {
     return new ListTile(
-      title: new Text(entry["name"]),
+      title: new Text(entry),
       trailing: new Icon(Icons.play_arrow),
       onTap: () {
         Navigator.push(
             context,
             new MaterialPageRoute(
                 builder: (context) =>
-                    new AlbumView(entry["id"], fetchAlbumData(entry["id"]))));
+                    new AlbumView(entry, fetchAlbumData(entry))));
       },
     );
   }
