@@ -17,7 +17,8 @@ export class UserService {
     search.set('password', user.password);
     user.isAdmin = user.isAdmin.toString();
     search.set('isAdmin', user.isAdmin);
-    this.http.post(this.ROOT_URL + '/register', {}, {search}).subscribe(res => console.log(res.json()));
+    const url = this.ROOT_URL + '/register';
+    this.http.post(url , {}, {search}).subscribe(res => console.log(res.json()));
   }
 
   getUser(loginUser) {

@@ -2,11 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import {Http, Response, RequestOptions, Headers, HttpModule, URLSearchParams} from '@angular/http';
+import {Http} from '@angular/http';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {Observable} from 'rxjs/Observable';
-import {Result} from '../Result';
 import {SongService} from './song.service';
+import {Result} from '../Result';
 
 @Component({
   selector: 'app-component',
@@ -27,20 +27,18 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.songservice.getRandom().subscribe(data => {
       this.searchResult = data;
-    });
+      });
   }
 
   onSubmit(searchForm) {
-
     this.songservice.getSong(searchForm).subscribe(data => {
       this.searchResult = data;
-      console.log(this.searchResult);
     });
   }
 
-  onAddedToFavorites(songItem) {
+  onAddedToFavorites(userItem, songItem) {
     console.log(songItem);
-    // return this.http.post<Song>(this.ROOT_URL, songItem);
+    this.songservice.postSongToFavorites(userItem, songItem);
   }
 
   open(content) {

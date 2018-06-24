@@ -16,8 +16,9 @@
   </div>
 </section>
 <div class="row">
-  <app-songitem *ngFor="let searchResult of Searchresult" [searchResult]="searchResult"
-                (addedToFavorites)="onAddedToFavorites($event)"></app-songitem>
+  <app-songitem
+  [searchResult]="SearchResult"
+  (addedToFavorites)="onAddedToFavorites($event)"></app-songitem>
 </div>
 <ng-template #content let-c="close" let-d="dismiss">
   <div class="modal-header">
