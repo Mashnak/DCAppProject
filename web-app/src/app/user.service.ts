@@ -1,12 +1,24 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Http, URLSearchParams, Response} from '@angular/http';
+import {UrlService} from './url.service';
 
 @Injectable()
 export class UserService {
 
 
-  readonly ROOT_URL: string = 'http://192.168.99.100:8080';
-  constructor(private http: Http) { }
+  constructor(private http: Http, private urlservice: UrlService) {
+  }
+
+  readonly ROOT_URL: string = this.urlservice.getURL();
+
+  registerUser(user) {
+    let search = new URLSearchParams();
+    search.set('name', user.name);
+    search.set('password', user.password);
+    user.isAdmin = user.isAdmin.toString();
+    search.set('isAdmin', user.isAdmin);
+    this.http.post(this.ROOT_URL + '/register', {}, {search}).subscribe(res => console.log(res.json()));
+  }
 
   getUser(loginUser) {
     let search = new URLSearchParams();

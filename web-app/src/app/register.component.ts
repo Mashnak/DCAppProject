@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {Http, Response, RequestOptions, Headers, HttpModule, URLSearchParams} from '@angular/http';
+import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
+import {UserService} from './user.service';
 
 @Component({
   selector: 'app-register',
@@ -9,17 +10,10 @@ import 'rxjs/add/operator/map';
 })
 export class RegisterComponent {
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private userservice: UserService) {
   }
 
-  readonly ROOT_URL: string = 'http://192.168.99.100:8080';
-
   onSubmit(user) {
-    let search = new URLSearchParams();
-    search.set('name', user.name);
-    search.set('password', user.password);
-    user.isAdmin = user.isAdmin.toString();
-    search.set('isAdmin', user.isAdmin);
-    this.http.post(this.ROOT_URL + '/register', {}, {search}).subscribe(res => console.log(res.json()));
+    this.userservice.registerUser(user);
   }
 }

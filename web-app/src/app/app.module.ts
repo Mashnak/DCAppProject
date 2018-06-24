@@ -9,6 +9,7 @@ import { RegisterComponent } from './register.component';
 import { LoginComponent } from './login.component';
 import {UserService} from './user.service';
 import {SongService} from './song.service';
+import {UrlService} from './url.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import {SongService} from './song.service';
     HttpModule,
     FormsModule,
     NgbModule.forRoot()],
-  providers: [UserService, SongService],
+  providers: [UserService, SongService, UrlService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
