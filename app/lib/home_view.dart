@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:app/playlist_view.dart';
+import 'package:app/profile_view.dart';
+import 'package:app/search_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -27,7 +30,7 @@ class HomeView extends StatelessWidget {
 
   const HomeView(this.futureHomeData);
 
-  Widget _buildHomeView(HomeData homeData) {
+  Widget _buildHomeView(context, HomeData homeData) {
     Paint namePaint = new Paint();
     namePaint.color = Colors.white;
     final TextStyle nameStyle = new TextStyle(
@@ -40,9 +43,19 @@ class HomeView extends StatelessWidget {
       padding: const EdgeInsets.all(5.0),
       children: homeData.songs.map((song) {
         return new GridTile(
-          child: new Image.network(
-            song.imagePath,
-            fit: BoxFit.cover,
+          child: new InkResponse(
+            enableFeedback: true,
+            child: Image.network(
+              song.imagePath,
+              fit: BoxFit.cover,
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) =>
+                          new SongView(song.name, fetchSongData(song.name))));
+            },
           ),
           footer: new Text(
             song.name,
@@ -63,7 +76,7 @@ class HomeView extends StatelessWidget {
         future: futureHomeData,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return _buildHomeView(snapshot.data);
+            return _buildHomeView(context, snapshot.data);
           } else if (snapshot.hasError) {
             return new Text("${snapshot.error}");
           }
@@ -72,6 +85,55 @@ class HomeView extends StatelessWidget {
             child: new CircularProgressIndicator(),
           );
         },
+      ),
+      drawer: new Drawer(
+        child: new ListView(
+          children: <Widget>[
+            new DrawerHeader(
+              child: new Text("Options"),
+            ),
+            new ListTile(
+              title: new Text("Search"),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new SearchView()));
+              },
+            ),
+            new ListTile(
+              title: new Text("Favourites"),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) =>
+                            new PlaylistView(fetchPlaylistData(""))));
+              },
+            ),
+            new ListTile(
+              title: new Text("Profile"),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) =>
+                            new ProfileView(fetchProfileData(""))));
+              },
+            ),
+            new AboutListTile(
+              aboutBoxChildren: <Widget>[
+                new Text("Made with Flutter my dudes.")
+              ],
+              applicationIcon: new Icon(Icons.ac_unit),
+              applicationLegalese: "DA Project Team A",
+              applicationName: "I Wanna Die - Music Finder",
+              applicationVersion: "0.4.20",
+              icon: new Icon(Icons.info),
+              child: new Text("About"),
+            )
+          ],
+        ),
       ),
     );
   }
