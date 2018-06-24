@@ -141,7 +141,7 @@ public class Application implements ApplicationRunner {
 
     /**
      * Registers a Users and enters it into the database. If the Username already
-     * exists the database this returns 500 Bad request
+     * exists the database this returns 400 Bad request
      *
      * @param name     the desired unique Username
      * @param password the password of the User
@@ -149,13 +149,16 @@ public class Application implements ApplicationRunner {
      * @return the created User
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<Users> registerUser(@RequestParam(value = "name") String name,
+    public ResponseEntity<Object> registerUser(@RequestParam(value = "name") String name,
             @RequestParam(value = "password") String password, @RequestParam(value = "isAdmin") String admin) {
         logger.info("Registering user with name {}", name);
         logger.info("");
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         boolean isAdmin = Boolean.valueOf(admin);
         Users newUser = new Users(name, password, date, isAdmin);
+        if (registeredUsers.findByName(name)!=null){
+            return new ResponseEntity<>("",HttpStatus.BAD_REQUEST);
+        }
         registeredUsers.save(newUser);
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
@@ -189,6 +192,37 @@ public class Application implements ApplicationRunner {
         artistRepository.save(result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    /**
+     * Adds a song to the favorites of a specified user. The specified user has to be logged in.
+     *
+     * If the user is not logged in ths returns 401 unauthorized
+     * If no song is found under the specified name this returns 404 not found
+     * @param name  the username of the user adding a favorite
+     * @param song  the name of the song to be added
+     * @return      The user with the updated playlist
+     */
+    @RequestMapping(value = "/favorite", method = RequestMethod.POST)
+    public ResponseEntity<Object> addFavorite(@RequestParam(value = "user")String name,
+                                              @RequestParam(value = "song")String song){
+        if (sessions.findByName(name)!=null){
+            if (songRepository.findByName(song)!=null) {
+                Users user = registeredUsers.findByName(sessions.findByName(name));
+                user.addFavorite(song);
+                registeredUsers.deleteByName(user.getName());
+                registeredUsers.save(user);
+                logger.info("saving {} as favorite for user {}", song, name);
+                logger.info("");
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No such song in database", HttpStatus.NOT_FOUND);
+            }
+        }else {
+            return new ResponseEntity<>("User is not logged in", HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
     // end of POST interfaces
 
     /**
@@ -240,7 +274,7 @@ public class Application implements ApplicationRunner {
      * If nothing is found the result is an empty set.
      *
      * @param term the term to search for
-     * @return a stringified Set of JSON Objects containing the search result
+     * @return a stringified Set of JSON Objects containing the search results
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity<String> search(@RequestParam(value = "term") String term) {
@@ -261,7 +295,6 @@ public class Application implements ApplicationRunner {
         albumResults.addAll(albumRepository.findByNameLike(term));
         // albumResults.addAll(albumRepository.findByPublisherLike(term));
         // albumResults.addAll(albumRepository.findByGenreLike(term));
-        albumResults.addAll(albumRepository.findByArtistLike(term));
         albumResults.addAll(albumRepository.findByTagLike(term));
 
         Set<Artists> artistResults = new HashSet<>();
@@ -433,6 +466,7 @@ public class Application implements ApplicationRunner {
 
         return new ResponseEntity<>(artistAlbumSong.toString(), HttpStatus.OK);
     }
+
 
     @RequestMapping(value = "/random", method = RequestMethod.GET)
     public ResponseEntity<Object> getRandomSong(@RequestParam(value = "count") String count) {

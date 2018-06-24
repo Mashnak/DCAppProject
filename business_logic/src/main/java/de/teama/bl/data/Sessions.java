@@ -10,7 +10,7 @@ public class Sessions extends Users {
         this.password = password;
         this.birthdate = birthdate;
         this.friends = new HashSet<>();
-        this.playlists = new LinkedList<>();
+        this.playlist = new LinkedList<>();
         this.isAdmin = isAdmin;
     }
 }
