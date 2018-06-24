@@ -15,7 +15,7 @@ public class Songs {
 
     private String name;
 
-    private String artist;
+    //private String artist;
     private String length;
     private String releaseDate;
     private String lyrics;
@@ -51,9 +51,9 @@ public class Songs {
         return name;
     }
 
-    public String getArtist() {
-        return artist;
-    }
+//    public String getArtist() {
+//        return artist;
+//    }
 
     public String getLength() {
         String formattedLength = "";
