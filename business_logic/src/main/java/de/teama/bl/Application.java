@@ -160,16 +160,6 @@ public class Application implements ApplicationRunner {
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/addTag", method = RequestMethod.POST)
-    public ResponseEntity<Songs> addTag(@RequestParam(value = "name") String name,
-            @RequestParam(value = "tag") String tag) {
-        Songs result = songRepository.findByName(name);
-        songRepository.delete(result);
-        result.addTag(tag);
-        songRepository.save(result);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/tag/song", method = RequestMethod.POST)
     public ResponseEntity<Songs> addTagToSong(@RequestParam(value = "name") String name,
             @RequestParam(value = "tag") String tag) {
@@ -271,6 +261,7 @@ public class Application implements ApplicationRunner {
         albumResults.addAll(albumRepository.findByNameLike(term));
         // albumResults.addAll(albumRepository.findByPublisherLike(term));
         // albumResults.addAll(albumRepository.findByGenreLike(term));
+        albumResults.addAll(albumRepository.findByArtistLike(term));
         albumResults.addAll(albumRepository.findByTagLike(term));
 
         Set<Artists> artistResults = new HashSet<>();
@@ -433,18 +424,6 @@ public class Application implements ApplicationRunner {
         // name = name.replace(" ","_");
         Artists result = artistRepository.findByName(name);
         JSONObject artistAlbumSong = new JSONObject(result);
-
-        // JSONArray albums = new JSONArray();
-        // for (Albums album : artistAlbumsRepository.findByArtist(result.getName())) {
-        // albums.put(album);
-        // }
-        // artistAlbumSong.put("albums", albums);
-
-        // JSONArray songs = new JSONArray();
-        // for (Songs song : artistSongsRepository.findByArtist(result.getName())) {
-        // songs.put(song);
-        // }
-        // artistAlbumSong.put("songs", songs);
 
         JSONArray albums = new JSONArray();
         for (String album : composeAlbumsOfArtist(name)) {

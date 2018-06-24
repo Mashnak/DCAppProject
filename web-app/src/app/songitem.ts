@@ -2,7 +2,6 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {Http} from '@angular/http';
 import {Injectable} from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import {Result} from '../Result';
 
 @Component({
   selector: 'app-songitem',
@@ -30,7 +29,7 @@ export class SongitemComponent {
 
   onSubmit(songTag) {
     console.log(songTag);
-    return this.http.post(this.ROOT_URL, songTag);
+    // post request /addTag?name=songname&tag=songTag
   }
 
   open(content) {
