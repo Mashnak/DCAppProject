@@ -24,21 +24,18 @@ export class AppComponent implements OnInit {
   constructor(private http: Http, private modalService: NgbModal, private songservice: SongService) {
   }
 
-  readonly ROOT_URL: string = 'http://192.168.99.100:8080';
-
   ngOnInit() {
-      this.songservice.getRandom().subscribe(data => {
-        this.searchResult = data;
-        console.log(data);
-      });
+    this.songservice.getRandom().subscribe(data => {
+      this.searchResult = data;
+    });
   }
 
   onSubmit(searchForm) {
-    const url = this.ROOT_URL + '/search';
-    let search = new URLSearchParams();
-    search.set('term', searchForm.searchText);
-    this.http.get(url, {search}).subscribe(res => console.log(res.json()));
-    console.log(this.searchResult);
+
+    this.songservice.getSong(searchForm).subscribe(data => {
+      this.searchResult = data;
+      console.log(this.searchResult);
+    });
   }
 
   onAddedToFavorites(songItem) {
