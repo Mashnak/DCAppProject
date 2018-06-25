@@ -161,13 +161,21 @@ public class Application implements ApplicationRunner {
         if (registeredUsers.findByName(name)!=null){
             logger.info("User {} already exists", name);
             logger.info("");
-            heartbeat("BL_Register", "User " + name + " already exists", true);
+            try{
+                heartbeat("BL_Register", "User " + name + " already exists", true);
+            }catch (Exception e){
+                logger.info("Heartbeat failed");
+            }
             return new ResponseEntity<>("User already exists",HttpStatus.BAD_REQUEST);
         }
         registeredUsers.save(newUser);
         logger.info("User {} successfully registered", name);
         logger.info("");
-        heartbeat("BL_Register", "User " + name + " successfully registered", false);
+        try{
+            heartbeat("BL_Register", "User " + name + " successfully registered", false);
+        }catch (Exception e){
+            logger.info("Heartbeat failed");
+        }
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
@@ -505,11 +513,19 @@ public class Application implements ApplicationRunner {
                 login(name);
                 return new ResponseEntity<>(user, HttpStatus.OK);
             } else {
-                heartbeat("BL_Login", "Invalid password",true);
+                try{
+                    heartbeat("BL_Login", "Invalid password",true);
+                }catch (Exception e){
+                    logger.info("Heartbeat failed");
+                }
                 return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
             }
         } catch (NullPointerException e) {
-            heartbeat("BL_Login", "Invalid username",true);
+            try{
+                heartbeat("BL_Login", "Invalid username",true);
+            }catch (Exception e){
+                logger.info("Heartbeat failed");
+            }
             return new ResponseEntity<>("Invalid username", HttpStatus.NOT_FOUND);
         }
     }
@@ -540,7 +556,11 @@ public class Application implements ApplicationRunner {
     public ResponseEntity<String> getSong(@RequestParam(value = "name", required = false) String name) {
         logger.info("Searching for Song with name {}", name);
         logger.info("");
-        heartbeat("BL_Get_Request", "Searching for Song with name " + name,false);
+        try{
+            heartbeat("BL_Get_Request", "Searching for Song with name " + name,false);
+        }catch (Exception e){
+            logger.info("Heartbeat failed");
+        }
         // name = name.replace(" ", "_");
         Songs result = songRepository.findByName(name);
         JSONObject artistSong = new JSONObject(result);
@@ -552,7 +572,11 @@ public class Application implements ApplicationRunner {
         artistSong.put("artists", artists);
 
         if (result == null) {
-            heartbeat("BL_Get_Request", "No song with name " + name + " in database",true);
+            try{
+                heartbeat("BL_Get_Request", "No song with name " + name + " in database",true);
+            }catch (Exception e){
+                logger.info("Heartbeat failed");
+            }
             return new ResponseEntity<>("No song with this name in database", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(artistSong.toString(), HttpStatus.OK);
@@ -566,7 +590,11 @@ public class Application implements ApplicationRunner {
         Users result = registeredUsers.findByName(name);
 
         if (result == null) {
-            heartbeat("BL_Get_Request", "No user with name " + name + " in database",true);
+            try{
+                heartbeat("BL_Get_Request", "No user with name " + name + " in database",true);
+            }catch (Exception e){
+                logger.info("Heartbeat failed");
+            }
             return new ResponseEntity<>("No user with this name in database", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
@@ -697,7 +725,11 @@ public class Application implements ApplicationRunner {
         if (sessions.findByName(username) == null) {
             logger.info("Logging in {}", username);
             logger.info("");
-            heartbeat("BL_Login", "Logging in " + username,false);
+            try{
+                heartbeat("BL_Login", "Logging in " + username,false);
+            }catch (Exception e){
+                logger.info("Heartbeat failed");
+            }
             Sessions user = registeredUsers.findByName(username).createSession();
             sessions.save(user);
         } else {
@@ -710,7 +742,11 @@ public class Application implements ApplicationRunner {
         if (sessions.findByName(username) != null) {
             logger.info("Logging out {}", username);
             logger.info("");
-            heartbeat("BL_Login", "Logging out " + username,false);
+            try{
+                heartbeat("BL_Login", "Logging out " + username,false);
+            }catch (Exception e){
+                logger.info("Heartbeat failed");
+            }
             sessions.deleteByName(username);
         } else {
             logger.info("Users {} is not logged in.", username);
