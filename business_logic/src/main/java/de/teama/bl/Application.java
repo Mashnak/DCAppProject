@@ -157,9 +157,13 @@ public class Application implements ApplicationRunner {
         boolean isAdmin = Boolean.valueOf(admin);
         Users newUser = new Users(name, password, date, isAdmin);
         if (registeredUsers.findByName(name)!=null){
-            return new ResponseEntity<>("",HttpStatus.BAD_REQUEST);
+            logger.info("User {} already exists", name);
+            logger.info("");
+            return new ResponseEntity<>("User already exists",HttpStatus.BAD_REQUEST);
         }
         registeredUsers.save(newUser);
+        logger.info("User {} successfully registered", name);
+        logger.info("");
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
@@ -224,47 +228,6 @@ public class Application implements ApplicationRunner {
     }
 
     // end of POST interfaces
-
-    /**
-     * Validates the credentials, a username and a password, of a user. If these
-     * credentials are correct, the user is logged in and will be saved as an active
-     * session.
-     *
-     * If the user is not registered this returns 404 not found. If the password is
-     * incorrect this returns 401 unauthorized.
-     *
-     * @param name     the username of the user logging in
-     * @param password the password of the user
-     * @return the user object that has been logged in
-     */
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ResponseEntity<Object> loginUser(@RequestParam(value = "name") String name,
-            @RequestParam(value = "password") String password) {
-        Users user = registeredUsers.findByName(name);
-        try {
-            if (user.getPassword().equals(password)) {
-                login(name);
-                return new ResponseEntity<>(user, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
-            }
-        } catch (NullPointerException e) {
-            return new ResponseEntity<>("Invalid username", HttpStatus.NOT_FOUND);
-        }
-    }
-
-    /**
-     * Logs out the user with the given name and ends its session
-     *
-     * @param name the username of the user logging out
-     * @return the user object that has been logged out
-     */
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public ResponseEntity<Object> logoutUser(@RequestParam(value = "name") String name) {
-        Users user = registeredUsers.findByName(name);
-        logout(name);
-        return new ResponseEntity<>(user.toString(), HttpStatus.OK);
-    }
 
     /**
      * Returns a list of Objects containing the given term in any of the relevant
@@ -396,6 +359,104 @@ public class Application implements ApplicationRunner {
         logger.info("Found {} different results", size);
         logger.info("");
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    /**
+     * Returns a list of Song containing the given term in any of the relevant
+     * text bast properties: name and tag.
+     *
+     * If nothing is found the result is an empty set.
+     *
+     * @param term the term to search for
+     * @return a stringified Set of JSON Objects containing the search results
+     */
+    @RequestMapping(value = "/webSearch", method = RequestMethod.GET)
+    public ResponseEntity<String> webSearch(@RequestParam(value = "term") String term) {
+
+        logger.info("Searching for songs containing {}", term);
+        // term = term.replace(" ","_");
+
+        Set<Songs> songResults = new HashSet<>();
+        songResults.addAll(songRepository.findByNameLike(term));
+        // songResults.addAll(songRepository.findByLengthLike(term));
+        // songResults.addAll(songRepository.findByReleaseDateLike(term));
+        // songResults.addAll(songRepository.findByLyricsLike(term));
+        // songResults.addAll(songRepository.findByGenreLike(term));
+        songResults.addAll(songRepository.findByTagLike(term));
+        // songResults.addAll(songRepository.findByAlbumLike(term));
+
+        int size = 0;
+        size += songResults.size();
+
+        String result = "[";
+
+        if (songResults.size() > 0) {
+            Songs[] songs = new Songs[songResults.size()];
+            songs = songResults.toArray(songs);
+            JSONObject artistSong = new JSONObject(songs[0]);
+            JSONArray artists = new JSONArray();
+            for (Artistsongs artist : artistSongsRepository.findBySong(songs[0].getName())) {
+                artists.put(artist.getArtist());
+            }
+            artistSong.put("artists", artists);
+            result += artistSong;
+            for (int i = 1; i < songs.length; i++) {
+                result += ",";
+                artistSong = new JSONObject(songs[i]);
+                artists = new JSONArray();
+                for (Artistsongs artist : artistSongsRepository.findBySong(songs[0].getName())) {
+                    artists.put(artist.getArtist());
+                }
+                artistSong.put("artists", artists);
+                result += artistSong;
+            }
+        }
+
+        result += "]";
+        logger.info("Found {} different results", size);
+        logger.info("");
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    /**
+     * Validates the credentials, a username and a password, of a user. If these
+     * credentials are correct, the user is logged in and will be saved as an active
+     * session.
+     *
+     * If the user is not registered this returns 404 not found. If the password is
+     * incorrect this returns 401 unauthorized.
+     *
+     * @param name     the username of the user logging in
+     * @param password the password of the user
+     * @return the user object that has been logged in
+     */
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ResponseEntity<Object> loginUser(@RequestParam(value = "name") String name,
+            @RequestParam(value = "password") String password) {
+        Users user = registeredUsers.findByName(name);
+        try {
+            if (user.getPassword().equals(password)) {
+                login(name);
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
+            }
+        } catch (NullPointerException e) {
+            return new ResponseEntity<>("Invalid username", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * Logs out the user with the given name and ends its session
+     *
+     * @param name the username of the user logging out
+     * @return the user object that has been logged out
+     */
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ResponseEntity<Object> logoutUser(@RequestParam(value = "name") String name) {
+        Users user = registeredUsers.findByName(name);
+        logout(name);
+        return new ResponseEntity<>(user.toString(), HttpStatus.OK);
     }
 
     /**
