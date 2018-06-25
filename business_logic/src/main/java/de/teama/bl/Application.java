@@ -210,8 +210,12 @@ public class Application implements ApplicationRunner {
     public ResponseEntity<Object> addFavorite(@RequestParam(value = "user")String name,
                                               @RequestParam(value = "song")String song){
         if (sessions.findByName(name)!=null){
+            logger.info("Found session for user {}", sessions.findByName(name).getName());
+            logger.info("");
             if (songRepository.findByName(song)!=null) {
-                Users user = registeredUsers.findByName(sessions.findByName(name));
+                logger.info("found song with name {}", song);
+                logger.info("");
+                Users user = registeredUsers.findByName(sessions.findByName(name).getName());
                 user.addFavorite(song);
                 registeredUsers.deleteByName(user.getName());
                 registeredUsers.save(user);
@@ -224,7 +228,30 @@ public class Application implements ApplicationRunner {
         }else {
             return new ResponseEntity<>("User is not logged in", HttpStatus.UNAUTHORIZED);
         }
+    }
 
+    @RequestMapping(value = "/friend", method = RequestMethod.POST)
+    public ResponseEntity<Object> addFriend(@RequestParam(value = "user")String name,
+                                              @RequestParam(value = "friend")String friend){
+        if (sessions.findByName(name)!=null){
+            logger.info("Found session for user {}", sessions.findByName(name).getName());
+            logger.info("");
+            if (registeredUsers.findByName(friend)!=null) {
+                logger.info("found user with name {}", friend);
+                logger.info("");
+                Users user = registeredUsers.findByName(registeredUsers.findByName(name).getName());
+                user.addFriend(friend);
+                registeredUsers.deleteByName(user.getName());
+                registeredUsers.save(user);
+                logger.info("saving {} as favorite for user {}", friend, name);
+                logger.info("");
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No such user registered in database", HttpStatus.NOT_FOUND);
+            }
+        }else {
+            return new ResponseEntity<>("User is not logged in", HttpStatus.UNAUTHORIZED);
+        }
     }
 
     // end of POST interfaces
