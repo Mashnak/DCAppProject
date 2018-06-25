@@ -2,13 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:app/common.dart';
+import 'package:app/song_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'globals.dart' as globals;
 
 Future<ProfileData> fetchProfileData(String name) async {
-  final response = await http.get(BASE_URL + "/user?name=" + name);
+  final response = await http.get(globals.BASE_URL + "/user?name=" + name);
   final int statusCode = response.statusCode;
   if (statusCode < 200 || statusCode > 400 || json == null) {
     final responseJson = json.decode(response.body);
@@ -62,8 +63,6 @@ class ProfileViewState extends State<ProfileView> {
       children: <Widget>[
         new InfoSection("Username", data.name),
         new InfoSection("Date of Birth", data.birthdate.toString()),
-        new MultiInfoSection("Friends", data.friends),
-        new MultiInfoSection("Playlists", data.playlists),
         data.isAdmin
             ? new Text("This user is an Admin")
             : new Container(
@@ -75,7 +74,7 @@ class ProfileViewState extends State<ProfileView> {
                 child: new Text("Logout"),
                 onPressed: () {
                   http
-                      .get(BASE_URL +
+                      .get(globals.BASE_URL +
                           "/logout?name=" +
                           globals.loggedInUser.name)
                       .then((response) {
@@ -132,7 +131,7 @@ class ProfileViewState extends State<ProfileView> {
                 context,
                 new MaterialPageRoute(
                     builder: (context) =>
-                        new ProfileView(entry, fetchProfileData(entry))));
+                        new SongView(entry, fetchSongData(entry))));
           },
         );
       }).toList(),
@@ -219,13 +218,14 @@ class ProfileViewState extends State<ProfileView> {
                                               icon: new Icon(Icons.tag_faces)),
                                           onSubmitted: (String val) {
                                             http
-                                                .post(BASE_URL +
-                                                    "/friend?name=" +
+                                                .post(globals.BASE_URL +
+                                                    "/friend?user=" +
                                                     globals.loggedInUser.name +
                                                     "&friend=" +
                                                     val)
                                                 .then((response) {
                                               print(response);
+                                              setState(() {});
                                             });
                                             Navigator.pop(context);
                                           },
@@ -287,13 +287,14 @@ class ProfileViewState extends State<ProfileView> {
                               : new SimpleDialogOption(
                                   onPressed: () {
                                     http
-                                        .post(BASE_URL +
+                                        .post(globals.BASE_URL +
                                             "/friend?name=" +
                                             globals.loggedInUser.name +
                                             "&friend=" +
                                             profileName)
                                         .then((response) {
                                       print(response);
+                                      setState(() {});
                                     });
                                     Navigator.pop(context);
                                   },

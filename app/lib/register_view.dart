@@ -65,7 +65,7 @@ class RegisterViewState extends State<RegisterView> {
                   print(_registerData.toString());
 
                   http
-                      .post(BASE_URL +
+                      .post(globals.BASE_URL +
                           "/register?name=" +
                           _registerData.name +
                           "&password=" +
@@ -86,7 +86,7 @@ class RegisterViewState extends State<RegisterView> {
                     }
                   }).then((response) {
                     http
-                        .get(BASE_URL +
+                        .get(globals.BASE_URL +
                             "/login?name=" +
                             _registerData.name +
                             "&password=" +
@@ -164,13 +164,13 @@ class RegisterViewState extends State<RegisterView> {
                   _loginKey.currentState.save();
 
                   print(_loginData.toString());
-                  print(BASE_URL +
+                  print(globals.BASE_URL +
                       "/login?name=" +
                       _loginData.name +
                       "&password=" +
                       _loginData.password);
                   http
-                      .get(BASE_URL +
+                      .get(globals.BASE_URL +
                           "/login?name=" +
                           _loginData.name +
                           "&password=" +

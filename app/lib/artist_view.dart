@@ -9,7 +9,7 @@ import 'common.dart';
 import 'globals.dart' as globals;
 
 Future<ArtistData> fetchArtistData(String name) async {
-  final response = await http.get(BASE_URL + '/artist?name=' + name);
+  final response = await http.get(globals.BASE_URL + '/artist?name=' + name);
   final int statusCode = response.statusCode;
 
   if (statusCode < 200 || statusCode > 400 || json == null) {
@@ -176,7 +176,7 @@ class ArtistView extends StatelessWidget {
                                                       Icons.tag_faces)),
                                               onSubmitted: (String val) {
                                                 http
-                                                    .post(BASE_URL +
+                                                    .post(globals.BASE_URL +
                                                         "/tag/artist?name=" +
                                                         artistName +
                                                         "&tag=" +

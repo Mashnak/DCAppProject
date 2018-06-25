@@ -9,7 +9,7 @@ import 'common.dart';
 import 'globals.dart' as globals;
 
 Future<AlbumData> fetchAlbumData(String name) async {
-  final response = await http.get(BASE_URL + '/album?name=' + name);
+  final response = await http.get(globals.BASE_URL + '/album?name=' + name);
 
   final int statusCode = response.statusCode;
 
@@ -180,7 +180,7 @@ class AlbumView extends StatelessWidget {
                                                       Icons.tag_faces)),
                                               onSubmitted: (String val) {
                                                 http
-                                                    .post(BASE_URL +
+                                                    .post(globals.BASE_URL +
                                                         "/tag/album?name=" +
                                                         albumName +
                                                         "&tag=" +

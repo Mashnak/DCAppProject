@@ -9,7 +9,7 @@ import 'common.dart';
 import 'globals.dart' as globals;
 
 Future<SongData> fetchSongData(name) async {
-  final response = await http.get(BASE_URL + '/song?name=' + name);
+  final response = await http.get(globals.BASE_URL + '/song?name=' + name);
   final int statusCode = response.statusCode;
 
   if (statusCode < 200 || statusCode > 400 || json == null) {
@@ -199,7 +199,7 @@ class SongView extends StatelessWidget {
                             new SimpleDialogOption(
                               onPressed: () {
                                 http
-                                    .post(BASE_URL +
+                                    .post(globals.BASE_URL +
                                         "/favorite?user=" +
                                         globals.loggedInUser.name +
                                         "&song=" +
@@ -242,7 +242,7 @@ class SongView extends StatelessWidget {
                                                     new Icon(Icons.tag_faces)),
                                             onSubmitted: (String val) {
                                               http
-                                                  .post(BASE_URL +
+                                                  .post(globals.BASE_URL +
                                                       "/tag/song?name=" +
                                                       songName +
                                                       "&tag=" +

@@ -4,10 +4,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'globals.dart' as globals;
 import 'common.dart';
 
 Future<PublisherData> fetchPublisherData(id) async {
-  final response = await http.get(BASE_URL + '/publisher?id=' + id);
+  final response = await http.get(globals.BASE_URL + '/publisher?id=' + id);
   final responseJson = json.decode(response.body);
 
   return new PublisherData.fromJson(responseJson);
