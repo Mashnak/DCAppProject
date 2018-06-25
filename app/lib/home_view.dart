@@ -115,13 +115,14 @@ class HomeView extends StatelessWidget {
               },
             ),
             new ListTile(
-              title: new Text("Favourites"),
+              title: new Text("Favorites"),
               onTap: () {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) =>
-                            new PlaylistView(fetchPlaylistData(""))));
+                        builder: (context) => globals.loggedInUser != null
+                            ? new PlaylistView()
+                            : new RegisterView()));
               },
             ),
             new ListTile(
