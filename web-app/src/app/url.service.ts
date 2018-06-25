@@ -10,8 +10,4 @@ export class UrlService {
   getURL() {
     return this.ROOT_URL;
   }
-
-  test() {
-    return 'test';
-  }
 }

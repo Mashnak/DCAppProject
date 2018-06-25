@@ -26,4 +26,19 @@ export class SongService {
     return this.http.get(url, {search})
       .map((res: Response) => (res.json()));
   }
+
+  postSongToFavorites(song) {
+    let search = new URLSearchParams();
+    search.set('song', song.name);
+    const url = this.ROOT_URL + '/favorite';
+    this.http.post(url, {}, {search}).subscribe(res => console.log(res.json()));
+  }
+
+  postTag(song, tag) {
+    let search = new URLSearchParams();
+    search.set('song', song.name);
+    search.set('tag', tag.name);
+    const url = this.ROOT_URL + '/addTag';
+    this.http.post(url, {}, {search}).subscribe(res => console.log(res.json()));
+  }
 }

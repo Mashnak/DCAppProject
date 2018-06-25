@@ -2,6 +2,7 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {Http} from '@angular/http';
 import {Injectable} from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {SongService} from './song.service';
 
 @Component({
   selector: 'app-songitem',
@@ -13,23 +14,18 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 export class SongitemComponent {
   closeResult: string;
 
-  constructor(private http: Http, private modalService: NgbModal) {
+  constructor(private http: Http, private modalService: NgbModal, private songservice: SongService) {
   }
-
-  readonly ROOT_URL = 'http://192.168.99.100:8080';
 
   @Input() searchResult;
   @Output() addedToFavorites = new EventEmitter();
 
-  // sends an event to app.component.ts if a song is requested to add to a playlist
   postSongToFavorites() {
     this.addedToFavorites.emit(this.searchResult);
-    console.log('added ' + this.searchResult +  ' to favorites');
   }
 
-  onSubmit(songTag) {
-    console.log(songTag);
-    // post request /addTag?name=songname&tag=songTag
+  onSubmit(song, tag) {
+    this.songservice.postTag(song, tag);
   }
 
   open(content) {
