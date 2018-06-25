@@ -17,6 +17,7 @@ Future<SongData> fetchSongData(name) async {
   }
 
   final responseJson = json.decode(response.body);
+  print(responseJson);
 
   return new SongData.fromJson(responseJson);
 }
@@ -84,6 +85,8 @@ class SongView extends StatelessWidget {
         return Colors.lightGreen;
       case "YouTube":
         return Colors.redAccent;
+      case "Soundcloud":
+        return Colors.deepOrange;
     }
     return Colors.white;
   }

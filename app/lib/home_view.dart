@@ -13,7 +13,25 @@ import 'globals.dart' as globals;
 
 Future<HomeData> fetchHomeData() async {
   final response = await http.get(globals.BASE_URL + '/random?count=10');
-  final responseJson = json.decode(response.body);
+  final int statusCode = response.statusCode;
+
+  if (statusCode < 200 || statusCode > 400 || json == null) {
+    final responseJson = json.decode(response.body);
+    print("Error");
+    print(statusCode);
+    print(responseJson);
+    throw new Exception("Error while fetching data");
+  }
+
+  print("Success");
+  List responseJson;
+  try {
+    responseJson = json.decode(response.body);
+  } catch (e) {
+    print("Failed to decode this list of songs.");
+    print(e.toString());
+  }
+  // print(responseJson);
 
   return new HomeData.fromJson(responseJson);
 }
@@ -23,7 +41,10 @@ class HomeData {
 
   HomeData.fromJson(List json)
       : songs = json.map((entry) {
-          return SongData.fromJson(entry);
+          print(entry.toString());
+          SongData data = SongData.fromJson(entry);
+          print("Successfully parsed: " + data.name);
+          return data;
         }).toList();
 }
 

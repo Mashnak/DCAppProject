@@ -14,6 +14,12 @@ class InfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (sectionValue == null || sectionValue == "") {
+      return new Container(
+        width: 0.0,
+        height: 0.0,
+      );
+    }
     if (requestType != null) {
       return new Container(
         padding: const EdgeInsets.all(12.0),
@@ -104,7 +110,7 @@ class MultiInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (sectionValues.length == 0) {
+    if (sectionValues == null || sectionValues.length == 0) {
       return new Container(
         width: 0.0,
         height: 0.0,
