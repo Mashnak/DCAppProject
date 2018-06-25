@@ -13,7 +13,7 @@ import 'song_view.dart';
 import 'globals.dart' as globals;
 
 Future<HomeData> fetchHomeData() async {
-  final response = await http.get('http://192.168.99.100:8080/random?count=10');
+  final response = await http.get(BASE_URL + '/random?count=10');
   final responseJson = json.decode(response.body);
 
   return new HomeData.fromJson(responseJson);

@@ -8,8 +8,7 @@ import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
 
 Future<ProfileData> fetchProfileData(String name) async {
-  final response =
-      await http.get("http://192.168.99.100:8080/user?name=" + name);
+  final response = await http.get(BASE_URL + "/user?name=" + name);
   final int statusCode = response.statusCode;
   if (statusCode < 200 || statusCode > 400 || json == null) {
     final responseJson = json.decode(response.body);
@@ -76,7 +75,8 @@ class ProfileViewState extends State<ProfileView> {
                 child: new Text("Logout"),
                 onPressed: () {
                   http
-                      .get("http://192.168.99.100:8080/logout?name=" +
+                      .get(BASE_URL +
+                          "/logout?name=" +
                           globals.loggedInUser.name)
                       .then((response) {
                     final int statusCode = response.statusCode;
@@ -219,12 +219,11 @@ class ProfileViewState extends State<ProfileView> {
                                               icon: new Icon(Icons.tag_faces)),
                                           onSubmitted: (String val) {
                                             http
-                                                .post(
-                                                    "http://192.168.99.100:8080/friend?name=" +
-                                                        globals
-                                                            .loggedInUser.name +
-                                                        "&friend=" +
-                                                        val)
+                                                .post(BASE_URL +
+                                                    "/friend?name=" +
+                                                    globals.loggedInUser.name +
+                                                    "&friend=" +
+                                                    val)
                                                 .then((response) {
                                               print(response);
                                             });
@@ -288,11 +287,11 @@ class ProfileViewState extends State<ProfileView> {
                               : new SimpleDialogOption(
                                   onPressed: () {
                                     http
-                                        .post(
-                                            "http://192.168.99.100:8080/friend?name=" +
-                                                globals.loggedInUser.name +
-                                                "&friend=" +
-                                                profileName)
+                                        .post(BASE_URL +
+                                            "/friend?name=" +
+                                            globals.loggedInUser.name +
+                                            "&friend=" +
+                                            profileName)
                                         .then((response) {
                                       print(response);
                                     });

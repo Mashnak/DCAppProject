@@ -162,8 +162,7 @@ class _SearchViewState extends State<SearchView> {
   }
 
   Future<SearchData> performSearch(String val) async {
-    final response =
-        await http.get('http://192.168.99.100:8080/search?term=' + val);
+    final response = await http.get(BASE_URL + '/search?term=' + val);
     final responseJson = json.decode(response.body);
 
     return new SearchData.fromJson(responseJson);

@@ -7,8 +7,7 @@ import 'package:http/http.dart' as http;
 import 'common.dart';
 
 Future<PublisherData> fetchPublisherData(id) async {
-  final response =
-      await http.get('http://192.168.99.100:8080/publisher?id=' + id);
+  final response = await http.get(BASE_URL + '/publisher?id=' + id);
   final responseJson = json.decode(response.body);
 
   return new PublisherData.fromJson(responseJson);

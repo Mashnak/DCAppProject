@@ -88,7 +88,7 @@ class DebugView extends StatelessWidget {
                     context,
                     new MaterialPageRoute(
                         builder: (context) =>
-                            new PlaylistView(fetchPlaylistData(""))));
+                            new PlaylistView()));
               },
             ),
             new RaisedButton(
