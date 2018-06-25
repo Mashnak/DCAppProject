@@ -65,7 +65,8 @@ class RegisterViewState extends State<RegisterView> {
                   print(_registerData.toString());
 
                   http
-                      .post("http://192.168.99.100:8080/register?name=" +
+                      .post(globals.BASE_URL +
+                          "/register?name=" +
                           _registerData.name +
                           "&password=" +
                           _registerData.password +
@@ -85,7 +86,8 @@ class RegisterViewState extends State<RegisterView> {
                     }
                   }).then((response) {
                     http
-                        .get("http://192.168.99.100:8080/login?name=" +
+                        .get(globals.BASE_URL +
+                            "/login?name=" +
                             _registerData.name +
                             "&password=" +
                             _registerData.password +
@@ -162,12 +164,14 @@ class RegisterViewState extends State<RegisterView> {
                   _loginKey.currentState.save();
 
                   print(_loginData.toString());
-                  print("http://192.168.99.100:8080/login?name=" +
+                  print(globals.BASE_URL +
+                      "/login?name=" +
                       _loginData.name +
                       "&password=" +
                       _loginData.password);
                   http
-                      .get("http://192.168.99.100:8080/login?name=" +
+                      .get(globals.BASE_URL +
+                          "/login?name=" +
                           _loginData.name +
                           "&password=" +
                           _loginData.password)

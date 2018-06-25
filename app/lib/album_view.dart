@@ -9,8 +9,7 @@ import 'common.dart';
 import 'globals.dart' as globals;
 
 Future<AlbumData> fetchAlbumData(String name) async {
-  final response =
-      await http.get('http://192.168.99.100:8080/album?name=' + name);
+  final response = await http.get(globals.BASE_URL + '/album?name=' + name);
 
   final int statusCode = response.statusCode;
 
@@ -181,11 +180,11 @@ class AlbumView extends StatelessWidget {
                                                       Icons.tag_faces)),
                                               onSubmitted: (String val) {
                                                 http
-                                                    .post(
-                                                        "http://192.168.99.100:8080/tag/album?name=" +
-                                                            albumName +
-                                                            "&tag=" +
-                                                            val)
+                                                    .post(globals.BASE_URL +
+                                                        "/tag/album?name=" +
+                                                        albumName +
+                                                        "&tag=" +
+                                                        val)
                                                     .then((response) {
                                                   print(response);
                                                 });

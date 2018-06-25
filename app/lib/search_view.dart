@@ -6,6 +6,7 @@ import 'package:app/artist_view.dart';
 import 'package:app/song_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'globals.dart' as globals;
 
 class SearchData {
   final List songs;
@@ -162,8 +163,7 @@ class _SearchViewState extends State<SearchView> {
   }
 
   Future<SearchData> performSearch(String val) async {
-    final response =
-        await http.get('http://192.168.99.100:8080/search?term=' + val);
+    final response = await http.get(globals.BASE_URL + '/search?term=' + val);
     final responseJson = json.decode(response.body);
 
     return new SearchData.fromJson(responseJson);

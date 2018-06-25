@@ -167,6 +167,15 @@ public class Application implements ApplicationRunner {
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
+    //tags
+
+    /**
+     * Adds a tag string to a specified song.
+     *
+     * @param name name of the song to be tagged
+     * @param tag the tag string to be appended to the song
+     * @return response entity with the updated song object as JSON
+     */
     @RequestMapping(value = "/tag/song", method = RequestMethod.POST)
     public ResponseEntity<Songs> addTagToSong(@RequestParam(value = "name") String name,
             @RequestParam(value = "tag") String tag) {
@@ -177,6 +186,13 @@ public class Application implements ApplicationRunner {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /**
+     * Adds a tag string to a specified album.
+     *
+     * @param name name of the album to be tagged
+     * @param tag the tag string to be appended to the album
+     * @return response entity with the updated album object as JSON
+     */
     @RequestMapping(value = "/tag/album", method = RequestMethod.POST)
     public ResponseEntity<Albums> addTagToAlbum(@RequestParam(value = "name") String name,
             @RequestParam(value = "tag") String tag) {
@@ -187,6 +203,13 @@ public class Application implements ApplicationRunner {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /**
+     * Adds a tag string to a specified artist.
+     *
+     * @param name name of the artist to be tagged
+     * @param tag the tag string to be appended to the artist
+     * @return response entity with the updated artist object as JSON
+     */
     @RequestMapping(value = "/tag/artist", method = RequestMethod.POST)
     public ResponseEntity<Artists> addTagToArtist(@RequestParam(value = "name") String name,
             @RequestParam(value = "tag") String tag) {
@@ -196,6 +219,8 @@ public class Application implements ApplicationRunner {
         artistRepository.save(result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    //favorites and friends
 
     /**
      * Adds a song to the favorites of a specified user. The specified user has to be logged in.
@@ -210,8 +235,12 @@ public class Application implements ApplicationRunner {
     public ResponseEntity<Object> addFavorite(@RequestParam(value = "user")String name,
                                               @RequestParam(value = "song")String song){
         if (sessions.findByName(name)!=null){
+            logger.info("Found session for user {}", sessions.findByName(name).getName());
+            logger.info("");
             if (songRepository.findByName(song)!=null) {
-                Users user = registeredUsers.findByName(sessions.findByName(name));
+                logger.info("found song with name {}", song);
+                logger.info("");
+                Users user = registeredUsers.findByName(sessions.findByName(name).getName());
                 user.addFavorite(song);
                 registeredUsers.deleteByName(user.getName());
                 registeredUsers.save(user);
@@ -224,7 +253,40 @@ public class Application implements ApplicationRunner {
         }else {
             return new ResponseEntity<>("User is not logged in", HttpStatus.UNAUTHORIZED);
         }
+    }
 
+    /**
+     * Adds a user to the friends of a specified user. The adding user has to be logged in.
+     * The added user has to be registered.
+     *
+     * If the user is not logged in ths returns 401 unauthorized
+     * If no user is found under the specified name this returns 404 not found
+     * @param name  the username of the user adding a favorite
+     * @param friend  the name of the song to be added
+     * @return      The user with the updated playlist
+     */
+    @RequestMapping(value = "/friend", method = RequestMethod.POST)
+    public ResponseEntity<Object> addFriend(@RequestParam(value = "user")String name,
+                                              @RequestParam(value = "friend")String friend){
+        if (sessions.findByName(name)!=null){
+            logger.info("Found session for user {}", sessions.findByName(name).getName());
+            logger.info("");
+            if (registeredUsers.findByName(friend)!=null) {
+                logger.info("found user with name {}", friend);
+                logger.info("");
+                Users user = registeredUsers.findByName(registeredUsers.findByName(name).getName());
+                user.addFriend(friend);
+                registeredUsers.deleteByName(user.getName());
+                registeredUsers.save(user);
+                logger.info("saving {} as favorite for user {}", friend, name);
+                logger.info("");
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No such user registered in database", HttpStatus.NOT_FOUND);
+            }
+        }else {
+            return new ResponseEntity<>("User is not logged in", HttpStatus.UNAUTHORIZED);
+        }
     }
 
     // end of POST interfaces
@@ -488,6 +550,7 @@ public class Application implements ApplicationRunner {
         return new ResponseEntity<>(artistSong.toString(), HttpStatus.OK);
     }
 
+    
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public ResponseEntity<String> getUser(@RequestParam(value = "name", required = false) String name) {
         logger.info("Searching for User with name {}", name);

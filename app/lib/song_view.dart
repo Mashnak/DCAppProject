@@ -9,8 +9,7 @@ import 'common.dart';
 import 'globals.dart' as globals;
 
 Future<SongData> fetchSongData(name) async {
-  final response =
-      await http.get('http://192.168.99.100:8080/song?name=' + name);
+  final response = await http.get(globals.BASE_URL + '/song?name=' + name);
   final int statusCode = response.statusCode;
 
   if (statusCode < 200 || statusCode > 400 || json == null) {
@@ -200,11 +199,11 @@ class SongView extends StatelessWidget {
                             new SimpleDialogOption(
                               onPressed: () {
                                 http
-                                    .post(
-                                        "http://192.168.99.100:8080/favorite?user=" +
-                                            globals.loggedInUser.name +
-                                            "&song=" +
-                                            songName)
+                                    .post(globals.BASE_URL +
+                                        "/favorite?user=" +
+                                        globals.loggedInUser.name +
+                                        "&song=" +
+                                        songName)
                                     .then((response) {
                                   print(response);
                                 });
@@ -243,11 +242,11 @@ class SongView extends StatelessWidget {
                                                     new Icon(Icons.tag_faces)),
                                             onSubmitted: (String val) {
                                               http
-                                                  .post(
-                                                      "http://192.168.99.100:8080/tag/song?name=" +
-                                                          songName +
-                                                          "&tag=" +
-                                                          val)
+                                                  .post(globals.BASE_URL +
+                                                      "/tag/song?name=" +
+                                                      songName +
+                                                      "&tag=" +
+                                                      val)
                                                   .then((response) {
                                                 print(response);
                                               });

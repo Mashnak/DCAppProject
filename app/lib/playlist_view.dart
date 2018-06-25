@@ -1,9 +1,5 @@
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:app/song_view.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
 
 class PlaylistView extends StatelessWidget {

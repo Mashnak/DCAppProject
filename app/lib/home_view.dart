@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:app/playlist_view.dart';
 import 'package:app/profile_view.dart';
 import 'package:app/register_view.dart';
 import 'package:app/search_view.dart';
@@ -13,7 +12,7 @@ import 'song_view.dart';
 import 'globals.dart' as globals;
 
 Future<HomeData> fetchHomeData() async {
-  final response = await http.get('http://192.168.99.100:8080/random?count=10');
+  final response = await http.get(globals.BASE_URL + '/random?count=10');
   final responseJson = json.decode(response.body);
 
   return new HomeData.fromJson(responseJson);
@@ -112,17 +111,6 @@ class HomeView extends StatelessWidget {
                     context,
                     new MaterialPageRoute(
                         builder: (context) => new SearchView()));
-              },
-            ),
-            new ListTile(
-              title: new Text("Favorites"),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => globals.loggedInUser != null
-                            ? new PlaylistView()
-                            : new RegisterView()));
               },
             ),
             new ListTile(

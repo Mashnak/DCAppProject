@@ -8,7 +8,6 @@ import 'search_view.dart';
 import 'song_view.dart';
 import 'album_view.dart';
 import 'artist_view.dart';
-import 'publisher_view.dart';
 
 class DebugView extends StatelessWidget {
   @override
@@ -87,8 +86,7 @@ class DebugView extends StatelessWidget {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) =>
-                            new PlaylistView(fetchPlaylistData(""))));
+                        builder: (context) => new PlaylistView()));
               },
             ),
             new RaisedButton(
