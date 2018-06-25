@@ -1,4 +1,5 @@
 import 'package:app/home_view.dart';
+import 'package:app/register_view.dart';
 import 'package:flutter/material.dart';
 
 import 'playlist_view.dart';
@@ -51,16 +52,16 @@ class DebugView extends StatelessWidget {
                             fetchArtistData("Paul McCartney"))));
               },
             ),
-            new RaisedButton(
-              child: new Text('Publisher View'),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) =>
-                            new PublisherView(fetchPublisherData(""))));
-              },
-            ),
+            // new RaisedButton(
+            //   child: new Text('Publisher View'),
+            //   onPressed: () {
+            //     Navigator.push(
+            //         context,
+            //         new MaterialPageRoute(
+            //             builder: (context) =>
+            //                 new PublisherView(fetchPublisherData(""))));
+            //   },
+            // ),
             new RaisedButton(
               child: new Text('Search View'),
               onPressed: () {
@@ -97,6 +98,15 @@ class DebugView extends StatelessWidget {
                     context,
                     new MaterialPageRoute(
                         builder: (context) => new HomeView(fetchHomeData())));
+              },
+            ),
+            new RaisedButton(
+              child: new Text('Register View'),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new RegisterView()));
               },
             ),
           ],
