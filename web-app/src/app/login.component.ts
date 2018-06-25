@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {User} from '../user';
@@ -17,17 +17,16 @@ export class LoginComponent {
     this.userResult = null;
   }
 
-  onSubmit(loginUser) {
+  @Output() userAddedToFavorites = new EventEmitter();
 
+  onSubmit(loginUser) {
     this.userservice.getUser(loginUser).subscribe(data => {
       this.userResult = data;
     });
   }
 
   userLogout() {
-    console.log(this.userResult);
     this.userservice.userLogout(this.userResult).subscribe((res: Response) => console.log());
     this.userResult = null;
   }
-
 }

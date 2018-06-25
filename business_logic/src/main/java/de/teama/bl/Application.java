@@ -16,15 +16,17 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.util.ErrorHandler;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /*
-TODO Authentication
-TODO Comments
 TODO Monitoring: Send Status
 TODO Documentation
  */
@@ -159,11 +161,21 @@ public class Application implements ApplicationRunner {
         if (registeredUsers.findByName(name)!=null){
             logger.info("User {} already exists", name);
             logger.info("");
+            try{
+                heartbeat("BL_Register", "User " + name + " already exists", true);
+            }catch (Exception e){
+                logger.info("Heartbeat failed");
+            }
             return new ResponseEntity<>("User already exists",HttpStatus.BAD_REQUEST);
         }
         registeredUsers.save(newUser);
         logger.info("User {} successfully registered", name);
         logger.info("");
+        try{
+            heartbeat("BL_Register", "User " + name + " successfully registered", false);
+        }catch (Exception e){
+            logger.info("Heartbeat failed");
+        }
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
@@ -501,9 +513,19 @@ public class Application implements ApplicationRunner {
                 login(name);
                 return new ResponseEntity<>(user, HttpStatus.OK);
             } else {
+                try{
+                    heartbeat("BL_Login", "Invalid password",true);
+                }catch (Exception e){
+                    logger.info("Heartbeat failed");
+                }
                 return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
             }
         } catch (NullPointerException e) {
+            try{
+                heartbeat("BL_Login", "Invalid username",true);
+            }catch (Exception ex){
+                logger.info("Heartbeat failed");
+            }
             return new ResponseEntity<>("Invalid username", HttpStatus.NOT_FOUND);
         }
     }
@@ -532,8 +554,13 @@ public class Application implements ApplicationRunner {
      */
     @RequestMapping(value = "/song", method = RequestMethod.GET)
     public ResponseEntity<String> getSong(@RequestParam(value = "name", required = false) String name) {
-        logger.info("Searching for Songs with name {}", name);
+        logger.info("Searching for Song with name {}", name);
         logger.info("");
+        try{
+            heartbeat("BL_Get_Request", "Searching for Song with name " + name,false);
+        }catch (Exception e){
+            logger.info("Heartbeat failed");
+        }
         // name = name.replace(" ", "_");
         Songs result = songRepository.findByName(name);
         JSONObject artistSong = new JSONObject(result);
@@ -545,19 +572,29 @@ public class Application implements ApplicationRunner {
         artistSong.put("artists", artists);
 
         if (result == null) {
+            try{
+                heartbeat("BL_Get_Request", "No song with name " + name + " in database",true);
+            }catch (Exception e){
+                logger.info("Heartbeat failed");
+            }
             return new ResponseEntity<>("No song with this name in database", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(artistSong.toString(), HttpStatus.OK);
     }
 
-    
+
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public ResponseEntity<String> getUser(@RequestParam(value = "name", required = false) String name) {
+    public ResponseEntity<String> getUser(@RequestParam(value = "name") String name) {
         logger.info("Searching for User with name {}", name);
         logger.info("");
         Users result = registeredUsers.findByName(name);
 
         if (result == null) {
+            try{
+                heartbeat("BL_Get_Request", "No user with name " + name + " in database",true);
+            }catch (Exception e){
+                logger.info("Heartbeat failed");
+            }
             return new ResponseEntity<>("No user with this name in database", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
@@ -688,6 +725,11 @@ public class Application implements ApplicationRunner {
         if (sessions.findByName(username) == null) {
             logger.info("Logging in {}", username);
             logger.info("");
+            try{
+                heartbeat("BL_Login", "Logging in " + username,false);
+            }catch (Exception e){
+                logger.info("Heartbeat failed");
+            }
             Sessions user = registeredUsers.findByName(username).createSession();
             sessions.save(user);
         } else {
@@ -700,6 +742,11 @@ public class Application implements ApplicationRunner {
         if (sessions.findByName(username) != null) {
             logger.info("Logging out {}", username);
             logger.info("");
+            try{
+                heartbeat("BL_Login", "Logging out " + username,false);
+            }catch (Exception e){
+                logger.info("Heartbeat failed");
+            }
             sessions.deleteByName(username);
         } else {
             logger.info("Users {} is not logged in.", username);
@@ -727,6 +774,33 @@ public class Application implements ApplicationRunner {
             result.add(song.getSong());
         }
         return result;
+    }
+
+    public void heartbeat(String name, String desc, Boolean error){
+        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+
+        HeartbeatObject beat = new HeartbeatObject(name, desc, error,
+                currentStatus.getMsID(), currentStatus.getAppID(), "");
+
+        Map<String,String> vars = new HashMap<>();
+        vars.put("eventName", name);
+        vars.put("description", desc);
+        vars.put("errorTag", error.toString());
+        vars.put("microserviceID", currentStatus.getMsID());
+        vars.put("appID", currentStatus.getAppID());
+        vars.put("timestamp", "");
+
+
+        try {
+            restTemplate.postForObject(currentStatus.getEventUrl(),beat,HeartbeatObject.class, vars);
+        }catch (HttpClientErrorException e){
+            logger.error("Error: " + e.getResponseBodyAsString());
+            logger.info("");
+        }catch (Exception e){
+            logger.error("Error: " + e.getMessage());
+            logger.info("");
+        }
     }
 
     public static void main(String[] args) {

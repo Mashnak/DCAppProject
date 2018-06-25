@@ -25,7 +25,7 @@ export class SongitemComponent {
   }
 
   onSubmit(song, tag) {
-    this.songservice.postTag(song, tag);
+    this.songservice.postTag(song, tag.tags);
   }
 
   open(content) {

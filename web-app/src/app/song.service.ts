@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http, URLSearchParams, Response} from '@angular/http';
 import {UrlService} from './url.service';
+import {LoginComponent} from './login.component';
 
 @Injectable()
 export class SongService {
@@ -14,7 +15,7 @@ export class SongService {
   getSong(searchResult) {
     let search = new URLSearchParams();
     search.set('term', searchResult.searchText);
-    const url = this.ROOT_URL + '/search';
+    const url = this.ROOT_URL + '/webSearch';
     return this.http.get(url, {search})
       .map((res: Response) => (res.json()));
   }
@@ -28,17 +29,13 @@ export class SongService {
   }
 
   postSongToFavorites(song) {
-    let search = new URLSearchParams();
-    search.set('song', song.name);
-    const url = this.ROOT_URL + '/favorite';
-    this.http.post(url, {}, {search}).subscribe(res => console.log(res.json()));
   }
 
   postTag(song, tag) {
     let search = new URLSearchParams();
-    search.set('song', song.name);
-    search.set('tag', tag.name);
-    const url = this.ROOT_URL + '/addTag';
+    search.set('name', song);
+    search.set('tag', tag);
+    const url = this.ROOT_URL + '/tag/song';
     this.http.post(url, {}, {search}).subscribe(res => console.log(res.json()));
   }
 }
