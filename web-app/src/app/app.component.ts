@@ -6,7 +6,7 @@ import {Http} from '@angular/http';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {Observable} from 'rxjs/Observable';
 import {SongService} from './song.service';
-import {Result} from '../result';
+import {Song} from '../song';
 
 @Component({
   selector: 'app-component',
@@ -18,7 +18,7 @@ import {Result} from '../result';
 export class AppComponent implements OnInit {
   title = 'Song Search';
   closeResult: string;
-  searchResult: Observable<Result>;
+  searchResult: Observable<Song>;
 
   constructor(private http: Http, private modalService: NgbModal, private songservice: SongService) {
   }
@@ -31,12 +31,12 @@ export class AppComponent implements OnInit {
 
   onSubmit(searchForm) {
     this.songservice.getSong(searchForm).subscribe(data => {
-      this.searchResult = data;
+      this.searchResult = data; console.log(this.searchResult);
     });
   }
 
   onAddedToFavorites(songItem) {
-    this.songservice.postSongToFavorites(songItem);
+    this.songservice.postSongToFavorites(songItem.name);
     console.log(songItem);
   }
 

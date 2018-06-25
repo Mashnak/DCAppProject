@@ -1,15 +1,15 @@
-<div><h4></h4></div>
+<div><h4>{{searchResult.name}}</h4></div>
 <div class="row">
   <div style="padding-left: 20px">
-    <div>Albumname: </div>
-    <div>Artistname:</div>
-    <div>Songlength:</div>
-    <div>ReleaseDate: </div>
-    <div>Genres:</div>
-    <div>Tags:</div>
+    <div>Albumname: {{searchResult.album}}</div>
+    <div>Artistname: {{searchResult.artists}}</div>
+    <div>Songlength: {{searchResult.length}}</div>
+    <div>ReleaseDate: {{searchResult.releaseDate}}</div>
+    <div>Genres: {{searchResult.genres}}</div>
+    <div>Tags: {{searchResult.tag}}</div>
   </div>
   <div style="padding-left: 40px">
-    <img style="width:130px; height:130px" [src]=""/>
+    <img style="width:70px; height:70px" [src]="searchResult.img"/>
   </div>
 </div>
 <div class="row tools" style="padding-top: 40px">
@@ -25,12 +25,12 @@
   </div>
   <div class="col-lg-4">
     <button class="details">
-      <a [attr.href]='' style="color: white" target="_blank">Link to song</a>
+      <a [attr.href]='searchResult.link[0].url' style="color: white" target="_blank">Link to song</a>
     </button>
   </div>
 </div>
 <div class="row tools" style="padding: 15px">
-  <form #songTagForm="ngForm" (ngSubmit)="onSubmit(searchResult, songTagForm)">
+  <form #songTagForm="ngForm" (ngSubmit)="onSubmit(searchResult.name, songTagForm.value)">
     <input type="text" name="tags" id="tags" ngModel>
     <button class="details" type="submit">Add Tag</button>
   </form>
@@ -43,7 +43,7 @@
     </button>
   </div>
   <div class="modal-body">
-    test
+    {{searchResult.lyrics}}
     <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Close</button>
   </div>
 </ng-template>
