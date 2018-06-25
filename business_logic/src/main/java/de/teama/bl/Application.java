@@ -523,7 +523,7 @@ public class Application implements ApplicationRunner {
         } catch (NullPointerException e) {
             try{
                 heartbeat("BL_Login", "Invalid username",true);
-            }catch (Exception e){
+            }catch (Exception ex){
                 logger.info("Heartbeat failed");
             }
             return new ResponseEntity<>("Invalid username", HttpStatus.NOT_FOUND);
