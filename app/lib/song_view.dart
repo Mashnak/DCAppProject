@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 import 'common.dart';
+import 'globals.dart' as globals;
 
 Future<SongData> fetchSongData(name) async {
   final response =
@@ -185,70 +186,84 @@ class SongView extends StatelessWidget {
             );
           },
         ),
-        floatingActionButton: new FloatingActionButton(
-            child: new Icon(Icons.add),
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext conteext) {
-                    return new SimpleDialog(
-                      title: const Text("Select action"),
-                      children: <Widget>[
-                        new SimpleDialogOption(
-                          onPressed: () {},
-                          child: const Text("Add to Favourites"),
-                        ),
-                        new SimpleDialogOption(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext conteext) {
-                                  return new SimpleDialog(
-                                    title: const Text("Add a tag"),
-                                    children: <Widget>[
-                                      new TextField(
-                                        style: new TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16.0),
-                                        autofocus: true,
-                                        autocorrect: false,
-                                        decoration: new InputDecoration(
-                                            border: InputBorder.none,
-                                            contentPadding:
-                                                EdgeInsets.all(10.0),
-                                            hintText: 'Please enter a tag',
-                                            labelStyle: new TextStyle(
+        floatingActionButton: globals.loggedInUser == null
+            ? null
+            : new FloatingActionButton(
+                child: new Icon(Icons.add),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext conteext) {
+                        return new SimpleDialog(
+                          title: const Text("Select action"),
+                          children: <Widget>[
+                            new SimpleDialogOption(
+                              onPressed: () {
+                                http
+                                    .post(
+                                        "http://192.168.99.100:8080/favorite?user=" +
+                                            globals.loggedInUser.name +
+                                            "&song=" +
+                                            songName)
+                                    .then((response) {
+                                  print(response);
+                                });
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Add to Favourites"),
+                            ),
+                            new SimpleDialogOption(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext conteext) {
+                                      return new SimpleDialog(
+                                        title: const Text("Add a tag"),
+                                        children: <Widget>[
+                                          new TextField(
+                                            style: new TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 16.0),
-                                            hintStyle: new TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 16.0),
-                                            filled: true,
-                                            fillColor: Colors.white,
-                                            icon: new Icon(Icons.tag_faces)),
-                                        onSubmitted: (String val) {
-                                          http
-                                              .post(
-                                                  "http://192.168.99.100:8080/tag/song?name=" +
-                                                      songName +
-                                                      "&tag=" +
-                                                      val)
-                                              .then((response) {
-                                            print(response);
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                });
-                          },
-                          child: const Text("Add Tag"),
-                        ),
-                      ],
-                    );
-                  });
-            }),
+                                            autofocus: true,
+                                            autocorrect: false,
+                                            decoration: new InputDecoration(
+                                                border: InputBorder.none,
+                                                contentPadding:
+                                                    EdgeInsets.all(10.0),
+                                                hintText: 'Please enter a tag',
+                                                labelStyle: new TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16.0),
+                                                hintStyle: new TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 16.0),
+                                                filled: true,
+                                                fillColor: Colors.white,
+                                                icon:
+                                                    new Icon(Icons.tag_faces)),
+                                            onSubmitted: (String val) {
+                                              http
+                                                  .post(
+                                                      "http://192.168.99.100:8080/tag/song?name=" +
+                                                          songName +
+                                                          "&tag=" +
+                                                          val)
+                                                  .then((response) {
+                                                print(response);
+                                              });
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              },
+                              child: const Text("Add Tag"),
+                            ),
+                          ],
+                        );
+                      });
+                }),
       ),
     );
   }

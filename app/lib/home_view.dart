@@ -130,7 +130,7 @@ class HomeView extends StatelessWidget {
                 Navigator.push(context,
                     new MaterialPageRoute(builder: (context) {
                   if (globals.loggedInUser != null) {
-                    return new ProfileView(
+                    return new ProfileView(globals.loggedInUser.name,
                         fetchProfileData(globals.loggedInUser.name));
                   } else {
                     return new RegisterView();

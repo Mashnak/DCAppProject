@@ -78,7 +78,7 @@ class DebugView extends StatelessWidget {
                     context,
                     new MaterialPageRoute(
                         builder: (context) =>
-                            new ProfileView(fetchProfileData(""))));
+                            new ProfileView("", fetchProfileData(""))));
               },
             ),
             new RaisedButton(

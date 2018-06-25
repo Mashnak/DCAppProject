@@ -42,19 +42,21 @@ class ProfileData {
 
 class ProfileView extends StatefulWidget {
   final Future<ProfileData> futureProfileData;
+  final String profileName;
 
-  ProfileView(this.futureProfileData);
+  ProfileView(this.profileName, this.futureProfileData);
 
   @override
   State<StatefulWidget> createState() {
-    return new ProfileViewState(futureProfileData);
+    return new ProfileViewState(profileName, futureProfileData);
   }
 }
 
 class ProfileViewState extends State<ProfileView> {
   final Future<ProfileData> futureProfileData;
+  final String profileName;
 
-  ProfileViewState(this.futureProfileData);
+  ProfileViewState(this.profileName, this.futureProfileData);
 
   Widget _buildProfile(context, ProfileData data) {
     return new Column(
@@ -131,9 +133,112 @@ class ProfileViewState extends State<ProfileView> {
                     title: const Text("Select action"),
                     children: <Widget>[
                       new SimpleDialogOption(
-                        onPressed: () {},
-                        child: const Text("Add to Friends"),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext conteext) {
+                                return new SimpleDialog(
+                                  title: const Text("Add a friend"),
+                                  children: <Widget>[
+                                    new TextField(
+                                      style: new TextStyle(
+                                          color: Colors.black, fontSize: 16.0),
+                                      autofocus: true,
+                                      autocorrect: false,
+                                      decoration: new InputDecoration(
+                                          border: InputBorder.none,
+                                          contentPadding: EdgeInsets.all(10.0),
+                                          hintText: 'Please enter a name',
+                                          labelStyle: new TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16.0),
+                                          hintStyle: new TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 16.0),
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          icon: new Icon(Icons.tag_faces)),
+                                      onSubmitted: (String val) {
+                                        http
+                                            .post(
+                                                "http://192.168.99.100:8080/friend?name=" +
+                                                    globals.loggedInUser.name +
+                                                    "&friend=" +
+                                                    val)
+                                            .then((response) {
+                                          print(response);
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                        child: const Text("Add a Friend"),
                       ),
+                      profileName == globals.loggedInUser.name
+                          ? new SimpleDialogOption(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext conteext) {
+                                      return new SimpleDialog(
+                                        title: const Text("View a profile"),
+                                        children: <Widget>[
+                                          new TextField(
+                                            style: new TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16.0),
+                                            autofocus: true,
+                                            autocorrect: false,
+                                            decoration: new InputDecoration(
+                                                border: InputBorder.none,
+                                                contentPadding:
+                                                    EdgeInsets.all(10.0),
+                                                hintText: 'Please enter a name',
+                                                labelStyle: new TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16.0),
+                                                hintStyle: new TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 16.0),
+                                                filled: true,
+                                                fillColor: Colors.white,
+                                                icon:
+                                                    new Icon(Icons.tag_faces)),
+                                            onSubmitted: (String val) {
+                                              Navigator.push(
+                                                  context,
+                                                  new MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          new ProfileView(
+                                                              val,
+                                                              fetchProfileData(
+                                                                  val))));
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              },
+                              child: const Text("View profile"),
+                            )
+                          : new SimpleDialogOption(
+                              onPressed: () {
+                                http
+                                    .post(
+                                        "http://192.168.99.100:8080/friend?name=" +
+                                            globals.loggedInUser.name +
+                                            "&friend=" +
+                                            profileName)
+                                    .then((response) {
+                                  print(response);
+                                });
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Add to friends"),
+                            )
                     ],
                   );
                 });
