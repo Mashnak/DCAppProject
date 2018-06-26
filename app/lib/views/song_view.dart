@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
-import 'common.dart';
-import 'globals.dart' as globals;
+import 'package:app/common.dart';
+import 'package:app/globals.dart' as globals;
 import 'package:app/data/data_network_util.dart';
 import 'package:app/data/song_data.dart';
 

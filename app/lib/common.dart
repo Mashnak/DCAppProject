@@ -1,6 +1,6 @@
-import 'package:app/album_view.dart';
+import 'package:app/views/album_view.dart';
 import 'package:app/artist_view.dart';
-import 'package:app/song_view.dart';
+import 'package:app/views/song_view.dart';
 import 'package:flutter/material.dart';
 import 'package:lorem/lorem.dart';
 

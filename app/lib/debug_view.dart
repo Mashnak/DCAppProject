@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'playlist_view.dart';
 import 'profile_view.dart';
 import 'search_view.dart';
-import 'song_view.dart';
-import 'album_view.dart';
+import 'package:app/views/song_view.dart';
+import 'package:app/views/album_view.dart';
 import 'artist_view.dart';
 
 class DebugView extends StatelessWidget {

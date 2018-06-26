@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:app/album_view.dart';
+import 'package:app/views/album_view.dart';
 import 'common.dart';
 import 'globals.dart' as globals;
 

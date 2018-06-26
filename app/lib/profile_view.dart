@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:app/common.dart';
-import 'package:app/song_view.dart';
+import 'package:app/views/song_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 

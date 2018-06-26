@@ -1,47 +1,17 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'song_view.dart';
-import 'common.dart';
-import 'globals.dart' as globals;
+import 'package:app/common.dart';
+import 'package:app/globals.dart' as globals;
+import 'package:app/data/data_network_util.dart';
+import 'package:app/data/album_data.dart';
+import 'package:app/views/song_view.dart';
 
 Future<AlbumData> fetchAlbumData(String name) async {
-  final response = await http.get(globals.BASE_URL + '/album?name=' + name);
-
-  final int statusCode = response.statusCode;
-
-  if (statusCode < 200 || statusCode > 400 || json == null) {
-    throw new Exception("Error while fetching data");
-  }
-
-  final responseJson = json.decode(response.body);
-
+  final responseJson = await fetchJson("/album?name=$name");
   return new AlbumData.fromJson(responseJson);
-}
-
-class AlbumData {
-  AlbumData(this.name, this.releaseDate, this.genres, this.tags, this.songs,
-      this.artists, this.imagePath);
-
-  final String name;
-  final DateTime releaseDate;
-  final List genres;
-  final List tags;
-  final List songs;
-  final List artists;
-  final String imagePath;
-
-  AlbumData.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        releaseDate = new DateTime(2016), //DateTime.parse(json['releaseDate']),
-        genres = json['genre'],
-        tags = json['tag'],
-        songs = json['songs'],
-        artists = json['artists'],
-        imagePath = json['img'];
 }
 
 class AlbumView extends StatelessWidget {

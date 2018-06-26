@@ -8,7 +8,7 @@ import 'package:app/search_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'song_view.dart';
+import 'package:app/views/song_view.dart';
 
 import 'globals.dart' as globals;
 
