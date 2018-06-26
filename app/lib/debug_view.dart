@@ -1,3 +1,6 @@
+import 'package:app/data/album_data.dart';
+import 'package:app/data/artist_data.dart';
+import 'package:app/data/song_data.dart';
 import 'package:app/home_view.dart';
 import 'package:app/register_view.dart';
 import 'package:flutter/material.dart';

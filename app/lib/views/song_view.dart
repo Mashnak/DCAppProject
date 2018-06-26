@@ -6,13 +6,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:app/common.dart';
 import 'package:app/globals.dart' as globals;
-import 'package:app/data/data_network_util.dart';
 import 'package:app/data/song_data.dart';
-
-Future<SongData> fetchSongData(name) async {
-  final responseJson = await fetchJson("/song?name=$name");
-  return new SongData.fromJson(responseJson);
-}
 
 class SongView extends StatelessWidget {
   final Future<SongData> futureSongData;

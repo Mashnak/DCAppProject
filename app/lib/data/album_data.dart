@@ -1,3 +1,12 @@
+import 'dart:async';
+
+import 'package:app/data/data_network_util.dart';
+
+Future<AlbumData> fetchAlbumData(String name) async {
+  final responseJson = await fetchJson("/album?name=$name");
+  return new AlbumData.fromJson(responseJson);
+}
+
 class AlbumData {
   AlbumData(this.name, this.releaseDate, this.genres, this.tags, this.songs,
       this.artists, this.imagePath);

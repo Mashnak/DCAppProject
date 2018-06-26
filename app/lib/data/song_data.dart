@@ -1,3 +1,12 @@
+import 'dart:async';
+
+import 'package:app/data/data_network_util.dart';
+
+Future<SongData> fetchSongData(name) async {
+  final responseJson = await fetchJson("/song?name=$name");
+  return new SongData.fromJson(responseJson);
+}
+
 class SongData {
   final String name;
   final String length;

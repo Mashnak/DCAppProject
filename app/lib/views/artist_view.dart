@@ -5,14 +5,9 @@ import 'package:http/http.dart' as http;
 
 import 'package:app/common.dart';
 import 'package:app/globals.dart' as globals;
+import 'package:app/data/album_data.dart';
 import 'package:app/data/artist_data.dart';
-import 'package:app/data/data_network_util.dart';
 import 'package:app/views/album_view.dart';
-
-Future<ArtistData> fetchArtistData(String name) async {
-  final responseJson = await fetchJson("/artist?name=$name");
-  return new ArtistData.fromJson(responseJson);
-}
 
 class ArtistView extends StatelessWidget {
   final Future<ArtistData> futureArtistData;
