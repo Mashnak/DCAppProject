@@ -4,11 +4,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:app/common.dart';
 import 'package:app/globals.dart' as globals;
 import 'package:app/data/song_data.dart';
 import 'package:app/data/profile_data.dart';
 import 'package:app/views/song_view.dart';
+import 'package:app/widgets/info_section.dart';
 
 class ProfileView extends StatefulWidget {
   final Future<ProfileData> futureProfileData;

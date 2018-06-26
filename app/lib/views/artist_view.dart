@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/widgets/info_section.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,7 +27,6 @@ class ArtistView extends StatelessWidget {
           fit: BoxFit.cover,
         ),
         new InfoSection('Artist Name', viewedArtistData.name),
-        //new MultiInfoSection('Songs', viewedArtistData.songs),
         new MultiInfoSection('Genres', viewedArtistData.genres),
         new MultiInfoSection('Tags', viewedArtistData.tags),
       ],

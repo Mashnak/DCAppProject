@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:app/common.dart';
 import 'package:app/globals.dart' as globals;
 import 'package:app/data/song_data.dart';
+import 'package:app/widgets/info_section.dart';
 
 class SongView extends StatelessWidget {
   final Future<SongData> futureSongData;
@@ -26,7 +27,9 @@ class SongView extends StatelessWidget {
         new InfoSection('Title Length', viewedSongData.length),
         new InfoSection('Release Date',
             "${viewedSongData.releaseDate.year.toString()}-${viewedSongData.releaseDate.month.toString().padLeft(2,'0')}-${viewedSongData.releaseDate.day.toString().padLeft(2,'0')}"),
-        new InfoSection.restful('Album Name', viewedSongData.album, "album"),
+        new InfoSection('Album Name', viewedSongData.album, () {
+          /* TODO ROUTE */
+        }),
         new MultiInfoSection.restful(
             'Artists', viewedSongData.artists, "artist"),
         new MultiInfoSection('Genres', viewedSongData.genres),

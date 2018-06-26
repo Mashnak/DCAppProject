@@ -8,6 +8,7 @@ import 'package:app/globals.dart' as globals;
 import 'package:app/data/song_data.dart';
 import 'package:app/data/album_data.dart';
 import 'package:app/views/song_view.dart';
+import 'package:app/widgets/info_section.dart';
 
 class AlbumView extends StatelessWidget {
   final Future<AlbumData> futureAlbumData;
