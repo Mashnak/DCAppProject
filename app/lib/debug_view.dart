@@ -7,7 +7,7 @@ import 'profile_view.dart';
 import 'search_view.dart';
 import 'package:app/views/song_view.dart';
 import 'package:app/views/album_view.dart';
-import 'artist_view.dart';
+import 'package:app/views/artist_view.dart';
 
 class DebugView extends StatelessWidget {
   @override
