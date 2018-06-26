@@ -4,15 +4,12 @@ import 'package:flutter/material.dart';
 
 import 'package:app/globals.dart' as globals;
 import 'package:app/data/home_data.dart';
-import 'package:app/views/song_view.dart';
-import 'package:app/views/search_view.dart';
-import 'package:app/views/profile_view.dart';
-import 'package:app/views/register_view.dart';
+import 'package:app/views/view_manager.dart';
 
 class HomeView extends StatelessWidget {
   final Future<HomeData> futureHomeData;
 
-  const HomeView(this.futureHomeData);
+  HomeView() : futureHomeData = fetchHomeData();
 
   Widget _buildHomeView(context, HomeData homeData) {
     Paint namePaint = new Paint();
@@ -33,12 +30,7 @@ class HomeView extends StatelessWidget {
               song.imagePath,
               fit: BoxFit.cover,
             ),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) => new SongView(song.name)));
-            },
+            onTap: ViewManager.pushNamed(context, "song", song.name),
           ),
           footer: new Text(
             song.name,
@@ -79,34 +71,20 @@ class HomeView extends StatelessWidget {
                       height: 0.0,
                     ),
                     accountName: new Text(globals.loggedInUser.name),
-                    // currentAccountPicture:
-                    //     new Image.network("http://i.imgur.com/YdhUZdZ.png"),
                   )
                 : new DrawerHeader(
                     child: new Text("Options"),
                   ),
             new ListTile(
               title: new Text("Search"),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => new SearchView()));
-              },
+              onTap: ViewManager.pushNamed(context, "search"),
             ),
             new ListTile(
-              title: new Text("Profile"),
-              onTap: () {
-                Navigator.push(context,
-                    new MaterialPageRoute(builder: (context) {
-                  if (globals.loggedInUser != null) {
-                    return new ProfileView(globals.loggedInUser.name);
-                  } else {
-                    return new RegisterView();
-                  }
-                }));
-              },
-            ),
+                title: new Text("Profile"),
+                onTap: ViewManager.pushNamed(
+                    context,
+                    globals.loggedInUser != null ? "profile" : "register",
+                    globals.loggedInUser.name)),
             new AboutListTile(
               aboutBoxChildren: <Widget>[
                 new Text("Made with Flutter my dudes.")

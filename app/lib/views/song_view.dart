@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:app/common.dart';
 import 'package:app/globals.dart' as globals;
 import 'package:app/data/song_data.dart';
+import 'package:app/views/view_manager.dart';
 import 'package:app/widgets/info_section.dart';
 
 class SongView extends StatelessWidget {
@@ -15,7 +16,7 @@ class SongView extends StatelessWidget {
 
   SongView(this.songName) : futureSongData = fetchSongData(songName);
 
-  Widget _buildSongInfoTab(viewedSongData) {
+  Widget _buildSongInfoTab(context, SongData viewedSongData) {
     return new ListView(
       children: <Widget>[
         new Image.network(
@@ -27,9 +28,8 @@ class SongView extends StatelessWidget {
         new InfoSection('Title Length', viewedSongData.length),
         new InfoSection('Release Date',
             "${viewedSongData.releaseDate.year.toString()}-${viewedSongData.releaseDate.month.toString().padLeft(2,'0')}-${viewedSongData.releaseDate.day.toString().padLeft(2,'0')}"),
-        new InfoSection('Album Name', viewedSongData.album, () {
-          /* TODO ROUTE */
-        }),
+        new InfoSection('Album Name', viewedSongData.album,
+            ViewManager.pushNamed(context, "album", viewedSongData.album)),
         new MultiInfoSection.restful(
             'Artists', viewedSongData.artists, "artist"),
         new MultiInfoSection('Genres', viewedSongData.genres),
@@ -75,7 +75,6 @@ class SongView extends StatelessWidget {
                 if (await canLaunch(url)) {
                   await launch(url);
                 } else {
-                  // throw 'Could not launch $url';
                   print('Could not launch $url');
                 }
               },
@@ -125,7 +124,6 @@ class SongView extends StatelessWidget {
               )
             ],
           ),
-          // title: new Text(viewedSongData.name),
         ),
         body: new FutureBuilder<SongData>(
           future: futureSongData,
@@ -133,7 +131,7 @@ class SongView extends StatelessWidget {
             if (snapshot.hasData) {
               return new TabBarView(
                 children: [
-                  _buildSongInfoTab(snapshot.data),
+                  _buildSongInfoTab(context, snapshot.data),
                   _buildSongLinksTab(snapshot.data),
                   _buildSongCommentsTab(snapshot.data),
                 ],

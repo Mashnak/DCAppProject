@@ -1,13 +1,12 @@
 import 'dart:async';
-
-import 'package:app/widgets/info_section.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:app/common.dart';
 import 'package:app/globals.dart' as globals;
 import 'package:app/data/artist_data.dart';
-import 'package:app/views/album_view.dart';
+import 'package:app/views/view_manager.dart';
+import 'package:app/widgets/info_section.dart';
 
 class ArtistView extends StatelessWidget {
   final Future<ArtistData> futureArtistData;
@@ -36,10 +35,7 @@ class ArtistView extends StatelessWidget {
     return new ListTile(
       title: new Text(entry),
       trailing: new Icon(Icons.play_arrow),
-      onTap: () {
-        Navigator.push(context,
-            new MaterialPageRoute(builder: (context) => new AlbumView(entry)));
-      },
+      onTap: ViewManager.pushNamed(context, "album", entry),
     );
   }
 
@@ -73,7 +69,6 @@ class ArtistView extends StatelessWidget {
                 )
               ],
             ),
-            // title: new Text(viewedSongData.name),
           ),
           body: new FutureBuilder<ArtistData>(
             future: futureArtistData,

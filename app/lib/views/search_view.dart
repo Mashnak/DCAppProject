@@ -1,11 +1,9 @@
 import 'dart:async';
 
-import 'package:app/data/search_data.dart';
 import 'package:flutter/material.dart';
 
-import 'package:app/views/song_view.dart';
-import 'package:app/views/album_view.dart';
-import 'package:app/views/artist_view.dart';
+import 'package:app/data/search_data.dart';
+import 'package:app/views/view_manager.dart';
 
 class SearchView extends StatefulWidget {
   @override
@@ -23,12 +21,7 @@ class _SearchViewState extends State<SearchView> {
         return new ListTile(
           title: new Text(entry["name"]),
           trailing: new Icon(Icons.music_note),
-          onTap: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new SongView(entry["name"])));
-          },
+          onTap: ViewManager.pushNamed(context, "song", entry["name"]),
         );
       }).toList(),
     );
@@ -40,12 +33,7 @@ class _SearchViewState extends State<SearchView> {
         return new ListTile(
           title: new Text(entry["name"]),
           trailing: new Icon(Icons.view_list),
-          onTap: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new AlbumView(entry["name"])));
-          },
+          onTap: ViewManager.pushNamed(context, "album", entry["name"]),
         );
       }).toList(),
     );
@@ -57,12 +45,7 @@ class _SearchViewState extends State<SearchView> {
         return new ListTile(
           title: new Text(entry["name"]),
           trailing: new Icon(Icons.accessibility),
-          onTap: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new ArtistView(entry["name"])));
-          },
+          onTap: ViewManager.pushNamed(context, "artist", entry["name"]),
         );
       }).toList(),
     );

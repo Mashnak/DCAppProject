@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:app/globals.dart' as globals;
 import 'package:app/data/profile_data.dart';
-import 'package:app/views/song_view.dart';
+import 'package:app/views/view_manager.dart';
 import 'package:app/widgets/info_section.dart';
 
 class ProfileView extends StatefulWidget {
@@ -77,12 +77,7 @@ class ProfileViewState extends State<ProfileView> {
         return new ListTile(
           title: new Text(entry),
           trailing: new Icon(Icons.view_list),
-          onTap: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new ProfileView(entry)));
-          },
+          onTap: ViewManager.pushNamed("profile", "entry"),
         );
       }).toList(),
     );
@@ -94,12 +89,7 @@ class ProfileViewState extends State<ProfileView> {
         return new ListTile(
           title: new Text(entry),
           trailing: new Icon(Icons.view_list),
-          onTap: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new SongView(entry)));
-          },
+          onTap: ViewManager.pushNamed(context, "song", entry),
         );
       }).toList(),
     );
@@ -235,12 +225,8 @@ class ProfileViewState extends State<ProfileView> {
                                                     icon: new Icon(
                                                         Icons.tag_faces)),
                                                 onSubmitted: (String val) {
-                                                  Navigator.push(
-                                                      context,
-                                                      new MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              new ProfileView(
-                                                                  val)));
+                                                  ViewManager.pushNamed(
+                                                      context, "profile", val);
                                                 },
                                               ),
                                             ],

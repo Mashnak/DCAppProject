@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:app/globals.dart' as globals;
-import 'package:app/views/song_view.dart';
+import 'package:app/views/view_manager.dart';
 
 class PlaylistView extends StatelessWidget {
   PlaylistView();
@@ -17,12 +17,7 @@ class PlaylistView extends StatelessWidget {
             return new ListTile(
               title: new Text(entry),
               trailing: new Icon(Icons.view_list),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => new SongView(entry)));
-              },
+              onTap: ViewManager.pushNamed(context, "song", entry),
             );
           }).toList(),
         ));

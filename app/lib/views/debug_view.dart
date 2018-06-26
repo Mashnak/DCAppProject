@@ -1,14 +1,6 @@
-import 'package:app/views/register_view.dart';
-import 'package:app/views/search_view.dart';
 import 'package:flutter/material.dart';
 
-import 'package:app/data/home_data.dart';
-import 'package:app/views/song_view.dart';
-import 'package:app/views/album_view.dart';
-import 'package:app/views/artist_view.dart';
-import 'package:app/views/home_view.dart';
-import 'package:app/views/profile_view.dart';
-import 'package:app/views/playlist_view.dart';
+import 'package:app/views/view_manager.dart';
 
 class DebugView extends StatelessWidget {
   @override
@@ -22,78 +14,38 @@ class DebugView extends StatelessWidget {
           children: <Widget>[
             new RaisedButton(
               child: new Text('Song View'),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) =>
-                            new SongView("My Side of the Fence")));
-              },
+              onPressed: ViewManager.pushNamed(
+                  context, "song", "My Side of the Fence"),
             ),
             new RaisedButton(
               child: new Text('Album View'),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) =>
-                            new AlbumView("Pray For The Wicked")));
-              },
+              onPressed: ViewManager.pushNamed(
+                  context, "album", "Pray For The Wicked"),
             ),
             new RaisedButton(
               child: new Text('Artist View'),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) =>
-                            new ArtistView("Paul McCartney")));
-              },
+              onPressed:
+                  ViewManager.pushNamed(context, "artist", "Paul McCartney"),
             ),
             new RaisedButton(
               child: new Text('Search View'),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => new SearchView()));
-              },
+              onPressed: ViewManager.pushNamed(context, "search"),
             ),
             new RaisedButton(
               child: new Text('Profile View'),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => new ProfileView("")));
-              },
+              onPressed: ViewManager.pushNamed(context, "profile", ""),
             ),
             new RaisedButton(
               child: new Text('Playlist View'),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => new PlaylistView()));
-              },
+              onPressed: ViewManager.pushNamed(context, "playlist"),
             ),
             new RaisedButton(
               child: new Text('Home View'),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => new HomeView(fetchHomeData())));
-              },
+              onPressed: ViewManager.pushNamed(context, "home"),
             ),
             new RaisedButton(
               child: new Text('Register View'),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => new RegisterView()));
-              },
+              onPressed: ViewManager.pushNamed(context, "register"),
             ),
           ],
         ),

@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:app/common.dart';
 import 'package:app/globals.dart' as globals;
 import 'package:app/data/album_data.dart';
-import 'package:app/views/song_view.dart';
+import 'package:app/views/view_manager.dart';
 import 'package:app/widgets/info_section.dart';
 
 class AlbumView extends StatelessWidget {
@@ -40,12 +40,7 @@ class AlbumView extends StatelessWidget {
     return new ListTile(
       title: new Text(songEntry),
       trailing: new Icon(Icons.play_arrow),
-      onTap: () {
-        Navigator.push(
-            context,
-            new MaterialPageRoute(
-                builder: (context) => new SongView(songEntry)));
-      },
+      onTap: ViewManager.pushNamed(context, "song", songEntry),
     );
   }
 
@@ -60,7 +55,7 @@ class AlbumView extends StatelessWidget {
 
     return new ListView(
       padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
-      children: dividedSongs, //<Widget>[].map(),
+      children: dividedSongs,
     );
   }
 

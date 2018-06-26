@@ -219,7 +219,6 @@ class RegisterViewState extends State<RegisterView> {
                 ),
               ],
             ),
-            // title: new Text(viewedSongData.name),
           ),
           body: new TabBarView(
             children: [_buildRegisterTab(context), _buildLoginTab(context)],

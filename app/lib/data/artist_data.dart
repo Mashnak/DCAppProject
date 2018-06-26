@@ -8,17 +8,9 @@ Future<ArtistData> fetchArtistData(String name) async {
 }
 
 class ArtistData {
-  ArtistData(
-      this.name,
-      this.genres,
-      this.tags, // this.songs,
-      this.albums,
-      this.imagePath);
-
   final String name;
   final List genres;
   final List tags;
-  // final List songs;
   final List albums;
   final String imagePath;
 
