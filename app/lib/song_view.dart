@@ -1,55 +1,17 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 
 import 'common.dart';
 import 'globals.dart' as globals;
+import 'package:app/data/data_network_util.dart';
+import 'package:app/data/song_data.dart';
 
 Future<SongData> fetchSongData(name) async {
-  final response = await http.get(globals.BASE_URL + '/song?name=' + name);
-  final int statusCode = response.statusCode;
-
-  if (statusCode < 200 || statusCode > 400 || json == null) {
-    throw new Exception("Error while fetching data");
-  }
-
-  final responseJson = json.decode(response.body);
-  print(responseJson);
-
+  final responseJson = await fetchJson("/song?name=$name");
   return new SongData.fromJson(responseJson);
-}
-
-class SongData {
-  SongData(this.name, this.length, this.releaseDate, this.lyrics, this.artists,
-      this.genres, this.tags, this.links, this.album, this.imagePath);
-
-  final String name;
-  final String length;
-  final DateTime releaseDate;
-  final String lyrics;
-  final List artists;
-
-  final List genres;
-  final List tags;
-  final List links;
-
-  final String imagePath;
-  final String album;
-
-  SongData.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        length = json['length'],
-        releaseDate = DateTime.parse(json['releaseDate']),
-        lyrics = json['lyrics'],
-        links = json['link'],
-        genres = json['genre'],
-        tags = json['tag'],
-        artists = json['artists'],
-        album = json['album'],
-        imagePath = json['img'];
 }
 
 class SongView extends StatelessWidget {
