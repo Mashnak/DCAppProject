@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:app/globals.dart' as globals;
-import 'package:app/data/song_data.dart';
 import 'package:app/views/song_view.dart';
 
 class PlaylistView extends StatelessWidget {
@@ -22,8 +21,7 @@ class PlaylistView extends StatelessWidget {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) =>
-                            new SongView(entry, fetchSongData(entry))));
+                        builder: (context) => new SongView(entry)));
               },
             );
           }).toList(),

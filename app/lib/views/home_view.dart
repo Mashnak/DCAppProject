@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:app/globals.dart' as globals;
-import 'package:app/data/song_data.dart';
 import 'package:app/data/home_data.dart';
-import 'package:app/data/profile_data.dart';
 import 'package:app/views/song_view.dart';
 import 'package:app/views/search_view.dart';
 import 'package:app/views/profile_view.dart';
@@ -39,8 +37,7 @@ class HomeView extends StatelessWidget {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (context) =>
-                          new SongView(song.name, fetchSongData(song.name))));
+                      builder: (context) => new SongView(song.name)));
             },
           ),
           footer: new Text(
@@ -103,8 +100,7 @@ class HomeView extends StatelessWidget {
                 Navigator.push(context,
                     new MaterialPageRoute(builder: (context) {
                   if (globals.loggedInUser != null) {
-                    return new ProfileView(globals.loggedInUser.name,
-                        fetchProfileData(globals.loggedInUser.name));
+                    return new ProfileView(globals.loggedInUser.name);
                   } else {
                     return new RegisterView();
                   }

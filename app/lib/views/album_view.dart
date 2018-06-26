@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 
 import 'package:app/common.dart';
 import 'package:app/globals.dart' as globals;
-import 'package:app/data/song_data.dart';
 import 'package:app/data/album_data.dart';
 import 'package:app/views/song_view.dart';
 import 'package:app/widgets/info_section.dart';
@@ -14,7 +13,7 @@ class AlbumView extends StatelessWidget {
   final Future<AlbumData> futureAlbumData;
   final String albumName;
 
-  const AlbumView(this.albumName, this.futureAlbumData);
+  AlbumView(this.albumName) : futureAlbumData = fetchAlbumData(albumName);
 
   Widget _buildAlbumInfoTab(viewedAlbumData) {
     return new ListView(
@@ -45,8 +44,7 @@ class AlbumView extends StatelessWidget {
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) =>
-                    new SongView(songEntry, fetchSongData(songEntry))));
+                builder: (context) => new SongView(songEntry)));
       },
     );
   }

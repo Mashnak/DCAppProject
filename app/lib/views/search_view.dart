@@ -3,9 +3,6 @@ import 'dart:async';
 import 'package:app/data/search_data.dart';
 import 'package:flutter/material.dart';
 
-import 'package:app/data/song_data.dart';
-import 'package:app/data/album_data.dart';
-import 'package:app/data/artist_data.dart';
 import 'package:app/views/song_view.dart';
 import 'package:app/views/album_view.dart';
 import 'package:app/views/artist_view.dart';
@@ -30,8 +27,7 @@ class _SearchViewState extends State<SearchView> {
             Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (context) => new SongView(
-                        entry["name"], fetchSongData(entry["name"]))));
+                    builder: (context) => new SongView(entry["name"])));
           },
         );
       }).toList(),
@@ -48,8 +44,7 @@ class _SearchViewState extends State<SearchView> {
             Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (context) => new AlbumView(
-                        entry["name"], fetchAlbumData(entry["name"]))));
+                    builder: (context) => new AlbumView(entry["name"])));
           },
         );
       }).toList(),
@@ -66,8 +61,7 @@ class _SearchViewState extends State<SearchView> {
             Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (context) => new ArtistView(
-                        entry["name"], fetchArtistData(entry["name"]))));
+                    builder: (context) => new ArtistView(entry["name"])));
           },
         );
       }).toList(),

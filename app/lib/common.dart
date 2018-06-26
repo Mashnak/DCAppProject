@@ -1,6 +1,3 @@
-import 'package:app/data/album_data.dart';
-import 'package:app/data/artist_data.dart';
-import 'package:app/data/song_data.dart';
 import 'package:app/views/album_view.dart';
 import 'package:app/views/artist_view.dart';
 import 'package:app/views/song_view.dart';
@@ -48,13 +45,13 @@ class MultiInfoSection extends StatelessWidget {
                         new MaterialPageRoute(builder: (context) {
                       switch (requestType) {
                         case "song":
-                          return new SongView(val, fetchSongData(val));
+                          return new SongView(val);
                           break;
                         case "artist":
-                          return new ArtistView(val, fetchArtistData(val));
+                          return new ArtistView(val);
                           break;
                         case "album":
-                          return new AlbumView(val, fetchAlbumData(val));
+                          return new AlbumView(val);
                           break;
                         default:
                       }

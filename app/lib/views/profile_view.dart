@@ -5,20 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:app/globals.dart' as globals;
-import 'package:app/data/song_data.dart';
 import 'package:app/data/profile_data.dart';
 import 'package:app/views/song_view.dart';
 import 'package:app/widgets/info_section.dart';
 
 class ProfileView extends StatefulWidget {
-  final Future<ProfileData> futureProfileData;
   final String profileName;
 
-  ProfileView(this.profileName, this.futureProfileData);
+  ProfileView(this.profileName);
 
   @override
   State<StatefulWidget> createState() {
-    return new ProfileViewState(profileName, futureProfileData);
+    return new ProfileViewState(profileName);
   }
 }
 
@@ -26,7 +24,8 @@ class ProfileViewState extends State<ProfileView> {
   final Future<ProfileData> futureProfileData;
   final String profileName;
 
-  ProfileViewState(this.profileName, this.futureProfileData);
+  ProfileViewState(this.profileName)
+      : futureProfileData = fetchProfileData(profileName);
 
   Widget _buildProfile(context, ProfileData data) {
     return new Column(
@@ -82,8 +81,7 @@ class ProfileViewState extends State<ProfileView> {
             Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (context) =>
-                        new ProfileView(entry, fetchProfileData(entry))));
+                    builder: (context) => new ProfileView(entry)));
           },
         );
       }).toList(),
@@ -100,8 +98,7 @@ class ProfileViewState extends State<ProfileView> {
             Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (context) =>
-                        new SongView(entry, fetchSongData(entry))));
+                    builder: (context) => new SongView(entry)));
           },
         );
       }).toList(),
@@ -243,9 +240,7 @@ class ProfileViewState extends State<ProfileView> {
                                                       new MaterialPageRoute(
                                                           builder: (context) =>
                                                               new ProfileView(
-                                                                  val,
-                                                                  fetchProfileData(
-                                                                      val))));
+                                                                  val)));
                                                 },
                                               ),
                                             ],

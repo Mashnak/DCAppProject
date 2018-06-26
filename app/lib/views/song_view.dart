@@ -13,7 +13,7 @@ class SongView extends StatelessWidget {
   final Future<SongData> futureSongData;
   final String songName;
 
-  const SongView(this.songName, this.futureSongData);
+  SongView(this.songName) : futureSongData = fetchSongData(songName);
 
   Widget _buildSongInfoTab(viewedSongData) {
     return new ListView(

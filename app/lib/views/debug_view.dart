@@ -1,11 +1,7 @@
-import 'package:app/data/profile_data.dart';
 import 'package:app/views/register_view.dart';
 import 'package:app/views/search_view.dart';
 import 'package:flutter/material.dart';
 
-import 'package:app/data/song_data.dart';
-import 'package:app/data/album_data.dart';
-import 'package:app/data/artist_data.dart';
 import 'package:app/data/home_data.dart';
 import 'package:app/views/song_view.dart';
 import 'package:app/views/album_view.dart';
@@ -30,9 +26,8 @@ class DebugView extends StatelessWidget {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) => new SongView(
-                            "My Side of the Fence",
-                            fetchSongData("My Side of the Fence"))));
+                        builder: (context) =>
+                            new SongView("My Side of the Fence")));
               },
             ),
             new RaisedButton(
@@ -41,9 +36,8 @@ class DebugView extends StatelessWidget {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) => new AlbumView(
-                            "Pray For The Wicked",
-                            fetchAlbumData("Pray For The Wicked"))));
+                        builder: (context) =>
+                            new AlbumView("Pray For The Wicked")));
               },
             ),
             new RaisedButton(
@@ -52,8 +46,8 @@ class DebugView extends StatelessWidget {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) => new ArtistView("Paul McCartney",
-                            fetchArtistData("Paul McCartney"))));
+                        builder: (context) =>
+                            new ArtistView("Paul McCartney")));
               },
             ),
             new RaisedButton(
@@ -71,8 +65,7 @@ class DebugView extends StatelessWidget {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) =>
-                            new ProfileView("", fetchProfileData(""))));
+                        builder: (context) => new ProfileView("")));
               },
             ),
             new RaisedButton(
