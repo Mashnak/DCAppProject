@@ -1,53 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
+import 'package:app/globals.dart' as globals;
+import 'package:app/data/home_data.dart';
 import 'package:app/data/song_data.dart';
 import 'package:app/profile_view.dart';
 import 'package:app/register_view.dart';
 import 'package:app/search_view.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
 import 'package:app/views/song_view.dart';
-
-import 'globals.dart' as globals;
-
-Future<HomeData> fetchHomeData() async {
-  final response = await http.get(globals.BASE_URL + '/random?count=10');
-  final int statusCode = response.statusCode;
-
-  if (statusCode < 200 || statusCode > 400 || json == null) {
-    final responseJson = json.decode(response.body);
-    print("Error");
-    print(statusCode);
-    print(responseJson);
-    throw new Exception("Error while fetching data");
-  }
-
-  print("Success");
-  List responseJson;
-  try {
-    responseJson = json.decode(response.body);
-  } catch (e) {
-    print("Failed to decode this list of songs.");
-    print(e.toString());
-  }
-  // print(responseJson);
-
-  return new HomeData.fromJson(responseJson);
-}
-
-class HomeData {
-  final List<SongData> songs;
-
-  HomeData.fromJson(List json)
-      : songs = json.map((entry) {
-          print(entry.toString());
-          SongData data = SongData.fromJson(entry);
-          print("Successfully parsed: " + data.name);
-          return data;
-        }).toList();
-}
 
 class HomeView extends StatelessWidget {
   final Future<HomeData> futureHomeData;

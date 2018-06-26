@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'debug_view.dart';
+import 'package:app/views/debug_view.dart';
 
 void main() => runApp(new MyApp());
 
