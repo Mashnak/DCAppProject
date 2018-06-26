@@ -1,26 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:app/data/search_data.dart';
+import 'package:flutter/material.dart';
+
+import 'package:app/data/song_data.dart';
 import 'package:app/data/album_data.dart';
 import 'package:app/data/artist_data.dart';
-import 'package:app/data/song_data.dart';
+import 'package:app/views/song_view.dart';
 import 'package:app/views/album_view.dart';
 import 'package:app/views/artist_view.dart';
-import 'package:app/views/song_view.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'globals.dart' as globals;
-
-class SearchData {
-  final List songs;
-  final List albums;
-  final List artists;
-
-  SearchData.fromJson(responseJson)
-      : songs = responseJson[0]['songs'],
-        albums = responseJson[1]['albums'],
-        artists = responseJson[2]['artists'];
-}
 
 class SearchView extends StatefulWidget {
   @override
@@ -111,7 +99,7 @@ class _SearchViewState extends State<SearchView> {
                     icon: new Icon(Icons.search)),
                 onSubmitted: (String val) {
                   setState(() {
-                    futureSearchData = performSearch(val);
+                    futureSearchData = fetchSearchData(val);
                   });
                 },
               ),
@@ -163,12 +151,5 @@ class _SearchViewState extends State<SearchView> {
         },
       ),
     );
-  }
-
-  Future<SearchData> performSearch(String val) async {
-    final response = await http.get(globals.BASE_URL + '/search?term=' + val);
-    final responseJson = json.decode(response.body);
-
-    return new SearchData.fromJson(responseJson);
   }
 }

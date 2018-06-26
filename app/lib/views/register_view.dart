@@ -1,8 +1,11 @@
-import 'package:app/profile_view.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'globals.dart' as globals;
+
+import 'package:app/globals.dart' as globals;
+import 'package:app/data/profile_data.dart';
+import 'package:app/data/register_data.dart';
 
 class RegisterView extends StatefulWidget {
   @override
@@ -11,21 +14,11 @@ class RegisterView extends StatefulWidget {
   }
 }
 
-class _RegisterData {
-  String name;
-  String password;
-}
-
-class _LoginData {
-  String name;
-  String password;
-}
-
 class RegisterViewState extends State<RegisterView> {
   final GlobalKey<FormState> _registerKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _loginKey = GlobalKey<FormState>();
-  _RegisterData _registerData = new _RegisterData();
-  _LoginData _loginData = new _LoginData();
+  RegisterData _registerData = new RegisterData();
+  LoginData _loginData = new LoginData();
 
   Widget _buildRegisterTab(context) {
     return Form(

@@ -1,45 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:app/common.dart';
-import 'package:app/data/song_data.dart';
-import 'package:app/views/song_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'globals.dart' as globals;
-
-Future<ProfileData> fetchProfileData(String name) async {
-  final response = await http.get(globals.BASE_URL + "/user?name=" + name);
-  final int statusCode = response.statusCode;
-  if (statusCode < 200 || statusCode > 400 || json == null) {
-    final responseJson = json.decode(response.body);
-    print(statusCode);
-    print(responseJson);
-    throw new Exception("Error while fetching data");
-  }
-
-  final responseJson = json.decode(response.body);
-
-  return new ProfileData.fromJson(responseJson);
-}
-
-class ProfileData {
-  final String name;
-  final String password;
-  final String birthdate;
-  final List friends;
-  final List playlists;
-  final bool isAdmin;
-
-  ProfileData.fromJson(responseJson)
-      : name = responseJson["name"],
-        password = responseJson["password"],
-        birthdate = responseJson["birthdate"],
-        friends = responseJson["friends"],
-        playlists = responseJson["playlist"],
-        isAdmin = responseJson["admin"];
-}
+import 'package:app/common.dart';
+import 'package:app/globals.dart' as globals;
+import 'package:app/data/song_data.dart';
+import 'package:app/data/profile_data.dart';
+import 'package:app/views/song_view.dart';
 
 class ProfileView extends StatefulWidget {
   final Future<ProfileData> futureProfileData;

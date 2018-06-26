@@ -1,17 +1,18 @@
+import 'package:app/data/profile_data.dart';
+import 'package:app/views/register_view.dart';
+import 'package:app/views/search_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app/data/song_data.dart';
 import 'package:app/data/album_data.dart';
 import 'package:app/data/artist_data.dart';
 import 'package:app/data/home_data.dart';
-import 'package:app/views/home_view.dart';
-import 'package:app/register_view.dart';
-import 'package:app/playlist_view.dart';
-import 'package:app/profile_view.dart';
-import 'package:app/search_view.dart';
 import 'package:app/views/song_view.dart';
 import 'package:app/views/album_view.dart';
 import 'package:app/views/artist_view.dart';
+import 'package:app/views/home_view.dart';
+import 'package:app/views/profile_view.dart';
+import 'package:app/views/playlist_view.dart';
 
 class DebugView extends StatelessWidget {
   @override

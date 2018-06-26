@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
+
+import 'package:app/globals.dart' as globals;
 import 'package:app/data/song_data.dart';
 import 'package:app/views/song_view.dart';
-import 'package:flutter/material.dart';
-import 'globals.dart' as globals;
 
 class PlaylistView extends StatelessWidget {
   PlaylistView();

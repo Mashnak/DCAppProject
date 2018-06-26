@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:app/globals.dart' as globals;
 import 'package:app/data/data_network_util.dart';
 import 'package:app/data/song_data.dart';
 
 Future<HomeData> fetchHomeData() async {
-  final responseJson = await fetchJson(globals.BASE_URL + '/random?count=10');
+  final responseJson = await fetchJson("/random?count=10");
   return new HomeData.fromJson(responseJson);
 }
 

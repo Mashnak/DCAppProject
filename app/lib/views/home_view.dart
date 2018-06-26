@@ -3,12 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:app/globals.dart' as globals;
-import 'package:app/data/home_data.dart';
 import 'package:app/data/song_data.dart';
-import 'package:app/profile_view.dart';
-import 'package:app/register_view.dart';
-import 'package:app/search_view.dart';
+import 'package:app/data/home_data.dart';
+import 'package:app/data/profile_data.dart';
 import 'package:app/views/song_view.dart';
+import 'package:app/views/search_view.dart';
+import 'package:app/views/profile_view.dart';
+import 'package:app/views/register_view.dart';
 
 class HomeView extends StatelessWidget {
   final Future<HomeData> futureHomeData;
