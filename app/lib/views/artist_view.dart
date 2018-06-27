@@ -2,11 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:app/common.dart';
 import 'package:app/globals.dart' as globals;
 import 'package:app/data/artist_data.dart';
 import 'package:app/views/view_manager.dart';
 import 'package:app/widgets/info_section.dart';
+import 'package:app/widgets/multi_info_section.dart';
 
 class ArtistView extends StatelessWidget {
   final Future<ArtistData> futureArtistData;

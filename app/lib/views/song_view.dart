@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:app/widgets/multi_info_section.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:app/common.dart';
 import 'package:app/globals.dart' as globals;
 import 'package:app/data/song_data.dart';
 import 'package:app/views/view_manager.dart';
@@ -28,10 +28,12 @@ class SongView extends StatelessWidget {
         new InfoSection('Title Length', viewedSongData.length),
         new InfoSection('Release Date',
             "${viewedSongData.releaseDate.year.toString()}-${viewedSongData.releaseDate.month.toString().padLeft(2,'0')}-${viewedSongData.releaseDate.day.toString().padLeft(2,'0')}"),
-        new InfoSection('Album Name', viewedSongData.album,
-            ViewManager.pushNamed(context, "album", viewedSongData.album)),
-        new MultiInfoSection.restful(
-            'Artists', viewedSongData.artists, "artist"),
+        new InfoSection('Album Name', viewedSongData.album, (value) {
+          ViewManager.pushNamed(context, "album", value);
+        }),
+        new MultiInfoSection('Artists', viewedSongData.artists, (value) {
+          ViewManager.pushNamed(context, "artist", value);
+        }),
         new MultiInfoSection('Genres', viewedSongData.genres),
         new MultiInfoSection("Tags", viewedSongData.tags)
       ],

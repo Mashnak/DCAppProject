@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:app/widgets/multi_info_section.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:app/common.dart';
 import 'package:app/globals.dart' as globals;
 import 'package:app/data/album_data.dart';
 import 'package:app/views/view_manager.dart';
@@ -15,7 +15,7 @@ class AlbumView extends StatelessWidget {
 
   AlbumView(this.albumName) : futureAlbumData = fetchAlbumData(albumName);
 
-  Widget _buildAlbumInfoTab(viewedAlbumData) {
+  Widget _buildAlbumInfoTab(context, AlbumData viewedAlbumData) {
     return new ListView(
       children: <Widget>[
         new Image.network(
@@ -28,8 +28,9 @@ class AlbumView extends StatelessWidget {
         new InfoSection('Album Title', viewedAlbumData.name),
         new InfoSection('Release Date',
             "${viewedAlbumData.releaseDate.year.toString()}-${viewedAlbumData.releaseDate.month.toString().padLeft(2,'0')}-${viewedAlbumData.releaseDate.day.toString().padLeft(2,'0')}"),
-        new MultiInfoSection.restful(
-            'Artists', viewedAlbumData.artists, "artist"),
+        new MultiInfoSection('Artists', viewedAlbumData.artists, (value) {
+          ViewManager.pushNamed(context, "artist", viewedAlbumData.artists);
+        }),
         new MultiInfoSection('Genres', viewedAlbumData.genres),
         new MultiInfoSection('Tags', viewedAlbumData.tags)
       ],
@@ -83,7 +84,7 @@ class AlbumView extends StatelessWidget {
               if (snapshot.hasData) {
                 return new TabBarView(
                   children: [
-                    _buildAlbumInfoTab(snapshot.data),
+                    _buildAlbumInfoTab(context, snapshot.data),
                     _buildAlbumContentTab(context, snapshot.data),
                   ],
                 );
