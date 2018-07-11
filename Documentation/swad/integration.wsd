@@ -1,0 +1,17 @@
+@startuml integration
+
+database Database
+node Backend
+node BusinessLogic
+node WebApp
+actor User
+node App
+
+User -> App : interacts with
+User --> WebApp : interacts with
+App -> BusinessLogic : managed by
+WebApp -> BusinessLogic : managed by
+BusinessLogic --> Database : uses
+Backend -> Database : fills
+
+@enduml

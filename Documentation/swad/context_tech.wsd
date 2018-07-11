@@ -1,0 +1,21 @@
+@startuml context
+
+top to bottom direction
+
+actor user
+actor :registered user: as reg
+
+node application as app
+
+user --> app: HTTP
+reg --> app: HTTP
+
+cloud Spotify as spotify
+cloud Youtube as youtube
+cloud ApiSeeds as apiseeds
+
+spotify --up-> app: provides information and\nlinks to listen
+youtube --up-> app: provides links to listen
+apiseeds --up-> app: provides lyrics for songs
+
+@enduml

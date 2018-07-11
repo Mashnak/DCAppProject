@@ -1,0 +1,31 @@
+@startuml context
+
+rectangle Client {
+  actor User as user
+  node WebApp as web
+  node App as app
+
+  user -> web: HTTP
+  user --> app: uses
+}
+
+rectangle Server {
+  node BusinessLogic as logic
+  node Backend as backend
+  database Database as db
+
+  web --> logic: HTTP
+  app --> logic: HTTP
+  logic --> db: TCP/IP Socket
+  backend --> db: TCP/IP Socket
+}
+
+rectangle ThirdParty {
+  cloud Spotify as spot
+  cloud Youtube as yt
+  cloud Apiseeds as as
+}
+
+ThirdParty -> backend: HTTP
+
+@enduml

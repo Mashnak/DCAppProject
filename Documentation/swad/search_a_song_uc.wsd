@@ -1,0 +1,16 @@
+@startuml Tag a Song
+
+actor User
+
+usecase (Suche starten) as search
+usecase (Song Info anzeigen) as info
+usecase (Tag zu Song hinzufügen) as tagsong
+usecase (Song abspielen) as playsong
+
+left to right direction
+User -right-> (search)
+(search) <. (info) : extends
+(info) <. (tagsong) : extends
+(info) <-. (playsong) : extends
+
+@enduml
