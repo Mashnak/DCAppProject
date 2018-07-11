@@ -1,0 +1,41 @@
+@startuml baustein
+
+package MusicApp {
+
+  package WebApp {
+
+  }
+
+  package App {
+
+  }
+
+  package BusinessLogic {
+
+  }
+
+  package Backend {
+
+  }
+
+  database Database as db {
+
+  }
+
+  Backend ..> db
+  db <.down.> BusinessLogic
+  App <..> BusinessLogic
+  WebApp <..> BusinessLogic
+
+}
+
+package ThirdParty {
+
+}
+
+Backend <.# ThirdParty
+
+MusicApp #..> App
+MusicApp #...> WebApp
+
+@enduml

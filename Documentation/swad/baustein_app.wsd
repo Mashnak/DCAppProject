@@ -1,0 +1,27 @@
+@startuml baustein_app
+
+package App {
+  package data {
+
+  }
+
+  package views {
+
+  }
+
+  package widgets {
+
+  }
+
+  package Flutter {
+
+  }
+
+  data <. views
+  views .> widgets
+
+  views ..> Flutter
+  widgets ..> Flutter
+}
+
+@enduml

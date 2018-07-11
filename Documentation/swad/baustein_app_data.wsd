@@ -1,0 +1,95 @@
+@startuml baustein_app_data
+
+package data {
+  class SongData {
+    {static}+Future<SongData> fetchSongData(name) async
+
+    +String name
+    +String length
+    +DateTime releaseDate
+    +String lyrics
+    +List artists
+
+    +List genres
+    +List tags
+    +List links
+
+    +String imagePath
+    +String album
+
+    +SongData.fromJson(Map<String, dynamic> json)
+  }
+
+  class AlbumData {
+    {static}+Future<AlbumData> fetchAlbumData(String name) async
+
+    +String name
+    +DateTime releaseDate
+    +List genres
+    +List tags
+    +List songs
+    +List artists
+    +String imagePath
+
+    +AlbumData.fromJson(Map<String, dynamic> json)
+  }
+
+  class ArtistData {
+    {static}+Future<ArtistData> fetchArtistData(String name) async
+
+    +String name
+    +List genres
+    +List tags
+    +List albums
+    +String imagePath
+
+    +ArtistData.fromJson(Map<String, dynamic> json)
+  }
+
+  class ProfileData {
+    {static}+Future<ProfileData> fetchProfileData(String name) async
+
+    +String name
+    +String password
+    +String birthdate
+    +List friends
+    +List playlists
+    +bool isAdmin
+
+    +ProfileData.fromJson(responseJson)
+  }
+
+  class HomeData {
+    {static}+Future<HomeData> fetchHomeData() async
+
+    +List<SongData songs;
+
+    +HomeData.fromJson(List json)
+  }
+
+  class SearchData {
+    +List songs
+    +List albums
+    +List artists
+
+    +SearchData.fromJson(responseJson)
+  }
+
+  class RegisterData {
+    +String name;
+    +String password;
+  }
+
+  class DataNetworkUtil {
+    {static}+dynamic fetchJson(String arg) async
+  }
+
+  SongData .right.> DataNetworkUtil
+  AlbumData .down.> DataNetworkUtil
+  ArtistData .down.> DataNetworkUtil
+  ProfileData .up.> DataNetworkUtil
+  HomeData .up.> DataNetworkUtil
+  SearchData .left.> DataNetworkUtil
+}
+
+@enduml
