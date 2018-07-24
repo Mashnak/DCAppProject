@@ -8,9 +8,6 @@ Future<AlbumData> fetchAlbumData(String name) async {
 }
 
 class AlbumData {
-  AlbumData(this.name, this.releaseDate, this.genres, this.tags, this.songs,
-      this.artists, this.imagePath);
-
   final String name;
   final DateTime releaseDate;
   final List genres;

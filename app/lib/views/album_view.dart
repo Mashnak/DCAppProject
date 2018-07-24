@@ -97,70 +97,7 @@ class AlbumView extends StatelessWidget {
               );
             },
           ),
-          floatingActionButton: globals.loggedInUser == null
-              ? null
-              : new FloatingActionButton(
-                  child: new Icon(Icons.add),
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext conteext) {
-                          return new SimpleDialog(
-                            title: const Text("Select action"),
-                            children: <Widget>[
-                              new SimpleDialogOption(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext conteext) {
-                                        return new SimpleDialog(
-                                          title: const Text("Add a tag"),
-                                          children: <Widget>[
-                                            new TextField(
-                                              style: new TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16.0),
-                                              autofocus: true,
-                                              autocorrect: false,
-                                              decoration: new InputDecoration(
-                                                  border: InputBorder.none,
-                                                  contentPadding:
-                                                      EdgeInsets.all(10.0),
-                                                  hintText:
-                                                      'Please enter a tag',
-                                                  labelStyle: new TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 16.0),
-                                                  hintStyle: new TextStyle(
-                                                      color: Colors.grey,
-                                                      fontSize: 16.0),
-                                                  filled: true,
-                                                  fillColor: Colors.white,
-                                                  icon: new Icon(
-                                                      Icons.tag_faces)),
-                                              onSubmitted: (String val) {
-                                                http
-                                                    .post(globals.BASE_URL +
-                                                        "/tag/album?name=" +
-                                                        albumName +
-                                                        "&tag=" +
-                                                        val)
-                                                    .then((response) {
-                                                  print(response);
-                                                });
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                },
-                                child: const Text("Add Tag"),
-                              ),
-                            ],
-                          );
-                        });
-                  })),
+          floatingActionButton: null),
     );
   }
 }

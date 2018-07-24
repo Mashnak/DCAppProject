@@ -1,6 +1,8 @@
 import 'dart:async';
 
-import 'package:app/widgets/multi_info_section.dart';
+import 'package:app/widgets/dialog_post_option.dart';
+import 'package:app/widgets/post_option.dart';
+import 'package:app/widgets/user_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
@@ -9,6 +11,7 @@ import 'package:app/globals.dart' as globals;
 import 'package:app/data/song_data.dart';
 import 'package:app/views/view_manager.dart';
 import 'package:app/widgets/info_section.dart';
+import 'package:app/widgets/multi_info_section.dart';
 
 class SongView extends StatelessWidget {
   final Future<SongData> futureSongData;
@@ -85,7 +88,7 @@ class SongView extends StatelessWidget {
         ));
   }
 
-  Widget _buildSongCommentsTab(viewedSongData) {
+  Widget _buildLyricsTab(viewedSongData) {
     TextStyle textStyle = new TextStyle(fontSize: 22.0);
 
     if (viewedSongData.lyrics.length == 0) {
@@ -112,120 +115,73 @@ class SongView extends StatelessWidget {
     return new DefaultTabController(
       length: 3,
       child: new Scaffold(
-        appBar: new AppBar(
-          bottom: new TabBar(
-            tabs: [
-              new Tab(
-                icon: new Icon(Icons.info),
+          appBar: new AppBar(
+            bottom: new TabBar(
+              tabs: [
+                new Tab(
+                  icon: new Icon(Icons.info),
+                ),
+                new Tab(
+                  icon: new Icon(Icons.music_note),
+                ),
+                new Tab(
+                  icon: new Icon(Icons.text_fields),
+                )
+              ],
+            ),
+          ),
+          body: new FutureBuilder<SongData>(
+            future: futureSongData,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return new TabBarView(
+                  children: [
+                    _buildSongInfoTab(context, snapshot.data),
+                    _buildSongLinksTab(snapshot.data),
+                    _buildLyricsTab(snapshot.data),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return new Center(child: Text("${snapshot.error}"));
+              }
+
+              return new Center(
+                child: new CircularProgressIndicator(),
+              );
+            },
+          ),
+          floatingActionButton: new UserFAB(
+            display: globals.loggedInUser != null,
+            children: [
+              new SimpleDialogOption(
+                onPressed: PostOptionCallback(
+                    context: context,
+                    url: globals.BASE_URL +
+                        "/favorite?user=" +
+                        globals.loggedInUser.name +
+                        "&song=" +
+                        songName,
+                    onComplete: (response) {
+                      debugPrint(response);
+                    }),
+                child: new Text("Add to Favorites"),
               ),
-              new Tab(
-                icon: new Icon(Icons.music_note),
-              ),
-              new Tab(
-                icon: new Icon(Icons.text_fields),
+              new SimpleDialogOption(
+                onPressed: DialogPostOptionCallback(
+                    context: context,
+                    title: "Add a Tag",
+                    hint: "Please enter a Tag",
+                    url: globals.BASE_URL +
+                        "/tag/song?name=" +
+                        songName +
+                        "&tag=",
+                    onCompleteCallback: (response) {
+                      debugPrint(response);
+                    }),
+                child: new Text("Add a Tag"),
               )
             ],
-          ),
-        ),
-        body: new FutureBuilder<SongData>(
-          future: futureSongData,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return new TabBarView(
-                children: [
-                  _buildSongInfoTab(context, snapshot.data),
-                  _buildSongLinksTab(snapshot.data),
-                  _buildSongCommentsTab(snapshot.data),
-                ],
-              );
-            } else if (snapshot.hasError) {
-              return new Text("${snapshot.error}");
-            }
-
-            return new Center(
-              child: new CircularProgressIndicator(),
-            );
-          },
-        ),
-        floatingActionButton: globals.loggedInUser == null
-            ? null
-            : new FloatingActionButton(
-                child: new Icon(Icons.add),
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext conteext) {
-                        return new SimpleDialog(
-                          title: const Text("Select action"),
-                          children: <Widget>[
-                            new SimpleDialogOption(
-                              onPressed: () {
-                                http
-                                    .post(globals.BASE_URL +
-                                        "/favorite?user=" +
-                                        globals.loggedInUser.name +
-                                        "&song=" +
-                                        songName)
-                                    .then((response) {
-                                  print(response);
-                                });
-                                Navigator.pop(context);
-                              },
-                              child: const Text("Add to Favourites"),
-                            ),
-                            new SimpleDialogOption(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext conteext) {
-                                      return new SimpleDialog(
-                                        title: const Text("Add a tag"),
-                                        children: <Widget>[
-                                          new TextField(
-                                            style: new TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16.0),
-                                            autofocus: true,
-                                            autocorrect: false,
-                                            decoration: new InputDecoration(
-                                                border: InputBorder.none,
-                                                contentPadding:
-                                                    EdgeInsets.all(10.0),
-                                                hintText: 'Please enter a tag',
-                                                labelStyle: new TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 16.0),
-                                                hintStyle: new TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 16.0),
-                                                filled: true,
-                                                fillColor: Colors.white,
-                                                icon:
-                                                    new Icon(Icons.tag_faces)),
-                                            onSubmitted: (String val) {
-                                              http
-                                                  .post(globals.BASE_URL +
-                                                      "/tag/song?name=" +
-                                                      songName +
-                                                      "&tag=" +
-                                                      val)
-                                                  .then((response) {
-                                                print(response);
-                                              });
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    });
-                              },
-                              child: const Text("Add Tag"),
-                            ),
-                          ],
-                        );
-                      });
-                }),
-      ),
+          )),
     );
   }
 }

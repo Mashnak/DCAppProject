@@ -9,7 +9,7 @@ import 'package:app/views/song_view.dart';
 
 class ViewManager {
   static pushNamed(context, String viewName, [value]) {
-    Navigator.push(context, new MaterialPageRoute(builder: (context) {
+    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
       switch (viewName) {
         case "song":
           return new SongView(value);
