@@ -1,0 +1,105 @@
+@startuml baustein_app_views
+
+package views{
+
+  rectangle "Search View" as SearchViewRect{
+    top to bottom direction
+
+    class StatefulWidget
+
+    class SearchView{
+      +_SearchViewState createState()
+    }
+
+    SearchView --|> StatefulWidget
+
+    class "State" as state
+
+    class _SearchViewState{
+      -Future<SearchData> futureSearchData;
+
+      +Widget build(BuildContext context)
+
+      -Widget _buildSongList(List searchSongs)
+      -Widget _buildAlbumList(List searchAlbums)
+      -Widget _buildArtistList(List searchArtists)
+    }
+
+    _SearchViewState --|> state
+
+    SearchView --> _SearchViewState
+  }
+
+  rectangle "Profile View" as ProfileViewRect{
+
+    class "StatefulWidget" as stateful
+
+    class ProfileView{
+      -final String profileName
+
+      +ProfileView()
+
+      +_ProfileViewState createState()
+    }
+
+    ProfileView --|> stateful
+
+    class "State" as state1
+
+    class _ProfileViewState{
+      -Future<ProfileData> futureProfileData
+      -String profileName
+
+      +ProfileViewState(this.profileName)
+
+      +Widget build(BuildContext context)
+
+      -Widget _buildProfile(BuildContext context, ProfileData data)
+      -Widget _buildFriendsTab(BuildContext context, ProfileData data)
+      -Widget _buildPlaylistTab(BuildContext context, ProfileData data)
+    }
+
+    _ProfileViewState --|> state1
+
+    ProfileView --> _ProfileViewState
+  }
+
+  rectangle "Register View" as RegisterViewRect{
+
+    class "StatefulWidget" as stateful1
+
+    class RegisterView{
+      +_RegisterViewState createState()
+    }
+
+    RegisterView --|> stateful1
+
+    class "State" as state2
+
+    class _RegisterViewState{
+      -GlobalKey<FormState> _registerKey = GlobalKey<FormState>();
+      -GlobalKey<FormState> _loginKey = GlobalKey<FormState>();
+      -RegisterData _registerData = new RegisterData();
+      -LoginData _loginData = new LoginData();
+
+      +Widget build(BuildContext context)
+
+      -Widget _buildRegisterTab(BuildContext context)
+      -Widget _buildLoginTab(BuildContext context)
+    }
+
+    _RegisterViewState --|> state2
+
+    RegisterView --> _RegisterViewState
+  }
+
+  class ViewManager{
+    {static}+pushNamed(BuildContext context, String viewName, [value])
+  }
+
+  SearchViewRect .left.> ViewManager
+  ProfileViewRect .up.> ViewManager
+  RegisterViewRect .down.> ViewManager
+}
+
+@enduml

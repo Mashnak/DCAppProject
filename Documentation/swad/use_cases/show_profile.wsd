@@ -1,0 +1,15 @@
+@startuml uc_show_profile
+
+actor User
+node System
+
+left to right direction
+
+rectangle "view profile"{
+  usecase "View profile" as view_profile
+
+  User -- view_profile
+  view_profile -- System
+}
+
+@enduml

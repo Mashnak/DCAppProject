@@ -1,0 +1,15 @@
+@startuml uc_search
+
+actor User
+node System
+
+left to right direction
+
+rectangle search{
+  usecase Search
+
+  User -- Search
+  Search -- System
+}
+
+@enduml

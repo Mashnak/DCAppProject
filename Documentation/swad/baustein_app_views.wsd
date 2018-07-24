@@ -1,0 +1,73 @@
+@startuml baustein_app_views
+
+package views{
+
+  class SongView{
+    -Future<SongData> futureSong
+    -String songName
+
+    +SongView(String songName)
+
+    +Widget build(BuildContext context)
+
+    -Widget _buildSongInfoTab(BuildContext context, SongData data)
+    -Widget _buildSongLinksTab(SongData data)
+    -Color _defineButtonCollor(String linkName)
+    -Widget _buildSongLyricsTab(SongData data)
+  }
+
+  class AlbumView{
+    -Future<AlbumData> futureAlbum
+    -String albumName
+
+    +AlbumView(String albumName)
+    +Widget build(BuildContext context)
+
+    -Widget _buildAlbumInfoTab(BuildContext context, AlbumData data)
+    -Widget _buildAlbumContentTab(BuildContext context, AlbumData data)
+    -Widget _buildSongItem(BuildContext context, String songEntry)
+  }
+
+  class ArtistView{
+    -Future<ArtistData> futureArtist
+    -String artistName
+
+    +ArtistView(String artistName)
+
+    +Widget build(BuildContext context)
+
+    -Widget _buildArtistInfoTab(ArtistData viewedArtistData)
+    -Widget _buildArtistAlbumsTab(BuildContext context, AritstData data)
+    -Widget _buildAlbumItem(BuildContext context, String entry)
+  }
+
+  class HomeView{
+    -Future<HomeData> futureHomeData
+
+    +HomeView()
+
+    +Widget build(BuildContext context)
+    -Widget _buildHomeView(BuildContext context, HomeData homeData)
+  }
+
+  class PlaylistView{
+    +Widget build(BuildContext context)
+  }
+
+  class ViewManager{
+    {static}+pushNamed(BuildContext context, String viewName, [value])
+  }
+
+  class DebugView{
+    +Widget build(BuildContext context)
+  }
+
+  SongView .right.> ViewManager
+  AlbumView .down.> ViewManager
+  ArtistView .down.> ViewManager
+  HomeView .up.> ViewManager
+  PlaylistView .up.> ViewManager
+  DebugView .left.> ViewManager
+}
+
+@enduml

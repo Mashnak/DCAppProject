@@ -1,0 +1,21 @@
+@startuml uc_show_album
+
+actor User
+
+left to right direction
+
+rectangle "view album"{
+  usecase "View album" as view_album
+
+  usecase "Search" as search
+  usecase "View artist, song" as view
+
+  User -- view_album
+  view_album .left.> search: <<extends>>
+  view_album .> view: <<extends>>
+}
+
+node System
+view_album -- System
+
+@enduml

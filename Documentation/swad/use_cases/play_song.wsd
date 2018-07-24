@@ -1,0 +1,16 @@
+@startuml uc_play_song
+
+actor User
+
+left to right direction
+
+rectangle "play song"{
+  usecase "Play song" as play_song
+
+  usecase "View song" as view
+
+  User -- play_song
+  play_song <.left. view: <<includes>>
+}
+
+@enduml

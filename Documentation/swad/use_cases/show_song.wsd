@@ -1,0 +1,21 @@
+@startuml uc_show_song
+
+actor User
+
+left to right direction
+
+rectangle "view song"{
+  usecase "View song" as view_song
+
+  usecase "Search" as search
+  usecase "View album,\nplaylist, profile" as view
+
+  User -- view_song
+  view_song .left.> search: <<extends>>
+  view_song .> view: <<extends>>
+}
+
+node System
+view_song -- System
+
+@enduml

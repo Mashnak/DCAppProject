@@ -1,0 +1,36 @@
+@startuml baustein_app_widgets
+
+package widgets{
+
+  class InfoSection{
+    +String sectionName
+    +String sectionValue
+    +Function onTapCallback
+  }
+
+  class MultiInfoSection{
+    +String sectionName
+    +List sectionValues
+    +Function onTapCallback
+  }
+
+  class DialogPostOption{
+    +String title
+    +String hint
+    +String url
+    +Function onCompleteCallback
+  }
+
+  class PostOption{
+    +Context context
+    +String url
+    +Function onComplete
+  }
+
+  class UserFab{
+    +bool display
+    +List children
+  }
+}
+
+@enduml

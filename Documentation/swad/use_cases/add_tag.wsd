@@ -1,0 +1,23 @@
+@startuml uc_add_tag
+
+actor User
+
+left to right direction
+
+rectangle "add tag"{
+  usecase "Add tag" as add_tag
+
+  usecase "View song" as song
+  usecase "View album" as album
+  usecase "View artist" as artist
+
+  add_tag <.left. song: <<includes>>
+  add_tag <.right. album: <<includes>>
+  add_tag <. artist: <<includes>>
+}
+User -down- add_tag
+
+node System
+add_tag -down- System
+
+@enduml
