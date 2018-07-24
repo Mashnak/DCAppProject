@@ -1,3 +1,5 @@
+// Author: Timur Bahadir
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -21,7 +23,9 @@ class _SearchViewState extends State<SearchView> {
         return new ListTile(
           title: new Text(entry["name"]),
           trailing: new Icon(Icons.music_note),
-          onTap: ViewManager.pushNamed(context, "song", entry["name"]),
+          onTap: () {
+            ViewManager.pushNamed(context, "song", entry["name"]);
+          },
         );
       }).toList(),
     );
@@ -33,7 +37,9 @@ class _SearchViewState extends State<SearchView> {
         return new ListTile(
           title: new Text(entry["name"]),
           trailing: new Icon(Icons.view_list),
-          onTap: ViewManager.pushNamed(context, "album", entry["name"]),
+          onTap: () {
+            ViewManager.pushNamed(context, "album", entry["name"]);
+          },
         );
       }).toList(),
     );
@@ -45,7 +51,9 @@ class _SearchViewState extends State<SearchView> {
         return new ListTile(
           title: new Text(entry["name"]),
           trailing: new Icon(Icons.accessibility),
-          onTap: ViewManager.pushNamed(context, "artist", entry["name"]),
+          onTap: () {
+            ViewManager.pushNamed(context, "artist", entry["name"]);
+          },
         );
       }).toList(),
     );

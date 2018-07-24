@@ -1,13 +1,15 @@
-import 'dart:async';
+// Author: Timur Bahadir
 
-import 'package:app/widgets/multi_info_section.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 import 'package:app/globals.dart' as globals;
 import 'package:app/data/album_data.dart';
 import 'package:app/views/view_manager.dart';
 import 'package:app/widgets/info_section.dart';
+import 'package:app/widgets/dialog_post_option.dart';
+import 'package:app/widgets/multi_info_section.dart';
+import 'package:app/widgets/user_fab.dart';
 
 class AlbumView extends StatelessWidget {
   final Future<AlbumData> futureAlbumData;
@@ -29,7 +31,7 @@ class AlbumView extends StatelessWidget {
         new InfoSection('Release Date',
             "${viewedAlbumData.releaseDate.year.toString()}-${viewedAlbumData.releaseDate.month.toString().padLeft(2,'0')}-${viewedAlbumData.releaseDate.day.toString().padLeft(2,'0')}"),
         new MultiInfoSection('Artists', viewedAlbumData.artists, (value) {
-          ViewManager.pushNamed(context, "artist", viewedAlbumData.artists);
+          ViewManager.pushNamed(context, "artist", value);
         }),
         new MultiInfoSection('Genres', viewedAlbumData.genres),
         new MultiInfoSection('Tags', viewedAlbumData.tags)
@@ -41,7 +43,9 @@ class AlbumView extends StatelessWidget {
     return new ListTile(
       title: new Text(songEntry),
       trailing: new Icon(Icons.play_arrow),
-      onTap: ViewManager.pushNamed(context, "song", songEntry),
+      onTap: () {
+        ViewManager.pushNamed(context, "song", songEntry);
+      },
     );
   }
 
@@ -97,7 +101,25 @@ class AlbumView extends StatelessWidget {
               );
             },
           ),
-          floatingActionButton: null),
+          floatingActionButton: new UserFAB(
+            display: globals.loggedInUser != null,
+            children: [
+              new SimpleDialogOption(
+                onPressed: DialogPostOptionCallback(
+                    context: context,
+                    title: "Add a Tag",
+                    hint: "Please enter a Tag",
+                    url: globals.BASE_URL +
+                        "/tag/album?name=" +
+                        albumName +
+                        "&tag=",
+                    onCompleteCallback: (response) {
+                      debugPrint(response);
+                    }),
+                child: new Text("Add a Tag"),
+              )
+            ],
+          )),
     );
   }
 }

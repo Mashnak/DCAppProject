@@ -1,15 +1,15 @@
-import 'dart:async';
+// Author: Timur Bahadir
 
-import 'package:app/widgets/dialog_post_option.dart';
-import 'package:app/widgets/post_option.dart';
-import 'package:app/widgets/user_fab.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart' as http;
 
 import 'package:app/globals.dart' as globals;
 import 'package:app/data/song_data.dart';
 import 'package:app/views/view_manager.dart';
+import 'package:app/widgets/dialog_post_option.dart';
+import 'package:app/widgets/post_option.dart';
+import 'package:app/widgets/user_fab.dart';
 import 'package:app/widgets/info_section.dart';
 import 'package:app/widgets/multi_info_section.dart';
 
@@ -158,7 +158,9 @@ class SongView extends StatelessWidget {
                     context: context,
                     url: globals.BASE_URL +
                         "/favorite?user=" +
-                        globals.loggedInUser.name +
+                        ((globals.loggedInUser == null)
+                            ? ""
+                            : globals.loggedInUser.name) +
                         "&song=" +
                         songName,
                     onComplete: (response) {

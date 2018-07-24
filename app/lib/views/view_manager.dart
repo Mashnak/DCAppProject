@@ -1,5 +1,8 @@
+// Author: Timur Bahadir
+
 import 'package:flutter/material.dart';
 
+import 'package:app/views/home_view.dart';
 import 'package:app/views/album_view.dart';
 import 'package:app/views/artist_view.dart';
 import 'package:app/views/profile_view.dart';
@@ -17,6 +20,8 @@ class ViewManager {
           return new AlbumView(value);
         case "artist":
           return new ArtistView(value);
+        case "home":
+          return new HomeView();
         case "search":
           return new SearchView();
         case "profile":

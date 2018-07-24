@@ -1,3 +1,5 @@
+// Author: Timur Bahadir
+
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -18,13 +20,7 @@ dynamic fetchJson(String arg) async {
     throw new Exception("Error while fetching data from: $requestURL");
   }
 
-  String responseValue;
-  try {
-    responseValue = json.decode(response.body);
-  } catch (e) {
-    print("Failed to parse json.");
-    print(e.toString());
-  }
+  final responseJson = json.decode(response.body);
 
-  return responseValue;
+  return responseJson;
 }

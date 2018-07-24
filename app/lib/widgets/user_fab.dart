@@ -1,5 +1,6 @@
+// Author: Timur Bahadir
+
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class UserFAB extends StatelessWidget {
   final bool display;
@@ -10,8 +11,7 @@ class UserFAB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return display
-        ? null
-        : new FloatingActionButton(
+        ? new FloatingActionButton(
             child: new Icon(Icons.add),
             onPressed: () {
               showDialog(
@@ -19,9 +19,10 @@ class UserFAB extends StatelessWidget {
                   builder: (BuildContext conteext) {
                     return new SimpleDialog(
                       title: const Text("Select action"),
-                      children: <Widget>[],
+                      children: children,
                     );
                   });
-            });
+            })
+        : new Container(width: 0.0, height: 0.0);
   }
 }

@@ -1,10 +1,14 @@
+// Author: Timur Bahadir
+
 import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 import 'package:app/globals.dart' as globals;
 import 'package:app/data/artist_data.dart';
 import 'package:app/views/view_manager.dart';
+import 'package:app/widgets/dialog_post_option.dart';
+import 'package:app/widgets/user_fab.dart';
 import 'package:app/widgets/info_section.dart';
 import 'package:app/widgets/multi_info_section.dart';
 
@@ -35,7 +39,9 @@ class ArtistView extends StatelessWidget {
     return new ListTile(
       title: new Text(entry),
       trailing: new Icon(Icons.play_arrow),
-      onTap: ViewManager.pushNamed(context, "album", entry),
+      onTap: () {
+        ViewManager.pushNamed(context, "album", entry);
+      },
     );
   }
 
@@ -89,70 +95,25 @@ class ArtistView extends StatelessWidget {
               );
             },
           ),
-          floatingActionButton: globals.loggedInUser == null
-              ? null
-              : new FloatingActionButton(
-                  child: new Icon(Icons.add),
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext conteext) {
-                          return new SimpleDialog(
-                            title: const Text("Select action"),
-                            children: <Widget>[
-                              new SimpleDialogOption(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext conteext) {
-                                        return new SimpleDialog(
-                                          title: const Text("Add a tag"),
-                                          children: <Widget>[
-                                            new TextField(
-                                              style: new TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16.0),
-                                              autofocus: true,
-                                              autocorrect: false,
-                                              decoration: new InputDecoration(
-                                                  border: InputBorder.none,
-                                                  contentPadding:
-                                                      EdgeInsets.all(10.0),
-                                                  hintText:
-                                                      'Please enter a tag',
-                                                  labelStyle: new TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 16.0),
-                                                  hintStyle: new TextStyle(
-                                                      color: Colors.grey,
-                                                      fontSize: 16.0),
-                                                  filled: true,
-                                                  fillColor: Colors.white,
-                                                  icon: new Icon(
-                                                      Icons.tag_faces)),
-                                              onSubmitted: (String val) {
-                                                http
-                                                    .post(globals.BASE_URL +
-                                                        "/tag/artist?name=" +
-                                                        artistName +
-                                                        "&tag=" +
-                                                        val)
-                                                    .then((response) {
-                                                  print(response);
-                                                });
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                },
-                                child: const Text("Add Tag"),
-                              ),
-                            ],
-                          );
-                        });
-                  })),
+          floatingActionButton: new UserFAB(
+            display: globals.loggedInUser != null,
+            children: [
+              new SimpleDialogOption(
+                onPressed: DialogPostOptionCallback(
+                    context: context,
+                    title: "Add a Tag",
+                    hint: "Please enter a Tag",
+                    url: globals.BASE_URL +
+                        "/tag/artist?name=" +
+                        artistName +
+                        "&tag=",
+                    onCompleteCallback: (response) {
+                      debugPrint(response);
+                    }),
+                child: new Text("Add a Tag"),
+              )
+            ],
+          )),
     );
   }
 }

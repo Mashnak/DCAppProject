@@ -1,11 +1,14 @@
+// Author: Timur Bahadir
+
 import 'package:flutter/material.dart';
 
 class MultiInfoSection extends StatelessWidget {
   final String sectionName;
-  final List sectionValues;
+  final Set sectionValues;
   final Function onTapCallback;
 
-  MultiInfoSection(this.sectionName, this.sectionValues, [this.onTapCallback]);
+  MultiInfoSection(this.sectionName, List vals, [this.onTapCallback])
+      : sectionValues = Set.from(vals);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +34,11 @@ class MultiInfoSection extends StatelessWidget {
           new GridView.extent(
             children: sectionValues.map((val) {
               return new InkResponse(
-                onTap: onTapCallback(val),
+                onTap: () {
+                  if (onTapCallback != null) {
+                    onTapCallback(val);
+                  }
+                },
                 child: Text(val,
                     style: new TextStyle(
                         fontSize: 20.0, fontWeight: FontWeight.bold)),

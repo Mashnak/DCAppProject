@@ -1,3 +1,5 @@
+// Author: Timur Bahadir
+
 import 'package:flutter/material.dart';
 
 class InfoSection extends StatelessWidget {
@@ -31,7 +33,11 @@ class InfoSection extends StatelessWidget {
                   ),
                 ),
                 new InkResponse(
-                    onTap: onTapCallback,
+                    onTap: () {
+                      if (onTapCallback != null) {
+                        onTapCallback(sectionValue);
+                      }
+                    },
                     child: new Text(
                       sectionValue,
                       style: new TextStyle(

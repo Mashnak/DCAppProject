@@ -1,3 +1,5 @@
+// Author: Timur Bahadir
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -30,7 +32,9 @@ class HomeView extends StatelessWidget {
               song.imagePath,
               fit: BoxFit.cover,
             ),
-            onTap: ViewManager.pushNamed(context, "song", song.name),
+            onTap: () {
+              ViewManager.pushNamed(context, "song", song.name);
+            },
           ),
           footer: new Text(
             song.name,
@@ -77,14 +81,20 @@ class HomeView extends StatelessWidget {
                   ),
             new ListTile(
               title: new Text("Search"),
-              onTap: ViewManager.pushNamed(context, "search"),
+              onTap: () {
+                ViewManager.pushNamed(context, "search");
+              },
             ),
             new ListTile(
                 title: new Text("Profile"),
-                onTap: ViewManager.pushNamed(
-                    context,
-                    globals.loggedInUser != null ? "profile" : "register",
-                    globals.loggedInUser.name)),
+                onTap: () {
+                  ViewManager.pushNamed(
+                      context,
+                      globals.loggedInUser != null ? "profile" : "register",
+                      globals.loggedInUser != null
+                          ? globals.loggedInUser.name
+                          : "");
+                }),
             new AboutListTile(
               aboutBoxChildren: <Widget>[
                 new Text("Made with Flutter my dudes.")

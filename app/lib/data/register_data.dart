@@ -1,3 +1,5 @@
+// Author: Timur Bahadir
+
 class RegisterData {
   String name;
   String password;

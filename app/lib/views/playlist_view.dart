@@ -1,3 +1,5 @@
+// Author: Timur Bahadir
+
 import 'package:flutter/material.dart';
 
 import 'package:app/globals.dart' as globals;
@@ -17,7 +19,9 @@ class PlaylistView extends StatelessWidget {
             return new ListTile(
               title: new Text(entry),
               trailing: new Icon(Icons.view_list),
-              onTap: ViewManager.pushNamed(context, "song", entry),
+              onTap: () {
+                ViewManager.pushNamed(context, "song", entry);
+              },
             );
           }).toList(),
         ));

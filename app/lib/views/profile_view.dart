@@ -1,3 +1,5 @@
+// Author: Timur Bahadir
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -77,7 +79,9 @@ class ProfileViewState extends State<ProfileView> {
         return new ListTile(
           title: new Text(entry),
           trailing: new Icon(Icons.view_list),
-          onTap: ViewManager.pushNamed("profile", "entry"),
+          onTap: () {
+            ViewManager.pushNamed(context, "profile", entry);
+          },
         );
       }).toList(),
     );
@@ -89,7 +93,9 @@ class ProfileViewState extends State<ProfileView> {
         return new ListTile(
           title: new Text(entry),
           trailing: new Icon(Icons.view_list),
-          onTap: ViewManager.pushNamed(context, "song", entry),
+          onTap: () {
+            ViewManager.pushNamed(context, "song", entry);
+          },
         );
       }).toList(),
     );

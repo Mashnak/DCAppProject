@@ -1,3 +1,5 @@
+// Author: Timur Bahadir
+
 import 'package:flutter/material.dart';
 
 import 'package:app/views/debug_view.dart';
