@@ -1,5 +1,7 @@
 # About
 
+[comment]: <> (Author: Timur Bahadir)
+
 Distributed applications project.
 Made by:
 - Khaled Ahmed

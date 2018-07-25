@@ -1,3 +1,4 @@
+:: Author: Timur Bahadir
 @echo off
 
 set command=%1
