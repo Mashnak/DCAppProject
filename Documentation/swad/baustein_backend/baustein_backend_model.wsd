@@ -1,0 +1,54 @@
+@startuml baustein_backend_model
+
+package model {
+    class artist {
+        +String name
+        +String img
+        +String[] genre
+        +String[] tag
+    }
+
+    class artistalbum {
+        +ref artist
+        +ref album
+    }
+
+    class album {
+        +String name
+        +String releaseDate
+        +String img
+        +String[] genre
+        +String[] tag
+    }
+
+    class song {
+        +String name
+        +ref album
+        +link[]
+        +String length
+        +String releaseDate
+        +String img
+        +String[] tag
+        +String[] genre
+        +String lyrics
+    }
+
+    class link {
+        +String name
+        +String url
+    }
+
+    class artistsong {
+        +ref song
+        +ref artist
+    }
+
+    artistalbum <.. artist
+    artistalbum <.. album
+    artistsong <.. song
+    artistsong <.. artist
+    song <.. album
+    song <.. link   
+}
+
+@enduml
