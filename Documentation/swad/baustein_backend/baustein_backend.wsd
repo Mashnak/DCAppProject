@@ -1,0 +1,41 @@
+@startuml baustein_backend
+
+package Backend {
+  package backend {
+
+  }
+
+  package model {
+
+  }
+
+  package ExpressJS {
+
+  }
+
+  package Mongoose {
+
+  }
+
+  package youtube_search {
+
+  }
+
+  package apiseeds_lyrics {
+
+  }
+
+  package node_spotify_api {
+
+  }
+
+  backend <.. model
+  backend <.. ExpressJS
+  backend <.. youtube_search
+  backend <.. apiseeds_lyrics
+  backend <.. node_spotify_api
+  backend <.. Mongoose
+  model   <.. Mongoose
+}
+
+@enduml

@@ -1,0 +1,101 @@
+@startuml baustein_database
+
+package test {
+    class artists {
+        +ObjectID _id
+        +String name
+        +String img
+        +String[] genre
+        +String[] tag
+    }
+
+    class artistalbums {
+        +ObjectID _id
+        +ref artist
+        +ref album
+    }
+
+    class albums {
+        +ObjectID _id
+        +String name
+        +String releaseDate
+        +String img
+        +String[] genre
+        +String[] tag
+    }
+
+    class songs {
+        +ObjectID _id
+        +String name
+        +ref album
+        +link[]
+        +String length
+        +String releaseDate
+        +String img
+        +String[] tag
+        +String[] genre
+        +String lyrics
+    }
+
+    class link {
+        +String name
+        +String url
+    }
+
+    class artistsongs {
+        +ObjectID _id
+        +ref song
+        +ref artist
+    }
+
+    class comments {
+        +ObjectID _id
+        +ref user
+        +ref related
+        +ref answerRef
+        +String text
+        +String timestamp
+    }
+
+    class playlists {
+        +ObjectID _id
+        +String name
+        +String creationDate
+        +songs[]
+    }
+
+    class sessions {
+        +ObjectID _id
+        +String name
+        +String birthdate
+        +playlist[] playlist
+        +users[] friends 
+        +Boolean isAdmin
+    }
+
+    class users {
+        +ObjectID _id
+        +String name
+        +String password
+        +String birthdate
+        +Boolean isAdmin
+    }
+
+    artistalbums <.. artists
+    artistalbums <.. albums
+    artistsongs <.. songs
+    artistsongs <.. artists
+    songs <.. albums
+    songs <.. link
+
+    sessions <.. users
+    sessions <.. playlists
+    playlists <.. songs
+    comments <.. users
+    comments <.. comments
+    comments <.. songs
+    comments <.. albums
+    comments <.. artists
+}
+
+@enduml

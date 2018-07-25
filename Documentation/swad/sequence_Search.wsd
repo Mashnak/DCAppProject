@@ -1,0 +1,13 @@
+@startuml Laufzeit_search
+actor user
+participant webapp
+participant businesslogic
+database mongo
+
+user -> webapp : "search"
+webapp -> businesslogic : send request
+businesslogic -> mongo : search
+mongo -> businesslogic : result
+businesslogic -> webapp : result
+
+@enduml
