@@ -1,0 +1,15 @@
+@startuml uc_register
+
+actor User
+node System
+
+left to right direction
+
+rectangle register{
+  usecase Register
+
+  User -- Register
+  Register -- System
+}
+
+@enduml

@@ -1,0 +1,19 @@
+@startuml uc_add_friend
+
+actor "Logged in User" as User
+
+left to right direction
+
+rectangle "add friend"{
+  usecase "Add friend" as add_friend
+
+  usecase "View profile" as song
+
+  add_friend .> song: <<extends>>
+}
+User -down- add_friend
+
+node System
+add_friend -down- System
+
+@enduml

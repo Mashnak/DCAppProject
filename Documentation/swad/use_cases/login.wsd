@@ -1,0 +1,15 @@
+@startuml uc_login
+
+actor "Registered User" as User
+node System
+
+left to right direction
+
+rectangle login{
+  usecase Login
+
+  User -- Login
+  Login -- System
+}
+
+@enduml

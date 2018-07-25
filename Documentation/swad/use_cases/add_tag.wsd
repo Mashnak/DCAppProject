@@ -1,6 +1,6 @@
 @startuml uc_add_tag
 
-actor User
+actor "Logged in User" as User
 
 left to right direction
 

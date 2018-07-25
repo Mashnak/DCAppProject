@@ -1,0 +1,19 @@
+@startuml uc_add_fav
+
+actor "Logged in User" as User
+
+left to right direction
+
+rectangle "add favorite"{
+  usecase "Add favorite" as add_fav
+
+  usecase "View song" as song
+
+  add_fav <. song: <<includes>>
+}
+User -down- add_fav
+
+node System
+add_fav -down- System
+
+@enduml

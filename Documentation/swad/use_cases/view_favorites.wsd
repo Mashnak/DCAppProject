@@ -1,0 +1,19 @@
+@startuml uc_view_favorites
+
+actor "Logged in User" as User
+
+left to right direction
+
+rectangle "view favorites"{
+  usecase "View favorites" as view_favorites
+
+  usecase "View profile" as song
+
+  view_favorites <. song: <<includes>>
+}
+User -down- view_favorites
+
+node System
+view_favorites -down- System
+
+@enduml
