@@ -1,0 +1,25 @@
+@startuml Laufzeit_register
+actor user
+participant webapp
+participant businesslogic
+database mongo
+
+user -> webapp : "Register with user password"
+webapp -> businesslogic : /register?name=user&password=password&isAdmin=true
+activate webapp
+businesslogic -> mongo : search for user
+alt User does not Exist
+    mongo -> businesslogic : null
+    businesslogic -> mongo : save()
+    businesslogic -> webapp : HTTP 200 OK
+    webapp -> webapp : login()
+    webapp -> user : Login User
+    note right 
+        for details see sequence_login
+    end note 
+else User Exists
+    mongo -> businesslogic : result
+    businesslogic -> webapp : HTTP 400 BAD REQUEST
+deactivate webapp
+end
+@enduml

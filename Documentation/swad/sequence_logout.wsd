@@ -1,0 +1,25 @@
+@startuml Laufzeit_logout
+actor user
+participant webapp
+participant businesslogic
+database mongo
+
+user -> webapp : "Logout user"
+activate webapp
+webapp -> businesslogic : /logout?name=user
+activate businesslogic
+businesslogic -> mongo : search for user
+activate mongo
+alt User Exists
+    mongo -> businesslogic : result
+    businesslogic -> mongo : remove from session
+    businesslogic -> webapp : HTTP 200 OK
+    webapp -> user : Logout User
+else User does not Exist
+    mongo -> businesslogic : null
+    businesslogic -> webapp : HTTP 200 OK
+    deactivate mongo
+    deactivate businesslogic
+    deactivate webapp
+end
+@enduml

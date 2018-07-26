@@ -1,0 +1,29 @@
+@startuml Laufzeit_login
+actor user
+participant webapp
+participant businesslogic
+database mongo
+
+user -> webapp : "Login with Username Password"
+activate webapp
+webapp -> businesslogic : /login?name=user&password=password
+activate businesslogic
+businesslogic -> mongo : search for user
+activate mongo
+alt User Exists
+    mongo -> businesslogic : result
+    businesslogic -> businesslogic : Check Password
+    alt Password Correct
+    businesslogic -> webapp : HTTP 200 OK
+    user <- webapp : Login
+    else Password Wrong
+    businesslogic -> webapp : HTTP 403 UNAUTHORIZED
+    end
+else User does not Exist
+    mongo -> businesslogic : null
+deactivate mongo
+    businesslogic -> webapp : HTTP 400 BAD REQUEST
+deactivate businesslogic
+deactivate webapp
+end
+@enduml

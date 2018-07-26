@@ -1,0 +1,20 @@
+@startuml Laufzeit_logout
+actor user
+participant webapp
+participant businesslogic
+database mongo
+
+user -> webapp : "Add Tag to Dark Knight"
+activate webapp
+webapp -> businesslogic : /tag/song/?name=Dark Knight&tag=Soundtrack
+activate businesslogic
+businesslogic -> mongo : search for song
+activate mongo
+mongo -> businesslogic : result
+businesslogic -> businesslogic : add tag to result
+businesslogic -> mongo : overwrite result 
+businesslogic -> webapp : HTTP 200 OK
+deactivate mongo
+deactivate businesslogic
+deactivate webapp
+@enduml

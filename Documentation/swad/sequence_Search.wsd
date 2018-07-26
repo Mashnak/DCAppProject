@@ -4,10 +4,11 @@ participant webapp
 participant businesslogic
 database mongo
 
-user -> webapp : "search"
-webapp -> businesslogic : send request
-businesslogic -> mongo : search
+user -> webapp : "Legend Has it"
+webapp -> businesslogic : /search?term=Legend Has it
+businesslogic -> mongo : search()
 mongo -> businesslogic : result
 businesslogic -> webapp : result
+webapp -> user : show list with results
 
 @enduml
