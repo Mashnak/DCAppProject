@@ -37,10 +37,10 @@ export class AppComponent implements OnInit {
 
   onAddedToFavorites(songItem) {
     this.songservice.postSongToFavorites(songItem.name);
-    console.log(songItem);
   }
 
   open(content) {
+    console.log(typeof (content));
     this.modalService.open(content).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {

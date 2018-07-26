@@ -1,0 +1,21 @@
+@startuml
+
+
+class AppcomponentView {
+}
+
+class LogincomponentView {
+}
+class RegistercomponentView {
+}
+class SongitemView {
+}
+
+
+
+AppcomponentView <|- LogincomponentView
+AppcomponentView <|- RegistercomponentView
+AppcomponentView <|- SongitemView
+
+
+@enduml

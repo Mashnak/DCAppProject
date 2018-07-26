@@ -1,0 +1,59 @@
+@startuml
+together {
+class Appcomponent {
+  -string closeResult
+  -Observable<Song> searchResult
+  -string title
+  +void constructor(http: Http, modalService: NgbModal, songservice: SongService)
+  +void ngOnit()
+  +String getDissmissReason(reason:any)
+  +void onAddToFavorites(Songitem songitem)
+  +void onSubmit(String searchForm)
+  +void open(Object content)
+}
+
+class Logincomponent {
+  -Observable<User> userResult
+  +void constructor(http: Http, userservice: UserService)
+  +void onSubmit(Observalbe<User> loginUser)
+  + void userLogout()
+}
+class Registercomponent {
+  +constructor(http: Http, userservice: UserService)
+  +void onSubmit(Observable<User> user)
+}
+class Songitem {
+  -String closeResult
+  +constructor(http: Http, modalService: NgbModal, songservice: SongService)
+  +void postSongToFavorites()
+  +void obSubmit(Observable<Song> song, String tag)
+  +open(Object content)
+  +String getDismissReason(Reason:any)
+}
+}
+together {
+class SongService{
+  -String ROOT_URL
+  +constructor(http: Http, urlservice: UrlService)
+  +Observable<Song> getRandom()
+  +Observable<Song> getSong(String searchResult)
+  +void postSongToFavorites(Observable<Song> song)
+  +void PostTag(Observable<Song> song, String tag)
+}
+class UserService{
+  -String ROOT_URL
+  +getUser(Observable<User> loginUser)
+  +void registerUser(Observable<User> user)
+  +userLogut(Observable<User> user)
+}
+class UrlService{
+  -String ROOT_URL
+  +constructor()
+  +String getURL()
+}
+}
+
+Appcomponent <|- Logincomponent
+Appcomponent <|- Registercomponent
+Appcomponent <|- Songitem
+@enduml
