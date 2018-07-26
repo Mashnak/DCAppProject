@@ -1,0 +1,127 @@
+{
+    "swagger":"2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "API Documentation (Author: Khaled Ahmed)",
+        "description": "NodeJS-Service for storing Music into the Database"
+    },
+    "host": "localhost:3000",
+    "basePath":"/api-docs",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json",
+        "HTML"
+    ],
+    "paths": {
+        "/":{
+            "get": {
+                "tags":[
+                    "status"
+                ],
+                "summary": "check if Service is running",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags":[
+                    "Monitoring"
+                ],
+                "summary":"Endpoint for Monitoring Service",
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "schema": {
+                        "type":"object",
+                        "properties": {
+                            "msID": {
+                                "type": "string",
+                                "uniqueItems": true
+                            },
+                            "appID": {
+                                "type": "string",
+                                "uniqueItems": true
+                            },
+                            "eventUrl": {
+                                "type": "string",
+                                "uniqueItems": true
+                            },
+                            "noOfUser": {
+                                "type": "integer",
+                                "uniqueItems": true
+                            },
+                            "status": {
+                                "type": "integer",
+                                "uniqueItems": true
+                            }
+                        }
+                    }
+                }],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "properties": {
+                                "msID": {
+                                    "type": "string",
+                                    "uniqueItems": true
+                                },
+                                "appID": {
+                                    "type": "string",
+                                    "uniqueItems": true
+                                },
+                                "eventUrl": {
+                                    "type": "string",
+                                    "uniqueItems": true
+                                },
+                                "noOfUser": {
+                                    "type": "integer",
+                                    "uniqueItems": true
+                                },
+                                "status": {
+                                    "type": "integer",
+                                    "uniqueItems": true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "monitoring":{
+            "properties": {
+                "msID": {
+                    "type": "string",
+                    "uniqueItems": true
+                },
+                "appID": {
+                    "type": "string",
+                    "uniqueItems": true
+                },
+                "eventUrl": {
+                    "type": "string",
+                    "uniqueItems": true
+                },
+                "noOfUser": {
+                    "type": "integer",
+                    "uniqueItems": true
+                },
+                "status": {
+                    "type": "integer",
+                    "uniqueItems": true
+                }
+            }
+        }
+    }
+}
