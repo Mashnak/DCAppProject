@@ -7,6 +7,10 @@ export class UrlService {
   constructor() {
   }
 
+  /**
+   * Provides the correct root url for the other services to communicate with the Business Logic
+   * @returns {string}
+   */
   getURL() {
     return this.ROOT_URL;
   }

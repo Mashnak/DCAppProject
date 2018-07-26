@@ -19,12 +19,19 @@ export class LoginComponent {
 
   @Output() userAddedToFavorites = new EventEmitter();
 
+  /**
+   * Calls the service function that logs in the user
+   * @param loginUser
+   */
   onSubmit(loginUser) {
     this.userservice.getUser(loginUser).subscribe(data => {
       this.userResult = data;
     });
   }
 
+  /**
+   * Calls the service function that logs out the user
+   */
   userLogout() {
     this.userservice.userLogout(this.userResult).subscribe((res: Response) => console.log());
     this.userResult = null;

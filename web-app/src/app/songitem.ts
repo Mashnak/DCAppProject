@@ -20,14 +20,26 @@ export class SongitemComponent {
   @Input() searchResult;
   @Output() addedToFavorites = new EventEmitter();
 
+  /**
+   * Sends the song to appcomponent.postSongToFavorite to add the song to the users favoritelist
+   */
   postSongToFavorites() {
     this.addedToFavorites.emit(this.searchResult);
   }
 
+  /**
+   * Calls the service function that adds the tag to the specific song
+   * @param song
+   * @param tag
+   */
   onSubmit(song, tag) {
     this.songservice.postTag(song, tag.tags);
   }
 
+  /**
+   * Opens the popup to show tho songs lyrics
+   * @param content
+   */
   open(content) {
     this.modalService.open(content).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -36,6 +48,11 @@ export class SongitemComponent {
     });
   }
 
+  /**
+   * Function that closes the popup that shows the songs lyrics
+   * @param reason
+   * @returns {string}
+   */
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';

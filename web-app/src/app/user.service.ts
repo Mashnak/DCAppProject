@@ -11,6 +11,10 @@ export class UserService {
 
   readonly ROOT_URL: string = this.urlservice.getURL();
 
+  /**
+   * Forwards the user object to the Business Logic which registers him
+   * @param user
+   */
   registerUser(user) {
     let search = new URLSearchParams();
     search.set('name', user.name);
@@ -21,6 +25,11 @@ export class UserService {
     this.http.post(url , {}, {search}).subscribe(res => console.log(res.json()));
   }
 
+  /**
+   * Forwards the user object to the Business Logic which logs him in
+   * @param loginUser
+   * @returns {Observable<any>}
+   */
   getUser(loginUser) {
     let search = new URLSearchParams();
     search.set('name', loginUser.name);
@@ -30,6 +39,11 @@ export class UserService {
       .map((res: Response) => (res.json()));
   }
 
+  /**
+   * Forwards the user object to the Business Logic which logs him out
+   * @param user
+   * @returns {Observable<any>}
+   */
   userLogout(user) {
     let search = new URLSearchParams();
     search.set('name', user.name);

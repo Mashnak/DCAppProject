@@ -12,6 +12,11 @@ export class SongService {
 
   readonly ROOT_URL: string = this.urlservice.getURL();
 
+  /**
+   * Forwards the searchterm to the Business Logic which returns the songs
+   * @param searchResult
+   * @returns {Observable<any>}
+   */
   getSong(searchResult) {
     let search = new URLSearchParams();
     search.set('term', searchResult.searchText);
@@ -20,6 +25,10 @@ export class SongService {
       .map((res: Response) => (res.json()));
   }
 
+  /**
+   * Requests all songs for the Business Logic that are stored in the database
+   * @returns {Observable<any>}
+   */
   getRandom() {
     let search = new URLSearchParams();
     search.set('count', '10');
@@ -28,9 +37,18 @@ export class SongService {
       .map((res: Response) => (res.json()));
   }
 
+  /**
+   * Forwards the song object to the Business Logic which adds it to the users favoritelist
+   * @param song
+   */
   postSongToFavorites(song) {
   }
 
+  /**
+   * Forwards the song object and the tag to the Business Logic which adds the tag to the specific song
+   * @param song
+   * @param tag
+   */
   postTag(song, tag) {
     let search = new URLSearchParams();
     search.set('name', song);

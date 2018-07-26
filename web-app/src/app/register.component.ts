@@ -13,6 +13,10 @@ export class RegisterComponent {
   constructor(private http: Http, private userservice: UserService) {
   }
 
+  /**
+   * Calls the service function that registers the new user
+   * @param user
+   */
   onSubmit(user) {
     this.userservice.registerUser(user);
   }
