@@ -1,6 +1,7 @@
 // Author: Timur Bahadir
 
-part of 'app.dart';
+import 'package:flutter/material.dart';
+import 'views/views.dart';
 
 /// Entry point of the app.
 void main() => runApp(new MyApp());

@@ -1,3 +1,4 @@
+# Author: Timur Bahadir
 version: "2"
 services:
   mongo_service:

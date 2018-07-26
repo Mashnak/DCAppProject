@@ -1,0 +1,39 @@
+@startuml verteilung
+
+artifact "Music Search" << artifact >> as ms
+
+component "Datenbank" << subsystem >> as db
+component "Backend" << subsystem >> as be
+component "Business Logic" << subsystem >> as bl
+component "Web App" << subsystem >> as wa
+component "Android App" << subsystem >> as aa
+
+card "Monitoring" << artifact >> as mt
+note bottom: Fremdsystem
+
+card "Spotify" << artifact >> as sp
+note bottom: Fremdsystem
+card "Youtube" << artifact >> as yt
+note bottom: Fremdsystem
+card "ApiSeeds" << artifact >> as ap
+note bottom: Fremdsystem
+
+ms .. db: docker container
+ms .. be: docker container
+ms .. bl: docker container
+ms .. wa: docker container
+ms .. aa
+
+be ..> db
+bl <..> db
+aa ..> bl
+wa ..> bl
+
+be .. sp
+be .. yt
+be .. ap
+
+bl .. mt
+be .. mt
+
+@enduml
