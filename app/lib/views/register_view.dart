@@ -1,14 +1,11 @@
 // Author: Timur Bahadir
 
-import 'dart:convert';
+part of 'views.dart';
 
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
-import 'package:app/globals.dart' as globals;
-import 'package:app/data/profile_data.dart';
-import 'package:app/data/register_data.dart';
-
+/// Displays a view to register a new account or login to an existing one.
+///
+/// Since a [RegisterView] is stateful, all behaviour
+/// is implemented in the [RegisterViewState] class.
 class RegisterView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -16,12 +13,42 @@ class RegisterView extends StatefulWidget {
   }
 }
 
+/// The view is split into two tabs.
+/// 1. Tab is used to register a new profile
+/// 2. Tab is used to log into an existing profile
+///
+/// It holds two [GlobalKey]s to maintain the state
+/// of the two forms.
 class RegisterViewState extends State<RegisterView> {
   final GlobalKey<FormState> _registerKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _loginKey = GlobalKey<FormState>();
   RegisterData _registerData = new RegisterData();
   LoginData _loginData = new LoginData();
 
+  @override
+  Widget build(BuildContext context) {
+    return new DefaultTabController(
+      length: 3,
+      child: new Scaffold(
+          appBar: new AppBar(
+            bottom: new TabBar(
+              tabs: [
+                new Tab(
+                  icon: new Text("Register"),
+                ),
+                new Tab(
+                  icon: new Text("Login"),
+                ),
+              ],
+            ),
+          ),
+          body: new TabBarView(
+            children: [_buildRegisterTab(context), _buildLoginTab(context)],
+          )),
+    );
+  }
+
+  /// Creates the first tab to register a new profile.
   Widget _buildRegisterTab(context) {
     return Form(
       key: _registerKey,
@@ -123,6 +150,7 @@ class RegisterViewState extends State<RegisterView> {
     );
   }
 
+  /// Creates the second tab to log into an existing account.
   Widget _buildLoginTab(context) {
     return Form(
       key: _loginKey,
@@ -202,29 +230,6 @@ class RegisterViewState extends State<RegisterView> {
           ),
         ],
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new DefaultTabController(
-      length: 3,
-      child: new Scaffold(
-          appBar: new AppBar(
-            bottom: new TabBar(
-              tabs: [
-                new Tab(
-                  icon: new Text("Register"),
-                ),
-                new Tab(
-                  icon: new Text("Login"),
-                ),
-              ],
-            ),
-          ),
-          body: new TabBarView(
-            children: [_buildRegisterTab(context), _buildLoginTab(context)],
-          )),
     );
   }
 }

@@ -1,16 +1,15 @@
 // Author: Timur Bahadir
 
-import 'package:flutter/material.dart';
+part of 'views.dart';
 
-import 'package:app/views/home_view.dart';
-import 'package:app/views/album_view.dart';
-import 'package:app/views/artist_view.dart';
-import 'package:app/views/profile_view.dart';
-import 'package:app/views/register_view.dart';
-import 'package:app/views/search_view.dart';
-import 'package:app/views/song_view.dart';
-
+/// To remove dependencies between views, the [ViewManager]
+/// takes care of switching views.
 class ViewManager {
+  /// Enters a new View on the stack of a [Navigator].
+  /// The [Navigator] is found via the [context].
+  /// The view to add is choosen by the [viewName].
+  /// Some Views require more data to be passed along, that
+  /// can be achieved via the optional [value] param.
   static pushNamed(context, String viewName, [value]) {
     Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
       switch (viewName) {

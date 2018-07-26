@@ -1,16 +1,14 @@
 // Author: Timur Bahadir
 
-import 'dart:async';
-import 'dart:convert';
+part of 'views.dart';
 
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
-import 'package:app/globals.dart' as globals;
-import 'package:app/data/profile_data.dart';
-import 'package:app/views/view_manager.dart';
-import 'package:app/widgets/info_section.dart';
-
+/// Displays the details of a profile.
+///
+/// Since a [ProfileView] is stateful, all behaviour
+/// is implemented in the [ProfileViewState] class.
+///
+/// The [ProfileView] passes along the name of the profile
+/// to [ProfileViewState].
 class ProfileView extends StatefulWidget {
   final String profileName;
 
@@ -22,84 +20,24 @@ class ProfileView extends StatefulWidget {
   }
 }
 
+/// Displays all Information of a profile.
+///
+/// The view is split into three tabs.
+/// 1. Tab displays general information about the profile
+/// 2. Tab displays the friends of that profile
+/// 3. Tab displays the favorite songs of that profile
+///
+/// It is constructed via a [FutureBuilder]. Showing a loading
+/// indicator while the data is being fetched and the error message
+/// if the fetching failed.
 class ProfileViewState extends State<ProfileView> {
   final Future<ProfileData> futureProfileData;
   final String profileName;
 
+  /// Creates a new [ProfileView] by requesting the [ProfileData]
+  /// of the profile with the name of [profileName].
   ProfileViewState(this.profileName)
       : futureProfileData = fetchProfileData(profileName);
-
-  Widget _buildProfile(context, ProfileData data) {
-    return new Column(
-      children: <Widget>[
-        new InfoSection("Username", data.name),
-        new InfoSection("Date of Birth", data.birthdate.toString()),
-        data.isAdmin
-            ? new Text("This user is an Admin")
-            : new Container(
-                width: 0.0,
-                height: 0.0,
-              ),
-        data.name == globals.loggedInUser.name
-            ? new RaisedButton(
-                child: new Text("Logout"),
-                onPressed: () {
-                  http
-                      .get(globals.BASE_URL +
-                          "/logout?name=" +
-                          globals.loggedInUser.name)
-                      .then((response) {
-                    final int statusCode = response.statusCode;
-
-                    if (statusCode < 200 || statusCode > 400 || json == null) {
-                      final responseJson = json.decode(response.body);
-                      print(statusCode);
-                      print(responseJson);
-                      throw new Exception("Error while fetching data");
-                    }
-
-                    final responseJson = json.decode(response.body);
-                    print(responseJson);
-                    Navigator.pop(context);
-                    globals.loggedInUser = null;
-                    setState(() {
-                      print(globals.loggedInUser);
-                    });
-                  });
-                },
-              )
-            : new Container(width: 0.0, height: 0.0)
-      ],
-    );
-  }
-
-  Widget _buildFriendsTab(context, ProfileData data) {
-    return new Column(
-      children: data.friends.map((entry) {
-        return new ListTile(
-          title: new Text(entry),
-          trailing: new Icon(Icons.view_list),
-          onTap: () {
-            ViewManager.pushNamed(context, "profile", entry);
-          },
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildPlaylistTab(context, ProfileData data) {
-    return new Column(
-      children: data.playlists.map((entry) {
-        return new ListTile(
-          title: new Text(entry),
-          trailing: new Icon(Icons.view_list),
-          onTap: () {
-            ViewManager.pushNamed(context, "song", entry);
-          },
-        );
-      }).toList(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -262,5 +200,82 @@ class ProfileViewState extends State<ProfileView> {
                     });
               }),
         ));
+  }
+
+  /// Creates the first tab to show general profile information.
+  Widget _buildProfile(context, ProfileData data) {
+    return new Column(
+      children: <Widget>[
+        new InfoSection("Username", data.name),
+        new InfoSection("Date of Birth", data.birthdate.toString()),
+        data.isAdmin
+            ? new Text("This user is an Admin")
+            : new Container(
+                width: 0.0,
+                height: 0.0,
+              ),
+        data.name == globals.loggedInUser.name
+            ? new RaisedButton(
+                child: new Text("Logout"),
+                onPressed: () {
+                  http
+                      .get(globals.BASE_URL +
+                          "/logout?name=" +
+                          globals.loggedInUser.name)
+                      .then((response) {
+                    final int statusCode = response.statusCode;
+
+                    if (statusCode < 200 || statusCode > 400 || json == null) {
+                      final responseJson = json.decode(response.body);
+                      print(statusCode);
+                      print(responseJson);
+                      throw new Exception("Error while fetching data");
+                    }
+
+                    final responseJson = json.decode(response.body);
+                    print(responseJson);
+                    Navigator.pop(context);
+                    globals.loggedInUser = null;
+                    setState(() {
+                      print(globals.loggedInUser);
+                    });
+                  });
+                },
+              )
+            : new Container(width: 0.0, height: 0.0)
+      ],
+    );
+  }
+
+  /// Creates the second tab to show all friends of the profile
+  /// in a pretty list.
+  Widget _buildFriendsTab(context, ProfileData data) {
+    return new Column(
+      children: data.friends.map((entry) {
+        return new ListTile(
+          title: new Text(entry),
+          trailing: new Icon(Icons.view_list),
+          onTap: () {
+            ViewManager.pushNamed(context, "profile", entry);
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  /// Creates the third tab to show all favorite songs of the profile
+  /// in a pretty list.
+  Widget _buildPlaylistTab(context, ProfileData data) {
+    return new Column(
+      children: data.playlists.map((entry) {
+        return new ListTile(
+          title: new Text(entry),
+          trailing: new Icon(Icons.view_list),
+          onTap: () {
+            ViewManager.pushNamed(context, "song", entry);
+          },
+        );
+      }).toList(),
+    );
   }
 }

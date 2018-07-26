@@ -1,11 +1,17 @@
 // Author: Timur Bahadir
 
-import 'package:flutter/material.dart';
+part of 'app.dart';
 
-import 'package:app/views/debug_view.dart';
-
+/// Entry point of the app.
 void main() => runApp(new MyApp());
 
+/// Root of the app.
+///
+/// Starts a new MaterialApp with a primary color of blue and the
+/// [DebugView] as a starting point.
+/// For a release [DebugView] should be changed to a [HomeView].
+/// It also names the app "Song Finder".
+///
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

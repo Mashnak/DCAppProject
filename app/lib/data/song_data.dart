@@ -1,14 +1,18 @@
 // Author: Timur Bahadir
 
-import 'dart:async';
+part of 'data.dart';
 
-import 'package:app/data/data_network_util.dart';
-
+/// Uses [fetchJson()] to create a [SearchData].
 Future<SongData> fetchSongData(name) async {
   final responseJson = await fetchJson("/song?name=$name");
   return new SongData.fromJson(responseJson);
 }
 
+/// Holds all required data for a [SongView].
+///
+/// Is constructed with the [fromJson()] method.
+/// The required json can be fetched using [fetchJson()].
+/// It is recommended to use the [fetchSearchData(String term)] function above.
 class SongData {
   final String name;
   final String length;
@@ -23,6 +27,7 @@ class SongData {
   final String imagePath;
   final String album;
 
+  /// Creates an [SongData] from parsed Json in [json].
   SongData.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         length = json['length'],

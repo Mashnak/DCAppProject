@@ -1,5 +1,5 @@
-name: app
-description: A new Flutter project.
+name: ds.hs_aalen.app
+description: Android app for the ds project.
 
 dependencies:
   flutter:

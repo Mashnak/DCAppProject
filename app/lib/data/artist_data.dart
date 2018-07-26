@@ -1,14 +1,18 @@
 // Author: Timur Bahadir
 
-import 'dart:async';
+part of 'data.dart';
 
-import 'package:app/data/data_network_util.dart';
-
+/// Uses [fetchJson()] to create a [ArtistData].
 Future<ArtistData> fetchArtistData(String name) async {
   final responseJson = await fetchJson("/artist?name=$name");
   return new ArtistData.fromJson(responseJson);
 }
 
+/// Holds all required data for a [ArtistView].
+///
+/// Is constructed with the [fromJson()] method.
+/// The required json can be fetched using [fetchJson()].
+/// It is recommended to use the [fetchArtistData()] function above.
 class ArtistData {
   final String name;
   final List genres;
@@ -16,6 +20,7 @@ class ArtistData {
   final List albums;
   final String imagePath;
 
+  /// Creates an [ArtistData] from parsed Json in [json].
   ArtistData.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         genres = json['genre'],

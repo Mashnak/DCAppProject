@@ -1,10 +1,10 @@
 // Author: Timur Bahadir
 
-import 'package:flutter/material.dart';
+part of 'views.dart';
 
-import 'package:app/globals.dart' as globals;
-import 'package:app/views/view_manager.dart';
-
+/// Shows a list of songs.
+///
+/// Currently unused.
 class PlaylistView extends StatelessWidget {
   PlaylistView();
 

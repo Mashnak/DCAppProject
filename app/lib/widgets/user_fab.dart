@@ -1,11 +1,16 @@
 // Author: Timur Bahadir
 
-import 'package:flutter/material.dart';
+part of 'widgets.dart';
 
+/// Creates a [FloatingActionButton] which hides itself
+/// when no user is logged in.
 class UserFAB extends StatelessWidget {
   final bool display;
   final List<SimpleDialogOption> children;
 
+  /// When [display] is false the [UserFAB] hides itself.
+  /// All members of [children] will be added as children
+  /// of the created [FloatingActionButton].
   UserFAB({this.display, this.children});
 
   @override

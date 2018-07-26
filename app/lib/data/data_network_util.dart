@@ -1,13 +1,15 @@
 // Author: Timur Bahadir
 
-import 'dart:convert';
+part of 'data.dart';
 
-import 'package:flutter/foundation.dart';
-
-import 'package:http/http.dart' as http;
-
-import 'package:app/globals.dart' as globals;
-
+/// Sends a HTTP-Request to [globals.BASE_URL] and decodes
+/// the response into Json.
+///
+/// Appends [arg] to [globals.BASE_URL] and sends a HTTP-Request
+/// to that url. It checks the return code and throws [Exception]
+/// if anything went wrong
+///
+/// The returning dynamic is already in parsed form.
 dynamic fetchJson(String arg) async {
   final String requestURL = globals.BASE_URL + arg;
   final response = await http.get(requestURL);

@@ -1,9 +1,11 @@
 // Author: Timur Bahadir
 
-import 'package:flutter/material.dart';
+part of 'views.dart';
 
-import 'package:app/views/view_manager.dart';
-
+/// This view serves debug purposes.
+///
+/// From This view every other type of view can be created
+/// using hard coded names.
 class DebugView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

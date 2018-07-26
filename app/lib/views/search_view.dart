@@ -1,12 +1,11 @@
 // Author: Timur Bahadir
 
-import 'dart:async';
+part of 'views.dart';
 
-import 'package:flutter/material.dart';
-
-import 'package:app/data/search_data.dart';
-import 'package:app/views/view_manager.dart';
-
+/// Displays a view to enable a search for songs, albums and artists.
+///
+/// Since a [SearchView] is stateful, all behaviour
+/// is implemented in the [_SearchViewState] class.
 class SearchView extends StatefulWidget {
   @override
   _SearchViewState createState() {
@@ -14,50 +13,16 @@ class SearchView extends StatefulWidget {
   }
 }
 
+/// Shows a search bar and three lists of search results
+/// once a search is started.
+/// 1. for songs
+/// 2. for albums
+/// 3. for artists
+///
+/// Theese lists are contained in a [SearchData] fetched
+/// when a new search is started.
 class _SearchViewState extends State<SearchView> {
   Future<SearchData> futureSearchData;
-
-  Widget _buildSongList(List searchSongs) {
-    return new Column(
-      children: searchSongs.map((entry) {
-        return new ListTile(
-          title: new Text(entry["name"]),
-          trailing: new Icon(Icons.music_note),
-          onTap: () {
-            ViewManager.pushNamed(context, "song", entry["name"]);
-          },
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildAlbumList(List searchAlbums) {
-    return new Column(
-      children: searchAlbums.map((entry) {
-        return new ListTile(
-          title: new Text(entry["name"]),
-          trailing: new Icon(Icons.view_list),
-          onTap: () {
-            ViewManager.pushNamed(context, "album", entry["name"]);
-          },
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildArtistList(List searchArtists) {
-    return new Column(
-      children: searchArtists.map((entry) {
-        return new ListTile(
-          title: new Text(entry["name"]),
-          trailing: new Icon(Icons.accessibility),
-          onTap: () {
-            ViewManager.pushNamed(context, "artist", entry["name"]);
-          },
-        );
-      }).toList(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +100,54 @@ class _SearchViewState extends State<SearchView> {
           );
         },
       ),
+    );
+  }
+
+  /// Creates the first list containing all songs
+  /// of the search result
+  Widget _buildSongList(List searchSongs) {
+    return new Column(
+      children: searchSongs.map((entry) {
+        return new ListTile(
+          title: new Text(entry["name"]),
+          trailing: new Icon(Icons.music_note),
+          onTap: () {
+            ViewManager.pushNamed(context, "song", entry["name"]);
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  /// Creates the second list containing all albums
+  /// of the search result
+  Widget _buildAlbumList(List searchAlbums) {
+    return new Column(
+      children: searchAlbums.map((entry) {
+        return new ListTile(
+          title: new Text(entry["name"]),
+          trailing: new Icon(Icons.view_list),
+          onTap: () {
+            ViewManager.pushNamed(context, "album", entry["name"]);
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  /// Creates the third list containing all artists
+  /// of the search result
+  Widget _buildArtistList(List searchArtists) {
+    return new Column(
+      children: searchArtists.map((entry) {
+        return new ListTile(
+          title: new Text(entry["name"]),
+          trailing: new Icon(Icons.accessibility),
+          onTap: () {
+            ViewManager.pushNamed(context, "artist", entry["name"]);
+          },
+        );
+      }).toList(),
     );
   }
 }

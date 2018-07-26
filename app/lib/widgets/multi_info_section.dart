@@ -1,12 +1,23 @@
 // Author: Timur Bahadir
 
-import 'package:flutter/material.dart';
+part of 'widgets.dart';
 
+/// Creates a generic and reuseable Component to display multiple
+/// Informations under the same name.
+///
+/// It displays [sectionName] above all values of [sectionValues].
+/// A optional callback can be given, which will be calles
+/// whenever a member of the [sectionValues] is tapped, with
+/// the content of the tapped sectionValue as a parameter.
 class MultiInfoSection extends StatelessWidget {
   final String sectionName;
   final Set sectionValues;
   final Function onTapCallback;
 
+  /// Creates the [MultiInfoSection] using [sectionName] as the name above
+  /// the values of [sectionValues]. The optional callback [onTapCallback]
+  /// is called when te [InfoSection] is tapped, the tapped value of [sectionValues]
+  /// is given as the parameter to [onTapCallback].
   MultiInfoSection(this.sectionName, List vals, [this.onTapCallback])
       : sectionValues = Set.from(vals);
 

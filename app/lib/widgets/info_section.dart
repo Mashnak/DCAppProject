@@ -1,12 +1,26 @@
 // Author: Timur Bahadir
 
-import 'package:flutter/material.dart';
+part of 'widgets.dart';
 
+/// Creates a generic and reusable Component to display information.
+///
+/// It displays the [sectionName] above the [sectionValue].
+/// Optionally a callback can be added, which will be called
+/// when the InfoSection is tapped with
+/// the [sectionValue] as a parameter.
 class InfoSection extends StatelessWidget {
+  /// Name above the information.
   final String sectionName;
+
+  /// Value of the information.
   final String sectionValue;
+
+  /// Optionally given and called when pressed.
   final Function onTapCallback;
 
+  /// Creates the [InfoSection] using [sectionName] as the name above
+  /// the value of [sectionValue]. The optional callback [onTapCallback]
+  /// is called when te [InfoSection] is tapped.
   InfoSection(this.sectionName, this.sectionValue, [this.onTapCallback]);
 
   @override

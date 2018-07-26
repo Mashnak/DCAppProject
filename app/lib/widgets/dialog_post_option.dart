@@ -1,10 +1,16 @@
 // Author: Timur Bahadir
 
-import 'package:flutter/material.dart';
+part of 'widgets.dart';
 
-import 'package:http/http.dart' as http;
-
-Function DialogPostOptionCallback(
+/// Creates a entry for a [SimpleDialog] to create a new
+/// [SimpleDialog] on press with a text Input.
+/// [title] will be the title of the [SimpleDialog],
+/// [hint] will be the input text hint,
+/// [url] is the destination of the Http-Post-Request,
+/// The input of the dialog will be appended to the [url].
+/// When the Http-Post-Request is completed [onCompleteCallback]
+/// is called.
+Function dialogPostOptionCallback(
     {context,
     String title,
     String hint,

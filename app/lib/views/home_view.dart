@@ -1,49 +1,17 @@
 // Author: Timur Bahadir
 
-import 'dart:async';
+part of 'views.dart';
 
-import 'package:flutter/material.dart';
-
-import 'package:app/globals.dart' as globals;
-import 'package:app/data/home_data.dart';
-import 'package:app/views/view_manager.dart';
-
+/// Default starting view of the app.
+///
+/// The [HomeView] displays a random collection
+/// of songs which can all be pressed to show a
+/// [SongView] with the details of that song.
 class HomeView extends StatelessWidget {
   final Future<HomeData> futureHomeData;
 
+  /// Creates the HomeView using [fetchHomeData()].
   HomeView() : futureHomeData = fetchHomeData();
-
-  Widget _buildHomeView(context, HomeData homeData) {
-    Paint namePaint = new Paint();
-    namePaint.color = Colors.white;
-    final TextStyle nameStyle = new TextStyle(
-        fontSize: 16.0, fontWeight: FontWeight.bold, background: namePaint);
-    return new GridView.count(
-      crossAxisCount: 2,
-      childAspectRatio: 1.0,
-      mainAxisSpacing: 4.0,
-      crossAxisSpacing: 4.0,
-      padding: const EdgeInsets.all(5.0),
-      children: homeData.songs.map((song) {
-        return new GridTile(
-          child: new InkResponse(
-            enableFeedback: true,
-            child: Image.network(
-              song.imagePath,
-              fit: BoxFit.cover,
-            ),
-            onTap: () {
-              ViewManager.pushNamed(context, "song", song.name);
-            },
-          ),
-          footer: new Text(
-            song.name,
-            style: nameStyle,
-          ),
-        );
-      }).toList(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +77,40 @@ class HomeView extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  /// Creates the [GridView] displaying the random
+  /// List of songs in pretty way.
+  Widget _buildHomeView(context, HomeData homeData) {
+    Paint namePaint = new Paint();
+    namePaint.color = Colors.white;
+    final TextStyle nameStyle = new TextStyle(
+        fontSize: 16.0, fontWeight: FontWeight.bold, background: namePaint);
+    return new GridView.count(
+      crossAxisCount: 2,
+      childAspectRatio: 1.0,
+      mainAxisSpacing: 4.0,
+      crossAxisSpacing: 4.0,
+      padding: const EdgeInsets.all(5.0),
+      children: homeData.songs.map((song) {
+        return new GridTile(
+          child: new InkResponse(
+            enableFeedback: true,
+            child: Image.network(
+              song.imagePath,
+              fit: BoxFit.cover,
+            ),
+            onTap: () {
+              ViewManager.pushNamed(context, "song", song.name);
+            },
+          ),
+          footer: new Text(
+            song.name,
+            style: nameStyle,
+          ),
+        );
+      }).toList(),
     );
   }
 }

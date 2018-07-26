@@ -1,10 +1,13 @@
 // Author: Timur Bahadir
 
-import 'package:flutter/material.dart';
+part of 'widgets.dart';
 
-import 'package:http/http.dart' as http;
-
-Function PostOptionCallback({context, String url, Function onComplete}) {
+/// Creates a entry for a [SimpleDialog]. Which when pressed
+/// starts a Http-Post-Request.
+/// [url] is the destination of the Http-Post-Request,
+/// When the Http-Post-Request is completed [onCompleteCallback]
+/// is called.
+Function postOptionCallback({context, String url, Function onComplete}) {
   return () {
     http.post(url).then((response) {
       onComplete(response);
