@@ -7,3 +7,4 @@ COPY . /app/
 RUN npm install
 
 CMD sleep 10 && cd /app && npm start
+#Author: Khaled Ahmed

@@ -1,5 +1,5 @@
 #! /bin/bash
-
+#Author: Khaled Ahmed
 mongoimport --db test --collection albums --type json --file Documents/album.json
 mongoimport --db test --collection artists --type json --file Documents/artist.json
 mongoimport --db test --collection songs --type json --file Documents/bundesliga.json
