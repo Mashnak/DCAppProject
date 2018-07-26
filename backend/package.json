@@ -11,12 +11,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "api-doc-generator": "0.0.2",
     "apiseeds-lyrics": "^2.0.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "mongoose": "^5.0.15",
     "node-spotify-api": "^1.0.7",
     "request": "^2.87.0",
+    "swagger-ui": "^3.17.5",
+    "swagger-ui-express": "^3.0.10",
     "url": "^0.11.0",
     "youtube-search": "^1.1.1"
   }
