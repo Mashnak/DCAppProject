@@ -1,5 +1,8 @@
+// Author: Khaled Ahmed
 /******************************************** MongoDB **************************************************/
 var mongoose = require('mongoose')
+
+//URL of the Database. Process.env.DB_URL is chosen if configured by Docker-Compose
 var dbUrl = process.env.DB_URL || 'mongodb://192.168.99.100/test'
 
 var Album = require('./model/album.model')
@@ -46,6 +49,7 @@ var m_msID = ""
 var m_appID = ""
 var statusLogs = []
 
+//Http-Request Options
 var eventOptions = {
     url: {},
     method: "POST",
@@ -56,6 +60,8 @@ var eventOptions = {
 const url = require('url')
 var request = require('request')
 var express = require('express')
+var swaggerUi = require('swagger-ui-express'),
+    swaggerDocument = require('./swagger.json')
 var app = express()
 var bodyParser = require('body-parser')
 
@@ -63,6 +69,7 @@ var HOST = process.env.HOST || '0.0.0.0'
 var PORT = process.env.PORT || 3000
 
 //REST-Functions
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use(express.static(__dirname))
 var server = app.listen(PORT, HOST, () => {
     console.log('server is listening on port', server.address().port)
@@ -91,6 +98,11 @@ app.post('/', function (req, res) {
     monitoringPost()
 })
 
+/**
+ * Posts Logs to Monitoring-Service.
+ * Logs are stored in statusLogs[] and cleared after transmitting.
+ * Set Timer for the next Transmitting of the Logs.
+ */
 function monitoringPost() {
     console.log("MonitoringPost started")
 
@@ -125,7 +137,12 @@ updateDatabase()
 
 /***************************** Functions for Updateservice *********************************************/
 
-//Function Requests newest Albumreleases on Spotify and sets a Timer for the new Request
+/**
+ * Function Requests newest Albumreleases on Spotify and sets a Timer for the next Request.
+ * Event is logged and pushed to statusLogs[].
+ * Albums are requested with createAlbum().
+ * 
+ */
 function updateDatabase() {
     spotify.request(newReleases).then(function (data) {
         if (data.albums.items) {
@@ -174,7 +191,14 @@ function updateDatabase() {
     })
 }
 
-//Requests Album and stores in List
+/**
+ * Requests Album via Spotify-Api and stores in Album-Collection of the Database.
+ * Event is logged and pushed to statusLogs[].
+ * Further information of the containing Songlist is requested with createSong().
+ * Reference between Artists and Albums is handled with createArtistAlbumRef().
+ * 
+ * @param {String} albumURL - Spotify-URL of the Album
+ */
 function createAlbum(albumURL) {
     spotify.request(albumURL).then(function (data) {
         console.log("Album: " + albumURL)
@@ -244,7 +268,11 @@ function createAlbum(albumURL) {
     })
 }
 
-//Creates Reference between Album and Artists
+/** Creates Reference between Album and Artists
+ * and stored to the Albumartist-Collection of the Database
+ * @param {String[]} artists - name of the Artists
+ * @param {String} albumRef - name of the Album
+ */
 function createArtistAlbumRef(artists, albumRef) {
     for (var pos in artists) {
         var artistAlbumEntry = new ArtistAlbum({
@@ -258,7 +286,19 @@ function createArtistAlbumRef(artists, albumRef) {
     }
 }
 
-//Stores Songinformation in List
+/**
+ * Lyrics and YouTube URL is requested
+ * Stores it to SongCollection of the Database.
+ * Artists are created with createArtist().
+ * Reference between Artists and Songs is created with createArtistSongRef().
+ * Event is logged and pushed to statusLogs[]
+ * 
+ * @param {Object} song - song
+ * @param {String} release - Releasedate of the song
+ * @param {String} image - URL of the Song-Image 
+ * @param {String} albumRef - name of the Album
+ * @param {String[]} genreList - List with the Genres of the song
+ */
 function createSong(song, release, image, albumRef, genreList) {
     var artists = []
     var nameTmp = ""
@@ -386,7 +426,11 @@ function createSong(song, release, image, albumRef, genreList) {
     }
 }
 
-//Requests Artist and stores in List
+/**
+ * Requests Artist via Spotify API and stores them Artists-Collection of the Database.
+ * Event is logged and pushed to statusLogs[]
+ * @param {String[]} artists - name of the Artists
+ */
 function createArtist(artists) {
     var existing = false
     for (pos in artists) {
@@ -425,7 +469,13 @@ function createArtist(artists) {
     }
 }
 
-//Creates Reference between Song and Artists
+/**
+ * Creates Reference between Song and Artists
+ * and Stores it in the artistSong-Collection of the database.
+ * 
+ * @param {String[]} artists - the names of the artists
+ * @param {String} songRef - the name of the song
+ */
 function createArtistSongRef(artists, songRef) {
     for (var pos in artists) {
         var artistSongEntry = new ArtistSong({
@@ -439,6 +489,10 @@ function createArtistSongRef(artists, songRef) {
     }
 }
 
+/**
+ * Logs Exceptionmessage
+ * @param err
+ */
 function handleError(err) {
     console.log("Not Successful!");
 }
