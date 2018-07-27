@@ -24,6 +24,7 @@ rectangle ThirdParty {
   cloud Spotify as spot
   cloud Youtube as yt
   cloud Apiseeds as as
+  cloud Monitoring as mo
 }
 
 ThirdParty -> backend: HTTP

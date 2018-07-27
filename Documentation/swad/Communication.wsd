@@ -1,0 +1,13 @@
+@startuml Communication
+[NodeJS] -(0- [Spotify] : REST
+[NodeJS] -(0- [YoutTube] : REST
+[NodeJS] -(0- [ApiSeeds] : REST
+[NodeJS] -0- [Monitoring] : REST
+[Spring] -0- Monitoring : REST
+
+[MongoDB] -(0- [NodeJS] : WireProtocol
+[MongoDB] -(0- [Spring] : WireProtocol
+
+[Angular] -0)- [Spring] : REST
+[Android] -0)- [Spring] : REST
+@enduml

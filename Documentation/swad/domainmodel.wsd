@@ -1,0 +1,91 @@
+@startuml Domainmodel
+package test {
+    class artists {
+        +ObjectID _id
+        +String name
+        +String img
+        +String[] genre
+        +String[] tag
+    }
+
+    class artistalbums {
+        +ObjectID _id
+    }
+
+    class albums {
+        +ObjectID _id
+        +String name
+        +String releaseDate
+        +String img
+        +String[] genre
+        +String[] tag
+    }
+
+    class songs {
+        +ObjectID _id
+        +String name
+        +String length
+        +String releaseDate
+        +String img
+        +String[] tag
+        +String[] genre
+        +String lyrics
+    }
+
+    class link {
+        +String name
+        +String url
+    }
+
+    class artistsongs {
+        +ObjectID _id
+    }
+
+    class comments {
+        +ObjectID _id
+        +String text
+        +String timestamp
+    }
+
+    class playlists {
+        +ObjectID _id
+        +String name
+        +String creationDate
+        +songs[]
+    }
+
+    class sessions {
+        +ObjectID _id
+        +String name
+        +String birthdate
+        +playlist[] playlist
+        +users[] friends 
+        +Boolean isAdmin
+    }
+
+    class users {
+        +ObjectID _id
+        +String name
+        +String password
+        +String birthdate
+        +Boolean isAdmin
+    }
+
+    artistalbums "1" <-- "*" artists
+    artistalbums "1" <-- "*" albums
+    artistsongs  "1" <-- "*" songs
+    artistsongs  "1" <-- "*" artists
+    songs "1" -- "*" albums
+    songs "*" *-- "1" link
+
+    sessions "0..*" <-- "n" users : friends of
+    sessions "1" <--* "1" users : session of
+    sessions "*" <-- "1" playlists
+    playlists "0..*" <-- "1..*" songs
+    comments  "1" o-- "0..*" users
+    comments  "1" o--> "0..*" comments : Answer to 
+    comments  "1" <-- "1..*" songs : Related to
+    comments  "1" <-- "1..*" albums : Related to
+    comments  "1" <-- "1..*" artists : Related to
+}
+@enduml

@@ -8,7 +8,7 @@
     "start": "node backend.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Khaled Ahmed",
   "license": "ISC",
   "dependencies": {
     "api-doc-generator": "0.0.2",

@@ -1,5 +1,4 @@
 @startuml context
-
 top to bottom direction
 
 actor user
@@ -13,9 +12,10 @@ reg --> app: tags songs, album and artists,\nadds friends and keeps favorites
 cloud Spotify as spotify
 cloud Youtube as youtube
 cloud ApiSeeds as apiseeds
+cloud monitoring as monitoring
 
 spotify --up-> app: provides information and\nlinks to listen
 youtube --up-> app: provides links to listen
 apiseeds --up-> app: provides lyrics for songs
-
+app --down-> monitoring: sends Logs of occuring events
 @enduml

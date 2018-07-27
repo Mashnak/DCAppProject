@@ -1,0 +1,15 @@
+@startuml
+node "Backend" {
+    package "NodeJS" {
+        [Mongoose]
+    }    
+    package "Database" {
+        database "MongoDB" {           
+        }
+        MongoDB - WiredProtocol 
+        Mongoose -> WiredProtocol 
+        Folder "Documents" {
+        }        
+    }   
+}
+@enduml
